@@ -1,41 +1,73 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import SettingsContext from "../contexts/settings-context";
+import DarkModeToggle from "react-dark-mode-toggle";
 
 const HeaderContainer = styled.div`
   width: 100%;
   height: 10vh;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
   position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: ${(props) => (props.darkMode ? "#434343" : "white")};
+  color: ${(props) => (props.darkMode ? "white" : "black")};
+`;
+
+const Logo = styled.div`
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  font-family: "Dancing Script", cursive;
+`;
+
+const LinksContainer = styled.div`
+  width: 60%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const Link = styled.div`
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    color: #cc5200;
+  }
+`;
+
+const ToggleContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const Link = styled.div`
-  color: white;
-  font-weight: 600;
-  text-transform: uppercase;
-  padding-top: 3px;
-  margin: 0% 1%;
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-
-  &:hover {
-    color: #cc5200;
-    border-color: #cc5200;
-  }
-`;
-
-const Header = () => {
+const Header = ({ toggleDarkMode }) => {
   const contextData = useContext(SettingsContext);
+  const { darkMode } = contextData;
   return (
-    <HeaderContainer>
-      <Link>Home</Link>
-      <Link>About</Link>
-      <Link>Projects</Link>
-      <Link>Experience</Link>
-      <Link>Contact</Link>
+    <HeaderContainer darkMode={darkMode}>
+      <Logo>&lt;Shivansh/&gt;</Logo>
+      <LinksContainer>
+        <Link>Skills</Link>
+        <Link>Experience</Link>
+        <Link>Projects</Link>
+        <Link>About</Link>
+        <Link>Contact</Link>
+        <ToggleContainer>
+          <DarkModeToggle
+            onChange={toggleDarkMode}
+            checked={contextData.darkMode}
+            size={70}
+            className="dark-mode-button"
+          />
+        </ToggleContainer>
+      </LinksContainer>
     </HeaderContainer>
   );
 };

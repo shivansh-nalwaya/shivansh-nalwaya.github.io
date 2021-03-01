@@ -1,3 +1,13 @@
 * {
   font-family: "Poppins", sans-serif;
 }
+
+.dark-mode-button {
+  outline: none;
+  overflow: visible !important;
+}
+
+.ant-btn-icon-only.ant-btn-lg > * {
+  font-size: 25px;
+  padding-top: 2px;
+}
