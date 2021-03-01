@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import Header from "./components/header";
+import Intro from "./components/intro";
+import SettingsContext from "./contexts/settings-context";
 
-function App() {
+const App = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 762);
+  const [darkMode, setDarkMode] = useState(false);
+
+  const setWindowWidth = () => setIsMobile(window.innerWidth <= 762);
+
+  useEffect(setWindowWidth, []);
+  window.addEventListener("resize", setWindowWidth);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <SettingsContext.Provider value={{ isMobile, darkMode }}>
+      <Header toggleDarkMode={() => setDarkMode(!darkMode)} />
+      <Intro />
+    </SettingsContext.Provider>
   );
-}
+};
 
 export default App;
