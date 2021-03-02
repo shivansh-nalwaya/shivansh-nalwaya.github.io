@@ -6,9 +6,8 @@ import Fade from "react-reveal/Fade";
 import Data from "../data";
 
 const Container = styled.div`
-  background: ${(props) => (props.darkMode ? "#434343" : "white")};
+  background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
-  height: 100vh;
   padding: 1%;
 `;
 
@@ -161,7 +160,7 @@ const Greeting = () => {
           </Fade>
         </Text>
         <Image>
-          <Fade right>
+          <Fade bottom>
             <img src="/assets/images/intro-avatar.svg" alt="" />
           </Fade>
         </Image>

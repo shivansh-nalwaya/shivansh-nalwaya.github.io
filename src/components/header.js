@@ -1,5 +1,6 @@
 import { MenuOutlined } from "@ant-design/icons";
-import { Collapse, Menu } from "antd";
+import { Collapse } from "antd";
+import Fade from "react-reveal/Fade";
 import { useContext } from "react";
 import DarkModeToggle from "react-dark-mode-toggle";
 import styled from "styled-components";
@@ -14,7 +15,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   z-index: 1;
-  background: ${(props) => (props.darkMode ? "#434343" : "white")};
+  background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
 
   @media (max-width: 768px) {
@@ -92,13 +93,13 @@ const ToggleContainer = styled.div`
 `;
 
 const StyledCollapse = styled(Collapse)`
-  background: ${(props) => (props.darkMode ? "#434343" : "white")};
+  background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
 `;
 
 const Header = ({ toggleDarkMode }) => {
   const contextData = useContext(SettingsContext);
-  const { isMobile, darkMode } = contextData;
+  const { darkMode } = contextData;
   return (
     <>
       <HeaderContainer darkMode={darkMode}>
