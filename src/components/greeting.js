@@ -9,25 +9,43 @@ const Container = styled.div`
   background: ${(props) => (props.darkMode ? "#434343" : "white")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
   height: 100vh;
-  padding: calc(10vh + 1%) 1% 1% 1%;
+  padding: 1%;
 `;
 
 const IntroBox = styled.div`
   padding: 2%;
   padding-top: 5%;
   display: flex;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Text = styled.div`
   width: 50%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0% 2%;
+  }
 `;
 
 const Image = styled.div`
   width: 50%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0% 2%;
+  }
 `;
 
 const Title = styled.div`
   font-size: 3.2em;
+
+  @media (max-width: 768px) {
+    font-size: 2em;
+  }
 `;
 
 const rotate = keyframes`
@@ -46,11 +64,19 @@ const Animated = styled.span`
 
 const SubTitle = styled.div`
   font-size: 2em;
+
+  @media (max-width: 768px) {
+    font-size: 1.4em;
+  }
 `;
 
 const Desc = styled.div`
   padding: 1% 0%;
   font-size: 1.4em;
+
+  @media (max-width: 768px) {
+    font-size: 1.1em;
+  }
 `;
 
 const Links = styled.div`
@@ -85,12 +111,12 @@ const ActionButton = styled(Button)`
 
 const Greeting = () => {
   const contextData = useContext(SettingsContext);
-  const { darkMode } = contextData;
+  const { isMobile, darkMode } = contextData;
   return (
     <Container darkMode={darkMode}>
       <IntroBox>
         <Text>
-          <Fade bottom>
+          <Fade bottom={!isMobile} left={isMobile}>
             <>
               <Title>
                 {Data.title} <Animated>👋</Animated>

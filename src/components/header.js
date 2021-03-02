@@ -16,6 +16,7 @@ const HeaderContainer = styled.div`
   z-index: 1;
   background: ${(props) => (props.darkMode ? "#434343" : "white")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
+
   @media (max-width: 768px) {
     display: none;
   }
@@ -28,6 +29,7 @@ const Logo = styled.div`
   align-items: center;
   font-size: 2em;
   font-family: "Dancing Script", cursive;
+  color: ${(props) => (props.darkMode ? "white" : "black")};
 
   @media (max-width: 768px) {
     justify-content: flex-start;
@@ -56,6 +58,7 @@ const Link = styled.div`
   font-weight: 600;
   text-transform: uppercase;
   cursor: pointer;
+  color: ${(props) => (props.darkMode ? "white" : "black")};
 
   &:hover {
     color: #cc5200;
@@ -64,7 +67,8 @@ const Link = styled.div`
   @media (max-width: 768px) {
     padding: 3% 0%;
     width: 100%;
-    border-bottom: 1px solid black;
+    border-bottom: ${(props) =>
+      props.darkMode ? "1px solid white" : "1px solid black"};
   }
 `;
 
@@ -82,8 +86,14 @@ const ToggleContainer = styled.div`
       padding-right: 10%;
       font-weight: 600;
       text-transform: uppercase;
+      color: ${(props) => (props.darkMode ? "white" : "black")};
     }
   }
+`;
+
+const StyledCollapse = styled(Collapse)`
+  background: ${(props) => (props.darkMode ? "#434343" : "white")};
+  color: ${(props) => (props.darkMode ? "white" : "black")};
 `;
 
 const Header = ({ toggleDarkMode }) => {
@@ -92,13 +102,13 @@ const Header = ({ toggleDarkMode }) => {
   return (
     <>
       <HeaderContainer darkMode={darkMode}>
-        <Logo>&lt;{Data.name}/&gt;</Logo>
+        <Logo darkMode={darkMode}>&lt;{Data.name}/&gt;</Logo>
         <LinksContainer>
-          <Link>Skills</Link>
-          <Link>Experience</Link>
-          <Link>Projects</Link>
-          <Link>About</Link>
-          <Link>Contact</Link>
+          <Link darkMode={darkMode}>Skills</Link>
+          <Link darkMode={darkMode}>Experience</Link>
+          <Link darkMode={darkMode}>Projects</Link>
+          <Link darkMode={darkMode}>About</Link>
+          <Link darkMode={darkMode}>Contact</Link>
           <ToggleContainer>
             <DarkModeToggle
               onChange={toggleDarkMode}
@@ -109,20 +119,28 @@ const Header = ({ toggleDarkMode }) => {
           </ToggleContainer>
         </LinksContainer>
       </HeaderContainer>
-      <Collapse
+      <StyledCollapse
+        darkMode={darkMode}
         bordered={false}
         ghost={true}
-        expandIcon={() => <MenuOutlined style={{ fontSize: "1.6em" }} />}
+        expandIcon={() => (
+          <MenuOutlined
+            style={{ fontSize: "1.6em", color: darkMode ? "white" : "black" }}
+          />
+        )}
         expandIconPosition="right"
       >
-        <Collapse.Panel header={<Logo>&lt;{Data.name}/&gt;</Logo>} key="1">
+        <StyledCollapse.Panel
+          header={<Logo darkMode={darkMode}>&lt;{Data.name}/&gt;</Logo>}
+          key="1"
+        >
           <LinksContainer>
-            <Link>Skills</Link>
-            <Link>Experience</Link>
-            <Link>Projects</Link>
-            <Link>About</Link>
-            <Link>Contact</Link>
-            <ToggleContainer>
+            <Link darkMode={darkMode}>Skills</Link>
+            <Link darkMode={darkMode}>Experience</Link>
+            <Link darkMode={darkMode}>Projects</Link>
+            <Link darkMode={darkMode}>About</Link>
+            <Link darkMode={darkMode}>Contact</Link>
+            <ToggleContainer darkMode={darkMode}>
               <DarkModeToggle
                 onChange={toggleDarkMode}
                 checked={contextData.darkMode}
@@ -131,8 +149,8 @@ const Header = ({ toggleDarkMode }) => {
               />
             </ToggleContainer>
           </LinksContainer>
-        </Collapse.Panel>
-      </Collapse>
+        </StyledCollapse.Panel>
+      </StyledCollapse>
     </>
   );
 };
