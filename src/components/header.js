@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useContext } from "react";
 import SettingsContext from "../contexts/settings-context";
 import DarkModeToggle from "react-dark-mode-toggle";
+import Data from "../data";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -10,6 +11,7 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1;
   background: ${(props) => (props.darkMode ? "#434343" : "white")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
 `;
@@ -52,7 +54,7 @@ const Header = ({ toggleDarkMode }) => {
   const { darkMode } = contextData;
   return (
     <HeaderContainer darkMode={darkMode}>
-      <Logo>&lt;Shivansh/&gt;</Logo>
+      <Logo>&lt;{Data.name}/&gt;</Logo>
       <LinksContainer>
         <Link>Skills</Link>
         <Link>Experience</Link>
