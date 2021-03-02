@@ -3,6 +3,7 @@ import Header from "./components/header";
 import Greeting from "./components/greeting";
 import SettingsContext from "./contexts/settings-context";
 import SkillSet from "./components/skillset";
+import "antd/dist/antd.css";
 
 const App = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 762);
@@ -14,9 +15,8 @@ const App = () => {
 
   useEffect(() => {
     setWindowWidth();
-    if (darkMode) require("antd/dist/antd.dark.css");
-    else require("antd/dist/antd.css");
-  }, [darkMode]);
+  }, []);
+
   window.addEventListener("resize", setWindowWidth);
 
   const toggleDarkMode = () => {

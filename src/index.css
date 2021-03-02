@@ -2,6 +2,10 @@
   font-family: "Poppins", sans-serif;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .dark-mode-button {
   outline: none;
   overflow: visible !important;
