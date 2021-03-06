@@ -68,7 +68,7 @@ const Certificates = () => {
       </Fade>
       <Row type="flex" justify="space-around">
         {Data.certificates.map((project) => (
-          <Col span={7} key={project.name}>
+          <Col lg={7} md={7} sm={11} xs={11} key={project.name}>
             <Fade big>
               <CustomCard
                 hoverable
