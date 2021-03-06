@@ -3,7 +3,10 @@ import Header from "./components/header";
 import Greeting from "./components/greeting";
 import SettingsContext from "./contexts/settings-context";
 import SkillSet from "./components/skillset";
+import Experience from "./components/experience";
 import "antd/dist/antd.css";
+import Projects from "./components/projects";
+import Certificates from "./components/certificates";
 
 const App = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 762);
@@ -29,6 +32,9 @@ const App = () => {
       <Header toggleDarkMode={toggleDarkMode} />
       <Greeting />
       <SkillSet />
+      <Experience />
+      <Projects />
+      <Certificates />
     </SettingsContext.Provider>
   );
 };

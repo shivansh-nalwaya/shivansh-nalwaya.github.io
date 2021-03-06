@@ -89,8 +89,9 @@ const LinkButton = styled(Button)`
   margin-right: 2%;
 
   &:hover {
-    background-color: #000;
-    border-color: #000;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+    background-color: ${(props) => props.color};
+    border-color: ${(props) => props.color};
     color: white;
   }
 `;
@@ -160,7 +161,7 @@ const Greeting = () => {
           </Fade>
         </Text>
         <Image>
-          <Fade bottom>
+          <Fade bottom={!isMobile} right={isMobile}>
             <img src="/assets/images/intro-avatar.svg" alt="" />
           </Fade>
         </Image>

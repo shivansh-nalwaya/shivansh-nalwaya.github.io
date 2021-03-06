@@ -1,7 +1,9 @@
 import { useContext } from "react";
 import Fade from "react-reveal/Fade";
+import Zoom from "react-reveal/Zoom";
 import styled from "styled-components";
 import SettingsContext from "../contexts/settings-context";
+import Data from "../data";
 
 const Container = styled.div`
   background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
@@ -43,39 +45,15 @@ const SkillSet = () => {
     <Container darkMode={darkMode}>
       <Fade bottom>
         <Title>What I'm good at?</Title>
+      </Fade>
+      <Fade>
         <>
-          <SkillItem>
-            <SkillImage src="/assets/images/react.png" alt="" />
-            <SkillTitle>React JS</SkillTitle>
-          </SkillItem>
-          <SkillItem>
-            <SkillImage src="/assets/images/react.png" alt="" />
-            <SkillTitle>React Native</SkillTitle>
-          </SkillItem>
-          <SkillItem>
-            <SkillImage src="/assets/images/react.png" alt="" />
-            <SkillTitle>Ruby on Rails</SkillTitle>
-          </SkillItem>
-          <SkillItem>
-            <SkillImage src="/assets/images/react.png" alt="" />
-            <SkillTitle>Node JS</SkillTitle>
-          </SkillItem>
-          <SkillItem>
-            <SkillImage src="/assets/images/react.png" alt="" />
-            <SkillTitle>Python</SkillTitle>
-          </SkillItem>
-          <SkillItem>
-            <SkillImage src="/assets/images/react.png" alt="" />
-            <SkillTitle>PostgreSQL</SkillTitle>
-          </SkillItem>
-          <SkillItem>
-            <SkillImage src="/assets/images/react.png" alt="" />
-            <SkillTitle>NoSQL</SkillTitle>
-          </SkillItem>
-          <SkillItem>
-            <SkillImage src="/assets/images/react.png" alt="" />
-            <SkillTitle>Docker</SkillTitle>
-          </SkillItem>
+          {Data.skills.map((skill) => (
+            <SkillItem key={skill.name}>
+              <SkillImage src={skill.icon} alt="" />
+              <SkillTitle>{skill.name}</SkillTitle>
+            </SkillItem>
+          ))}
         </>
       </Fade>
     </Container>
