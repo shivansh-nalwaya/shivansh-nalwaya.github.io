@@ -15,3 +15,7 @@ body {
   font-size: 25px;
   padding-top: 2px;
 }
+
+.vertical-timeline-light::before {
+  background: black !important;
+}

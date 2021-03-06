@@ -24,21 +24,26 @@ const Title = styled.div`
 
 const Experience = () => {
   const contextData = useContext(SettingsContext);
-  const { darkMode } = contextData;
+  const { darkMode, isMobile } = contextData;
   return (
     <Container darkMode={darkMode}>
       <Fade>
         <Title>Experience</Title>
-        <VerticalTimeline>
+        <VerticalTimeline
+          className={darkMode ? "vertical-timeline" : "vertical-timeline-light"}
+          animate={!isMobile}
+        >
           {Data.experience.map((exp) => (
             <VerticalTimelineElement
               key={exp.companyName}
               contentArrowStyle={{
-                borderRightColor: darkMode ? "black" : "#6AC6FC",
+                borderRightColor: darkMode ? "white" : "black",
               }}
               contentStyle={{
-                background: darkMode ? "black" : "#6AC6FC",
-                boxShadow: 'unset',
+                background: darkMode ? "black" : "white",
+                boxShadow: `inset 0px 0px 0px 4px ${
+                  darkMode ? "white" : "black"
+                }`,
                 color: "#fff",
               }}
               date={
@@ -53,7 +58,8 @@ const Experience = () => {
                 </div>
               }
               iconStyle={{
-                background: darkMode ? "black" : "#6AC6FC",
+                background: darkMode ? "black" : "white",
+                boxShadow: `0 0 0 4px ${darkMode ? "white" : "black"}`,
                 color: "#fff",
               }}
               icon={
@@ -88,7 +94,7 @@ const Experience = () => {
           <VerticalTimelineElement
             iconStyle={{
               background: darkMode ? "black" : "white",
-              color: "#fff",
+              boxShadow: `0 0 0 4px ${darkMode ? "white" : "black"}`,
               marginTop: "1%",
             }}
           />
