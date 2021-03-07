@@ -4,49 +4,90 @@ const Data = {
   role: "Full Stack Developer",
   background:
     "A passionate Full Stack Software Developer 🚀 having an experience of building Web, Mobile and Desktop applications with ReactJS / NodeJS / React Native / ElectronJS and some other cool libraries and frameworks.",
+  links: [
+    {
+      icon: "fa fa-envelope",
+      link: "https://github.com/shivansh-nalwaya",
+      color: "#EA4335",
+    },
+    {
+      icon: "fab fa-linkedin-in",
+      link: "https://github.com/shivansh-nalwaya",
+      color: "#1976A8",
+    },
+    {
+      icon: "fab fa-github",
+      link: "https://github.com/shivansh-nalwaya",
+      color: "#24292E",
+    },
+    {
+      icon: "fab fa-stack-overflow",
+      link: "https://github.com/shivansh-nalwaya",
+      color: "#F28031",
+    },
+    {
+      icon: "fab fa-hackerrank",
+      link: "https://github.com/shivansh-nalwaya",
+      color: "#5DB558",
+    },
+  ],
   skills: [
     { name: "React JS", icon: "/assets/images/react.png" },
     { name: "React Native", icon: "/assets/images/react.png" },
-    { name: "Ruby on Rails", icon: "/assets/images/react.png" },
-    { name: "Node JS", icon: "/assets/images/react.png" },
-    { name: "Python", icon: "/assets/images/react.png" },
-    { name: "PostgreSQL", icon: "/assets/images/react.png" },
-    { name: "NoSQL", icon: "/assets/images/react.png" },
-    { name: "Docker", icon: "/assets/images/react.png" },
+    { name: "Ruby on Rails", icon: "/assets/images/ruby.png" },
+    { name: "Node JS", icon: "/assets/images/javascript.png" },
+    { name: "Python", icon: "/assets/images/python.png" },
+    { name: "Go", icon: "/assets/images/go.svg" },
+    { name: "DBMS", icon: "/assets/images/sql.png" },
+    { name: "Docker", icon: "/assets/images/docker.png" },
   ],
   experience: [
     {
       companyName: "The Better India",
       logo:
-        "https://s3-ap-south-1.amazonaws.com/thebetterindia-english/uploads/2020/07/03121109/tbi-logo.png",
+        "https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-9/71040342_10157593579949594_8002608543100305408_o.jpg?_nc_cat=1&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=-WoSx9s2RuoAX9_jMc2&_nc_ht=scontent.fdel1-1.fna&oh=beabc2801e095d1edc1b8b204ae0c241&oe=606AC707",
       date: "Nov, 2019 - Present",
       role: "Front End Developer",
       location: "Bangalore, KA, India",
-      desc:
-        "Creative Direction, User Experience, Visual Design, Project Management, Team Leading",
-      techStack: ["React JS", "Next JS", "React Native"],
+      desc: [
+        "Developed 2 E-commerce websites from scratch.",
+        "Developed 2 mobile apps from scratch.",
+        "Developed an in-house desktop app for marketing team.",
+      ],
+      techStack: ["React JS", "Next JS", "React Native", "Electron JS", "AWS"],
     },
     {
       companyName: "Varsito Solutions",
       logo:
-        "https://sixerclass.com/_data/images/uploads/sixerclass-logo-1-.png",
+        "https://scontent.fdel1-2.fna.fbcdn.net/v/t1.0-9/44771700_976415472553103_8849376803094003712_n.jpg?_nc_cat=107&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=ONk1RRzHCgMAX-uDyN-&_nc_ht=scontent.fdel1-2.fna&oh=2e5df55512131bbca6f06152f3f04472&oe=606C47FD",
       date: "Aug, 2018 - Oct, 2019",
       role: "Full Stack Developer",
       location: "Bangalore, KA, India",
-      desc:
-        "Creative Direction, User Experience, Visual Design, Project Management, Team Leading",
-      techStack: ["React JS", "Next JS", "React Native"],
+      desc: [
+        "Developed multiple features for a training institute management platform.",
+        "Worked with operations team to resolve client issues.",
+        "Developed an in-house desktop app for operations team.",
+      ],
+      techStack: [
+        "Ruby on Rails",
+        "React JS",
+        "React Native",
+        "Electron JS",
+        "Docker",
+      ],
     },
     {
       companyName: "GKMIT",
       logo:
-        "https://s3-ap-south-1.amazonaws.com/thebetterindia-english/uploads/2020/07/03121109/tbi-logo.png",
-      date: "Jan, 2018 - Jul, 2019",
+        "https://scontent.fdel1-3.fna.fbcdn.net/v/t1.0-9/70148167_1422737584543857_2700859681231863808_o.png?_nc_cat=103&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=6ioH3rYEcVoAX8v9c1J&_nc_ht=scontent.fdel1-3.fna&oh=82ec50f693ebdd3d9ab06fed29b94ea3&oe=606886FF",
+      date: "Jan, 2018 - Jul, 2018",
       role: "Intern",
       location: "Udaipur, RJ, India",
-      desc:
-        "Creative Direction, User Experience, Visual Design, Project Management, Team Leading",
-      techStack: ["Ruby on Rails", "React JS", "React Native"],
+      desc: [
+        "Developed multiple features for a payment engine",
+        "Integrated muliple payment gateways",
+      ],
+      techStack: ["Ruby on Rails", "React JS", "Agile Development"],
     },
   ],
   projects: [
@@ -58,69 +99,63 @@ const Data = {
     },
     {
       image: "/assets/images/project-1.png",
-      name: "Europe Street beat",
-      link: "www.instagram.com",
+      name: "Portfolio Website",
+      link: "shivansh-nalwaya.github.io",
       githubLink: "https://www.github.com/shivansh-nalwaya",
     },
     {
       image: "/assets/images/project-1.png",
-      name: "Europe Street beat",
-      link: "www.instagram.com",
+      name: "Portfolio Website",
+      link: "shivansh-nalwaya.github.io",
       githubLink: "https://www.github.com/shivansh-nalwaya",
     },
     {
       image: "/assets/images/project-1.png",
-      name: "Europe Street beat",
-      link: "www.instagram.com",
+      name: "Portfolio Website",
+      link: "shivansh-nalwaya.github.io",
       githubLink: "https://www.github.com/shivansh-nalwaya",
     },
     {
       image: "/assets/images/project-1.png",
-      name: "Europe Street beat",
-      link: "www.instagram.com",
+      name: "Portfolio Website",
+      link: "shivansh-nalwaya.github.io",
       githubLink: "https://www.github.com/shivansh-nalwaya",
     },
     {
       image: "/assets/images/project-1.png",
-      name: "Europe Street beat",
-      link: "www.instagram.com",
+      name: "Portfolio Website",
+      link: "shivansh-nalwaya.github.io",
       githubLink: "https://www.github.com/shivansh-nalwaya",
     },
   ],
   certificates: [
     {
-      image:
-        "https://developer-junaid.web.app/static/media/ReactBasic(HackerRank).200bc61a.png",
+      image: "/assets/images/certificate.png",
       name: "Python (Advanced)",
-      link: "hackerearth.com",
+      link: "hackerrank.com",
     },
     {
-      image:
-        "https://developer-junaid.web.app/static/media/ReactBasic(HackerRank).200bc61a.png",
+      image: "/assets/images/certificate.png",
       name: "Europe Street beat",
       link: "www.instagram.com",
     },
     {
-      image:
-        "https://developer-junaid.web.app/static/media/ReactBasic(HackerRank).200bc61a.png",
+      image: "/assets/images/certificate.png",
       name: "Europe Street beat",
       link: "www.instagram.com",
     },
     {
-      image:
-        "https://developer-junaid.web.app/static/media/ReactBasic(HackerRank).200bc61a.png",
+      image: "/assets/images/certificate.png",
       name: "Europe Street beat",
       link: "www.instagram.com",
     },
     {
-      image:
-        "https://developer-junaid.web.app/static/media/ReactBasic(HackerRank).200bc61a.png",
+      image: "/assets/images/certificate.png",
       name: "Europe Street beat",
       link: "www.instagram.com",
     },
     {
-      image:
-        "https://developer-junaid.web.app/static/media/ReactBasic(HackerRank).200bc61a.png",
+      image: "/assets/images/certificate.png",
       name: "Europe Street beat",
       link: "www.instagram.com",
     },

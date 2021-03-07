@@ -30,6 +30,7 @@ const SkillItem = styled.div`
 
 const SkillImage = styled.img`
   width: 100px;
+  height: 100px;
 `;
 
 const SkillTitle = styled.div`

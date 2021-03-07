@@ -94,6 +94,13 @@ const LinkButton = styled(Button)`
     border-color: ${(props) => props.color};
     color: white;
   }
+
+  &:focus {
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+    background-color: ${(props) => props.color};
+    border-color: ${(props) => props.color};
+    color: white;
+  }
 `;
 
 const ActionButton = styled(Button)`
@@ -124,36 +131,16 @@ const Greeting = () => {
               <SubTitle>{Data.role}</SubTitle>
               <Desc>{Data.background}</Desc>
               <Links>
-                <LinkButton
-                  shape="circle"
-                  size="large"
-                  color="#EA4335"
-                  icon={<i class="fa fa-envelope" />}
-                />
-                <LinkButton
-                  shape="circle"
-                  size="large"
-                  color="#1976A8"
-                  icon={<i class="fab fa-linkedin-in" />}
-                />
-                <LinkButton
-                  shape="circle"
-                  size="large"
-                  color="#24292E"
-                  icon={<i class="fab fa-github" />}
-                />
-                <LinkButton
-                  shape="circle"
-                  size="large"
-                  color="#F28031"
-                  icon={<i class="fab fa-stack-overflow" />}
-                />
-                <LinkButton
-                  shape="circle"
-                  size="large"
-                  color="#5DB558"
-                  icon={<i class="fab fa-hackerrank" />}
-                />
+                {Data.links.map((link) => (
+                  <LinkButton
+                    key={link.link}
+                    shape="circle"
+                    size="large"
+                    color={link.color}
+                    icon={<i className={link.icon} />}
+                    onClick={() => window.open(link.link)}
+                  />
+                ))}
               </Links>
               <ActionButton size="large">CONTACT ME</ActionButton>
               <ActionButton size="large">SEE MY RESUME</ActionButton>

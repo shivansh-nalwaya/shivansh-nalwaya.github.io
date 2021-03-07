@@ -70,6 +70,8 @@ const Experience = () => {
                     alignItems: "center",
                     width: "100%",
                     height: "100%",
+                    borderRadius: "50%",
+                    overflow: "hidden",
                   }}
                 >
                   <img src={exp.logo} style={{ width: "100%" }} />
@@ -82,8 +84,13 @@ const Experience = () => {
               <h4 style={{ color: darkMode ? "white" : "black" }}>
                 {exp.location}
               </h4>
-              <p style={{ color: darkMode ? "white" : "black" }}>{exp.desc}</p>
-              <br />
+              <p style={{ color: darkMode ? "white" : "black" }}>
+                <ul>
+                  {exp.desc.map((des, ind) => (
+                    <li key={`${exp.companyName}-${ind}`}>{des}</li>
+                  ))}
+                </ul>
+              </p>
               {exp.techStack.map((stack) => (
                 <Tag color="grey" key={`${exp.companyName}-${stack}`}>
                   {stack}
