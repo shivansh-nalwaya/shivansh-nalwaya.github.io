@@ -7,6 +7,8 @@ import Experience from "./components/experience";
 import "antd/dist/antd.css";
 import Projects from "./components/projects";
 import Certificates from "./components/certificates";
+import Contact from "./components/contact";
+import Footer from "./components/footer";
 
 const App = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 762);
@@ -35,6 +37,8 @@ const App = () => {
       <Experience />
       <Projects />
       <Certificates />
+      <Contact />
+      <Footer />
     </SettingsContext.Provider>
   );
 };

@@ -1,9 +1,11 @@
 import { Button } from "antd";
 import { useContext } from "react";
+import Fade from "react-reveal/Fade";
 import styled, { keyframes } from "styled-components";
 import SettingsContext from "../contexts/settings-context";
-import Fade from "react-reveal/Fade";
 import Data from "../data";
+import ContactLinks from "./contact-links";
+import CustomButton from "./CustomButton";
 
 const Container = styled.div`
   background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
@@ -78,44 +80,6 @@ const Desc = styled.div`
   }
 `;
 
-const Links = styled.div`
-  margin-top: 1%;
-`;
-
-const LinkButton = styled(Button)`
-  background-color: ${(props) => props.color};
-  border-color: ${(props) => props.color};
-  color: white;
-  margin-right: 2%;
-
-  &:hover {
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    background-color: ${(props) => props.color};
-    border-color: ${(props) => props.color};
-    color: white;
-  }
-
-  &:focus {
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    background-color: ${(props) => props.color};
-    border-color: ${(props) => props.color};
-    color: white;
-  }
-`;
-
-const ActionButton = styled(Button)`
-  margin: 3% 3% 3% 0%;
-  background: #5cb86e;
-  border-color: #5cb86e;
-  color: white;
-  border-radius: 5px;
-
-  &:hover {
-    border-color: #5cb86e;
-    color: #5cb86e;
-  }
-`;
-
 const Greeting = () => {
   const contextData = useContext(SettingsContext);
   const { isMobile, darkMode } = contextData;
@@ -130,20 +94,9 @@ const Greeting = () => {
               </Title>
               <SubTitle>{Data.role}</SubTitle>
               <Desc>{Data.background}</Desc>
-              <Links>
-                {Data.links.map((link) => (
-                  <LinkButton
-                    key={link.link}
-                    shape="circle"
-                    size="large"
-                    color={link.color}
-                    icon={<i className={link.icon} />}
-                    onClick={() => window.open(link.link)}
-                  />
-                ))}
-              </Links>
-              <ActionButton size="large">CONTACT ME</ActionButton>
-              <ActionButton size="large">SEE MY RESUME</ActionButton>
+              <ContactLinks />
+              <CustomButton size="large">CONTACT ME</CustomButton>
+              <CustomButton size="large">SEE MY RESUME</CustomButton>
             </>
           </Fade>
         </Text>
