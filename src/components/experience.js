@@ -47,15 +47,19 @@ const Experience = () => {
                 color: "#fff",
               }}
               date={
-                <div
-                  style={{
-                    marginTop: "-3%",
-                    color: darkMode ? "white" : "black",
-                  }}
-                >
-                  <div>{exp.companyName}</div>
-                  <div>{exp.date}</div>
-                </div>
+                isMobile ? (
+                  <span />
+                ) : (
+                  <div
+                    style={{
+                      marginTop: "-3%",
+                      color: darkMode ? "white" : "black",
+                    }}
+                  >
+                    <div>{exp.companyName}</div>
+                    <div>{exp.date}</div>
+                  </div>
+                )
               }
               iconStyle={{
                 background: darkMode ? "black" : "white",
@@ -78,12 +82,24 @@ const Experience = () => {
                 </div>
               }
             >
+              {isMobile && (
+                <div>
+                  <h3 style={{ color: darkMode ? "white" : "black" }}>
+                    {exp.companyName}
+                  </h3>
+                  <div style={{ marginTop: "-3%", marginBottom: "3%" }}>
+                    {exp.date}
+                  </div>
+                </div>
+              )}
               <h3 style={{ color: darkMode ? "white" : "black" }}>
                 {exp.role}
               </h3>
-              <h4 style={{ color: darkMode ? "white" : "black" }}>
-                {exp.location}
-              </h4>
+              {isMobile || (
+                <h4 style={{ color: darkMode ? "white" : "black" }}>
+                  {exp.location}
+                </h4>
+              )}
               <p style={{ color: darkMode ? "white" : "black" }}>
                 <ul>
                   {exp.desc.map((des, ind) => (
@@ -102,7 +118,7 @@ const Experience = () => {
             iconStyle={{
               background: darkMode ? "black" : "white",
               boxShadow: `0 0 0 4px ${darkMode ? "white" : "black"}`,
-              marginTop: "1%",
+              marginTop: isMobile ? "10%" : "1%",
             }}
           />
         </VerticalTimeline>

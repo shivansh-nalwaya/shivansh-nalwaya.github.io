@@ -7,6 +7,10 @@ const Container = styled.div`
   background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
   padding: 1%;
+
+  @media (max-width: 768px) {
+    padding: 5%;
+  }
 `;
 
 const Text = styled.div`

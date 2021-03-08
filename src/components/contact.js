@@ -26,6 +26,10 @@ const SubTitle = styled.div`
   font-size: 1.4em;
   margin-bottom: 5%;
   color: ${(props) => (props.darkMode ? "white" : "black")};
+
+  @media (max-width: 768px) {
+    margin-top: 5%;
+  }
 `;
 
 const CustomInput = styled(Input)`
@@ -74,9 +78,22 @@ const Contact = () => {
           <Fade right>
             <SubTitle darkMode={darkMode}>Or shoot a message!</SubTitle>
             <Form>
-              <CustomInput darkMode={darkMode} size="large" placeholder="Name" />
-              <CustomInput darkMode={darkMode} size="large" placeholder="Email" />
-              <CustomTextArea darkMode={darkMode} size="large" placeholder="Message" rows={4} />
+              <CustomInput
+                darkMode={darkMode}
+                size="large"
+                placeholder="Name"
+              />
+              <CustomInput
+                darkMode={darkMode}
+                size="large"
+                placeholder="Email"
+              />
+              <CustomTextArea
+                darkMode={darkMode}
+                size="large"
+                placeholder="Message"
+                rows={4}
+              />
               <CustomButton size="large" style={{ width: "100%" }}>
                 <i class="fas fa-paper-plane"></i>&nbsp;&nbsp;Send
               </CustomButton>

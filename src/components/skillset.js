@@ -26,6 +26,11 @@ const SkillItem = styled.div`
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
   border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+
+  @media (max-width: 768px) {
+    width: 35vw;
+    margin: 2vw 7vw;
+  }
 `;
 
 const SkillImage = styled.img`
