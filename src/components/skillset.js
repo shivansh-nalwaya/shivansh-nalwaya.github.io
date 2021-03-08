@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import Fade from "react-reveal/Fade";
-import Zoom from "react-reveal/Zoom";
 import styled from "styled-components";
 import SettingsContext from "../contexts/settings-context";
 import Data from "../data";

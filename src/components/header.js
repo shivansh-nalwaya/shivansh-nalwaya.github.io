@@ -1,11 +1,11 @@
 import { MenuOutlined } from "@ant-design/icons";
 import { Collapse } from "antd";
-import Fade from "react-reveal/Fade";
 import { useContext } from "react";
 import DarkModeToggle from "react-dark-mode-toggle";
 import styled from "styled-components";
 import SettingsContext from "../contexts/settings-context";
 import Data from "../data";
+import scrollTo from "./scroll-to";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -104,15 +104,6 @@ const StyledCollapse = styled(Collapse)`
 const Header = ({ toggleDarkMode }) => {
   const contextData = useContext(SettingsContext);
   const { darkMode } = contextData;
-
-  const scrollTo = (id) => {
-    const y =
-      document.getElementById(id).getBoundingClientRect().top + window.scrollY;
-    window.scroll({
-      top: y - window.innerHeight / 10,
-      behavior: "smooth",
-    });
-  };
 
   return (
     <>

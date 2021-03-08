@@ -1,3 +1,4 @@
+import { Tag } from "antd";
 import { useContext } from "react";
 import Fade from "react-reveal/Fade";
 import {
@@ -8,7 +9,6 @@ import "react-vertical-timeline-component/style.min.css";
 import styled from "styled-components";
 import SettingsContext from "../contexts/settings-context";
 import Data from "../data";
-import { Tag } from "antd";
 
 const Container = styled.div`
   background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
@@ -78,7 +78,7 @@ const Experience = () => {
                     overflow: "hidden",
                   }}
                 >
-                  <img src={exp.logo} style={{ width: "100%" }} />
+                  <img src={exp.logo} alt="" style={{ width: "100%" }} />
                 </div>
               }
             >
