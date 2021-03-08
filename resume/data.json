@@ -1,0 +1,118 @@
+{
+  "name": "SHIVANSH NALWAYA",
+  "title": "FULL STACK DEVELOPER",
+  "Professional Skills": {
+    "Programming Languages": ["C / C++", "Python", "Ruby", "Java"],
+    "Web Development": ["Ruby on Rails", "Node JS", "Django", "PHP"],
+    "Web Design": ["HTML5", "CSS", "JavaScript", "React JS", "Angular JS"],
+    "Data Analytics": ["Python", "R"],
+    "Database Management": ["PostgreSQL", "MySQL", "NoSQL"],
+    "System Architecture": ["Linux", "Docker"],
+    "Others": ["REST", "Git", "Photoshop", "FL Studio"]
+  },
+  "Contacts": [
+    {
+      "icon": "fa fa-envelope",
+      "label": "shivanshnalwaya@gmail.com",
+      "link": "mailto:shivanshnalwaya@gmail.com"
+    },
+    {
+      "icon": "fa fa-phone",
+      "label": "+91 9462091961",
+      "link": "callto:9462091961"
+    },
+    {
+      "icon": "fab fa-github",
+      "label": "shivansh-nalwaya",
+      "link": "https://github.com/shivansh-nalwaya"
+    },
+    {
+      "icon": "fab fa-linkedin",
+      "label": "shivansh-nalwaya",
+      "link": "https://www.linkedin.com/in/shivansh-nalwaya/"
+    },
+    {
+      "icon": "fab fa-stack-overflow",
+      "label": "shivansh-nalwaya",
+      "link": "https://stackoverflow.com/users/9348504/shivansh-nalwaya"
+    }
+  ],
+  "Education": [
+    {
+      "title": "B. TECH (CSE)",
+      "subtitle": "TECHNO INDIA NJR INSTITUTE OF TECHNOLOGY (RTU)",
+      "duration": "2014 - 2018"
+    },
+    {
+      "title": "SENIOR SECONDARY",
+      "subtitle": "ST. PAULS SENIOR SECONDARY SCHOOL (CBSE)",
+      "duration": "2014"
+    },
+    {
+      "title": "SECONDARY",
+      "subtitle": "ST. PAULS SENIOR SECONDARY SCHOOL (CBSE)",
+      "duration": "2012"
+    }
+  ],
+  "Work Experience": [
+    {
+      "title": "FULL STACK DEVELOPER",
+      "subtitle": "Varsito Solutions Pvt. Ltd.",
+      "duration": "Aug, 2018 - Present"
+    },
+    {
+      "title": "FULL STACK DEVELOPER",
+      "subtitle": "GKMIT Pvt. Ltd.",
+      "duration": "Jan, 2018 - Jul, 2018"
+    }
+  ],
+  "Projects": [
+    {
+      "title": "SIXERCLASS",
+      "duration": "Aug, 2018 - Present",
+      "desc": [
+        "Training Institute Management Platform",
+        "Role - Full Stack Developer",
+        "Technologies - Docker, Ruby on Rails, React JS, Electron JS"
+      ]
+    },
+    {
+      "title": "PAYOUTS",
+      "duration": "May, 2018 - July, 2018",
+      "desc": [
+        "Payment engine",
+        "Role - Full Stack Developer",
+        "Technologies - Ruby on Rails"
+      ]
+    },
+    {
+      "title": "BITSSA",
+      "duration": "Feb, 2018 - Mar, 2018",
+      "desc": [
+        "Multi cryptocurreny exchange platform",
+        "Role - Full Stack Developer",
+        "Technologies - Ruby on Rails"
+      ]
+    },
+    {
+      "title": "RESUME DATABASE",
+      "duration": "Jul, 2017 - Sep, 2017",
+      "desc": [
+        "Resume analyzer and personality insights",
+        "Role - Backend Developer",
+        "Technologies - Python Flask, IBM Watson"
+      ]
+    }
+  ],
+  "Certifications": [
+    {
+      "title": "BUSINESS ANALYTICS AND OPTIMIZATION | IBM ICE",
+      "duration": "Jul, 2015 - Apr, 2018"
+    }
+  ],
+  "Achievements": [
+    "Finalist of Smart India Hackathon 2017, Ministry of Steel",
+    "Finalist of Google Hackathon 2017 - GDG Coimbatore",
+    "Finalist of Rajasthan Hackathan 3.0, Udaipur"
+  ]
+}
