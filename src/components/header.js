@@ -99,6 +99,11 @@ const StyledCollapse = styled(Collapse)`
   width: 100%;
   background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
+  display: none;
+
+  @media (max-width: 768px) {
+    display: unset;
+  }
 `;
 
 const Header = ({ toggleDarkMode }) => {
