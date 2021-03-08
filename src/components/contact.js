@@ -12,7 +12,7 @@ const Container = styled.div`
   background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
   padding: 1%;
-  paddingtop: 3%;
+  padding-top: 3%;
 `;
 
 const Title = styled.div`
@@ -30,7 +30,7 @@ const SubTitle = styled.div`
 
 const CustomInput = styled(Input)`
   margin-bottom: 4%;
-  background: grey;
+  background: ${(props) => (props.darkMode ? "grey" : "white")};
 
   &:hover {
     border-color: black;
@@ -43,7 +43,7 @@ const CustomInput = styled(Input)`
 `;
 
 const CustomTextArea = styled(TextArea)`
-  background: grey;
+  background: ${(props) => (props.darkMode ? "grey" : "white")};
 
   &:hover {
     border-color: black;
@@ -74,9 +74,9 @@ const Contact = () => {
           <Fade right>
             <SubTitle darkMode={darkMode}>Or shoot a message!</SubTitle>
             <Form>
-              <CustomInput size="large" placeholder="Name" />
-              <CustomInput size="large" placeholder="Email" />
-              <CustomTextArea size="large" placeholder="Message" rows={4} />
+              <CustomInput darkMode={darkMode} size="large" placeholder="Name" />
+              <CustomInput darkMode={darkMode} size="large" placeholder="Email" />
+              <CustomTextArea darkMode={darkMode} size="large" placeholder="Message" rows={4} />
               <CustomButton size="large" style={{ width: "100%" }}>
                 <i class="fas fa-paper-plane"></i>&nbsp;&nbsp;Send
               </CustomButton>

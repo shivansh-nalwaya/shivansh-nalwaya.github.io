@@ -10,7 +10,6 @@ const Container = styled.div`
   background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
   padding: 1%;
-  paddingtop: 3%;
 `;
 
 const Title = styled.div`
