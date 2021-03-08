@@ -61,7 +61,7 @@ const Certificates = () => {
   const contextData = useContext(SettingsContext);
   const { darkMode } = contextData;
   return (
-    <Container darkMode={darkMode}>
+    <Container darkMode={darkMode} id="certificates">
       <Fade bottom>
         <Title>Certificates</Title>
       </Fade>
@@ -74,6 +74,7 @@ const Certificates = () => {
                 cover={<CurvedImage alt="" src={project.image} />}
                 bodyStyle={CardBodyStyle(darkMode)}
                 darkMode={darkMode}
+                onClick={() => window.open(project.link)}
               >
                 <Card.Meta
                   title={
@@ -81,7 +82,7 @@ const Certificates = () => {
                   }
                   description={
                     <GreySpan style={{ color: "grey" }}>
-                      {project.link}
+                      {project.linkToShow}
                     </GreySpan>
                   }
                 />

@@ -84,7 +84,7 @@ const Greeting = () => {
   const contextData = useContext(SettingsContext);
   const { isMobile, darkMode } = contextData;
   return (
-    <Container darkMode={darkMode}>
+    <Container darkMode={darkMode} id="home">
       <IntroBox>
         <Text>
           <Fade bottom={!isMobile} left={isMobile}>

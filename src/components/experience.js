@@ -26,7 +26,7 @@ const Experience = () => {
   const contextData = useContext(SettingsContext);
   const { darkMode, isMobile } = contextData;
   return (
-    <Container darkMode={darkMode}>
+    <Container darkMode={darkMode} id="experience">
       <Fade>
         <Title>Experience</Title>
         <VerticalTimeline

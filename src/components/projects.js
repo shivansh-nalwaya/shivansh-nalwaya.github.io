@@ -61,7 +61,7 @@ const Projects = () => {
   const contextData = useContext(SettingsContext);
   const { darkMode } = contextData;
   return (
-    <Container darkMode={darkMode}>
+    <Container darkMode={darkMode} id="projects">
       <Fade bottom>
         <Title>Projects</Title>
       </Fade>

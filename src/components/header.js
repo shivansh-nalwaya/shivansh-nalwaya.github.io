@@ -93,6 +93,10 @@ const ToggleContainer = styled.div`
 `;
 
 const StyledCollapse = styled(Collapse)`
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
   background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
   color: ${(props) => (props.darkMode ? "white" : "black")};
 `;
@@ -100,16 +104,39 @@ const StyledCollapse = styled(Collapse)`
 const Header = ({ toggleDarkMode }) => {
   const contextData = useContext(SettingsContext);
   const { darkMode } = contextData;
+
+  const scrollTo = (id) => {
+    const y =
+      document.getElementById(id).getBoundingClientRect().top + window.scrollY;
+    window.scroll({
+      top: y - window.innerHeight / 10,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <HeaderContainer darkMode={darkMode}>
         <Logo darkMode={darkMode}>&lt;{Data.name}/&gt;</Logo>
         <LinksContainer>
-          <Link darkMode={darkMode}>Skills</Link>
-          <Link darkMode={darkMode}>Experience</Link>
-          <Link darkMode={darkMode}>Projects</Link>
-          <Link darkMode={darkMode}>About</Link>
-          <Link darkMode={darkMode}>Contact</Link>
+          <Link darkMode={darkMode} onClick={() => scrollTo("home")}>
+            About
+          </Link>
+          <Link darkMode={darkMode} onClick={() => scrollTo("skills")}>
+            Skills
+          </Link>
+          <Link darkMode={darkMode} onClick={() => scrollTo("experience")}>
+            Experience
+          </Link>
+          <Link darkMode={darkMode} onClick={() => scrollTo("projects")}>
+            Projects
+          </Link>
+          <Link darkMode={darkMode} onClick={() => scrollTo("certificates")}>
+            Certificates
+          </Link>
+          <Link darkMode={darkMode} onClick={() => scrollTo("contact")}>
+            Contact
+          </Link>
           <ToggleContainer>
             <DarkModeToggle
               onChange={toggleDarkMode}
@@ -136,11 +163,24 @@ const Header = ({ toggleDarkMode }) => {
           key="1"
         >
           <LinksContainer>
-            <Link darkMode={darkMode}>Skills</Link>
-            <Link darkMode={darkMode}>Experience</Link>
-            <Link darkMode={darkMode}>Projects</Link>
-            <Link darkMode={darkMode}>About</Link>
-            <Link darkMode={darkMode}>Contact</Link>
+            <Link darkMode={darkMode} onClick={() => scrollTo("home")}>
+              About
+            </Link>
+            <Link darkMode={darkMode} onClick={() => scrollTo("skills")}>
+              Skills
+            </Link>
+            <Link darkMode={darkMode} onClick={() => scrollTo("experience")}>
+              Experience
+            </Link>
+            <Link darkMode={darkMode} onClick={() => scrollTo("projects")}>
+              Projects
+            </Link>
+            <Link darkMode={darkMode} onClick={() => scrollTo("certificates")}>
+              Certificates
+            </Link>
+            <Link darkMode={darkMode} onClick={() => scrollTo("contact")}>
+              Contact
+            </Link>
             <ToggleContainer darkMode={darkMode}>
               <DarkModeToggle
                 onChange={toggleDarkMode}

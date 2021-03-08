@@ -48,7 +48,7 @@ const SkillSet = () => {
   const contextData = useContext(SettingsContext);
   const { darkMode } = contextData;
   return (
-    <Container darkMode={darkMode}>
+    <Container darkMode={darkMode} id="skills">
       <Fade bottom>
         <Title>What I'm good at?</Title>
       </Fade>

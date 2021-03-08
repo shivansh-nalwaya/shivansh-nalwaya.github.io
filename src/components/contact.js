@@ -63,7 +63,7 @@ const Contact = () => {
   const contextData = useContext(SettingsContext);
   const { darkMode } = contextData;
   return (
-    <Container darkMode={darkMode}>
+    <Container darkMode={darkMode} id="contact">
       <Fade bottom>
         <Title>Contact Me</Title>
       </Fade>
