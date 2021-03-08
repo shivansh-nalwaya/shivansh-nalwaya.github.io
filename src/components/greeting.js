@@ -5,6 +5,7 @@ import SettingsContext from "../contexts/settings-context";
 import Data from "../data";
 import ContactLinks from "./contact-links";
 import CustomButton from "./CustomButton";
+import scrollTo from "./scroll-to";
 
 const Container = styled.div`
   background: ${(props) => (props.darkMode ? "#434343" : "#EDF9FE")};
@@ -94,8 +95,12 @@ const Greeting = () => {
               <SubTitle>{Data.role}</SubTitle>
               <Desc>{Data.background}</Desc>
               <ContactLinks />
-              <CustomButton size="large">CONTACT ME</CustomButton>
-              <CustomButton size="large">SEE MY RESUME</CustomButton>
+              <CustomButton size="large" onClick={() => scrollTo("contact")}>
+                CONTACT ME
+              </CustomButton>
+              <CustomButton size="large" onClick={() => window.open("/resume")}>
+                SEE MY RESUME
+              </CustomButton>
             </>
           </Fade>
         </Text>
