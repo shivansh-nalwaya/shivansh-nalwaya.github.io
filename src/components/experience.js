@@ -100,13 +100,13 @@ const Experience = () => {
                   {exp.location}
                 </h4>
               )}
-              <p style={{ color: darkMode ? "white" : "black" }}>
+              <div style={{ color: darkMode ? "white" : "black" }}>
                 <ul>
                   {exp.desc.map((des, ind) => (
                     <li key={`${exp.companyName}-${ind}`}>{des}</li>
                   ))}
                 </ul>
-              </p>
+              </div>
               {exp.techStack.map((stack) => (
                 <Tag color="grey" key={`${exp.companyName}-${stack}`}>
                   {stack}

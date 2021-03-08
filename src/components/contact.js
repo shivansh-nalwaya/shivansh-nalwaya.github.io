@@ -95,7 +95,7 @@ const Contact = () => {
                 rows={4}
               />
               <CustomButton size="large" style={{ width: "100%" }}>
-                <i class="fas fa-paper-plane"></i>&nbsp;&nbsp;Send
+                <i className="fas fa-paper-plane"></i>&nbsp;&nbsp;Send
               </CustomButton>
             </Form>
           </Fade>

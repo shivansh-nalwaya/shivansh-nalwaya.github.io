@@ -7,12 +7,12 @@ const Data = {
   links: [
     {
       icon: "fa fa-envelope",
-      link: "https://github.com/shivansh-nalwaya",
+      link: "mailto:shivanshnalwaya@gmail.com",
       color: "#EA4335",
     },
     {
       icon: "fab fa-linkedin-in",
-      link: "https://github.com/shivansh-nalwaya",
+      link: "https://www.linkedin.com/in/shivansh-nalwaya/",
       color: "#1976A8",
     },
     {
@@ -22,12 +22,12 @@ const Data = {
     },
     {
       icon: "fab fa-stack-overflow",
-      link: "https://github.com/shivansh-nalwaya",
+      link: "https://stackoverflow.com/users/9348504/shivansh-nalwaya",
       color: "#F28031",
     },
     {
       icon: "fab fa-hackerrank",
-      link: "https://github.com/shivansh-nalwaya",
+      link: "https://www.hackerrank.com/shivanshnlw",
       color: "#5DB558",
     },
   ],
