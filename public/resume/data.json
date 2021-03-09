@@ -2,13 +2,44 @@
   "name": "SHIVANSH NALWAYA",
   "title": "FULL STACK DEVELOPER",
   "Professional Skills": {
-    "Programming Languages": ["C / C++", "Python", "Ruby", "Java"],
-    "Web Development": ["Ruby on Rails", "Node JS", "Django", "PHP"],
-    "Web Design": ["HTML5", "CSS", "JavaScript", "React JS", "Angular JS"],
-    "Data Analytics": ["Python", "R"],
-    "Database Management": ["PostgreSQL", "MySQL", "NoSQL"],
-    "System Architecture": ["Linux", "Docker"],
-    "Others": ["REST", "Git", "Photoshop", "FL Studio"]
+    "Programming Languages": [
+      "C / C++",
+      "Python",
+      "Ruby",
+      "Java"
+    ],
+    "Web Development": [
+      "Ruby on Rails",
+      "Node JS",
+      "Django",
+      "PHP"
+    ],
+    "Web Design": [
+      "HTML5",
+      "CSS",
+      "JavaScript",
+      "React JS",
+      "Angular JS"
+    ],
+    "Data Analytics": [
+      "Python",
+      "R"
+    ],
+    "Database Management": [
+      "PostgreSQL",
+      "MySQL",
+      "NoSQL"
+    ],
+    "System Architecture": [
+      "Linux",
+      "Docker"
+    ],
+    "Others": [
+      "REST",
+      "Git",
+      "Photoshop",
+      "FL Studio"
+    ]
   },
   "Contacts": [
     {
@@ -56,42 +87,48 @@
   ],
   "Work Experience": [
     {
-      "title": "FULL STACK DEVELOPER",
-      "subtitle": "Varsito Solutions Pvt. Ltd.",
-      "duration": "Aug, 2018 - Present"
+      "title": "FRONTEND DEVELOPER",
+      "subtitle": "The Better India",
+      "duration": "Nov, 2019 - Present",
+      "desc": [
+        "Developed 2 E-commerce websites from scratch.",
+        "Developed 2 mobile apps from scratch.",
+        "Developed an in-house desktop app for marketing team."
+      ],
+      "techStack": [
+        "React JS",
+        "Next JS",
+        "React Native",
+        "Electron JS",
+        "AWS"
+      ]
     },
     {
       "title": "FULL STACK DEVELOPER",
-      "subtitle": "GKMIT Pvt. Ltd.",
-      "duration": "Jan, 2018 - Jul, 2018"
+      "subtitle": "Varsito Solutions",
+      "duration": "Aug, 2018 - Oct, 2019",
+      "desc": [
+        "Developed multiple features for a training institute management platform.",
+        "Worked with operations team to resolve client issues.",
+        "Developed an in-house desktop app for operations team."
+      ],
+      "techStack": [
+        "Ruby on Rails",
+        "React JS",
+        "React Native",
+        "Electron JS",
+        "Docker"
+      ]
     }
   ],
   "Projects": [
     {
-      "title": "SIXERCLASS",
-      "duration": "Aug, 2018 - Present",
+      "title": "FAST TRIAL",
+      "duration": "Jul, 2017 - Jul, 2018",
       "desc": [
-        "Training Institute Management Platform",
+        "Online fashion trial platform",
         "Role - Full Stack Developer",
-        "Technologies - Docker, Ruby on Rails, React JS, Electron JS"
-      ]
-    },
-    {
-      "title": "PAYOUTS",
-      "duration": "May, 2018 - July, 2018",
-      "desc": [
-        "Payment engine",
-        "Role - Full Stack Developer",
-        "Technologies - Ruby on Rails"
-      ]
-    },
-    {
-      "title": "BITSSA",
-      "duration": "Feb, 2018 - Mar, 2018",
-      "desc": [
-        "Multi cryptocurreny exchange platform",
-        "Role - Full Stack Developer",
-        "Technologies - Ruby on Rails"
+        "Technologies - Python, Flask, OpenCV"
       ]
     },
     {
@@ -100,7 +137,7 @@
       "desc": [
         "Resume analyzer and personality insights",
         "Role - Backend Developer",
-        "Technologies - Python Flask, IBM Watson"
+        "Technologies - Python, Flask, IBM Watson"
       ]
     }
   ],
