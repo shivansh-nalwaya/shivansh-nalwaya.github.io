@@ -1,11 +1,11 @@
 var JS = JS || {};
 
-JS.scripts = function() {
+JS.scripts = function () {
   this.initialize();
 };
 
 JS.scripts.prototype = {
-  initialize: function() {
+  initialize: function () {
     this.basicData();
     this.skillData();
     this.contactData();
@@ -15,48 +15,46 @@ JS.scripts.prototype = {
     this.certificateData();
     this.achievementData();
   },
-  basicData: function() {
+  basicData: function () {
     $.ajax({
       url: "/resume/data.json",
-      success: function(result) {
+      success: function (result) {
         $("#name").append(result.name);
         $("#title").append(result.title);
-      }
+      },
     });
   },
-  skillData: function() {
+  skillData: function () {
     $.ajax({
       url: "/resume/data.json",
-      success: function(result) {
+      success: function (result) {
         let skills = _.get(result, "Professional Skills");
-        _.map(_.keys(skills), skill => {
+        _.map(_.keys(skills), (skill) => {
           let html = `<h5>${skill}</h5>`;
-          _.map(skills[skill], s => (html += `<span>${s}</span> `));
+          _.map(skills[skill], (s) => (html += `<span>${s}</span> `));
           $("#skills").append(html);
         });
-      }
+      },
     });
   },
-  contactData: function() {
+  contactData: function () {
     $.ajax({
       url: "/resume/data.json",
-      success: function(result) {
+      success: function (result) {
         let contacts = _.get(result, "Contacts");
-        _.map(contacts, contact => {
-          let html = `<h5><i class="${contact.icon}"></i> <a href="${
-            contact.link
-          }">${contact.label}</a></h5>`;
+        _.map(contacts, (contact) => {
+          let html = `<h5><i class="${contact.icon}"></i> <a href="${contact.link}">${contact.label}</a></h5>`;
           $("#contacts").append(html);
         });
-      }
+      },
     });
   },
-  educationData: function() {
+  educationData: function () {
     $.ajax({
       url: "/resume/data.json",
-      success: function(result) {
+      success: function (result) {
         let educations = _.get(result, "Education");
-        _.map(educations, education => {
+        _.map(educations, (education) => {
           let html = `<div class="row">
 					<div class="col-8">
 						${education.title}
@@ -70,21 +68,25 @@ JS.scripts.prototype = {
 				</div>`;
           $("#education").append(html);
         });
-      }
+      },
     });
   },
-  experienceData: function() {
+  experienceData: function () {
     $.ajax({
       url: "/resume/data.json",
-      success: function(result) {
+      success: function (result) {
         let experiences = _.get(result, "Work Experience");
-        _.map(experiences, experience => {
+        _.map(experiences, (experience) => {
+          let expDesc = "<ul style='margin-top: -2%;'>";
+          experience.desc.forEach((desc) => (expDesc += `<li>${desc}</li>`));
+          expDesc += `<li>${experience.techStack.join(", ")}</li></ul>`;
           let html = `<div class="row">
 					<div class="col-7">
-						${experience.title}
+						${experience.subtitle}
 						<p class="text-secondary">
-								${experience.subtitle}
-						</p>
+								${experience.title}
+            </p>
+            ${expDesc}
 					</div>
 					<div class="col-4">
 						<p class="float-right">${experience.duration}</p>
@@ -92,17 +94,17 @@ JS.scripts.prototype = {
 				</div>`;
           $("#experience").append(html);
         });
-      }
+      },
     });
   },
-  projectData: function() {
+  projectData: function () {
     $.ajax({
       url: "/resume/data.json",
-      success: function(result) {
+      success: function (result) {
         let projects = _.get(result, "Projects");
-        _.map(projects, project => {
+        _.map(projects, (project) => {
           let projectList = "";
-          project.desc.forEach(item => (projectList += `<li>${item}</li>`));
+          project.desc.forEach((item) => (projectList += `<li>${item}</li>`));
           let html = `<div class="row">
 					<div class="col-7">
 						${project.title}
@@ -116,15 +118,15 @@ JS.scripts.prototype = {
 				</div>`;
           $("#projects").append(html);
         });
-      }
+      },
     });
   },
-  certificateData: function() {
+  certificateData: function () {
     $.ajax({
       url: "/resume/data.json",
-      success: function(result) {
+      success: function (result) {
         let certificates = _.get(result, "Certifications");
-        _.map(certificates, certificate => {
+        _.map(certificates, (certificate) => {
           let html = `<div class="row">
 					<div class="col-8">
 						${certificate.title}
@@ -135,19 +137,19 @@ JS.scripts.prototype = {
 				</div>`;
           $("#certificates").append(html);
         });
-      }
+      },
     });
   },
-  achievementData: function() {
+  achievementData: function () {
     $.ajax({
       url: "/resume/data.json",
-      success: function(result) {
+      success: function (result) {
         let achievements = _.get(result, "Achievements");
         let achievementsUi = "";
-        achievements.forEach(item => (achievementsUi += `<li>${item}</li>`));
+        achievements.forEach((item) => (achievementsUi += `<li>${item}</li>`));
         let html = `<ul>${achievementsUi}</ul>`;
         $("#achievements").append(html);
-      }
+      },
     });
-  }
+  },
 };
