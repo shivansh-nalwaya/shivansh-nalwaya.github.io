@@ -6,24 +6,22 @@
       "C / C++",
       "Python",
       "Ruby",
-      "Java"
+      "Golang"
     ],
-    "Web Development": [
+    "Back-End": [
       "Ruby on Rails",
       "Node JS",
       "Django",
       "PHP"
     ],
-    "Web Design": [
-      "HTML5",
-      "CSS",
+    "Front-End": [
       "JavaScript",
       "React JS",
-      "Angular JS"
+      "Next JS",
+      "Three JS"
     ],
-    "Data Analytics": [
-      "Python",
-      "R"
+    "Mobile App Development": [
+      "React Native"
     ],
     "Database Management": [
       "PostgreSQL",
@@ -31,6 +29,7 @@
       "NoSQL"
     ],
     "System Architecture": [
+      "AWS",
       "Linux",
       "Docker"
     ],
@@ -87,9 +86,23 @@
   ],
   "Work Experience": [
     {
+      "title": "SENIOR FRONTEND DEVELOPER - SDE-2",
+      "subtitle": "Awign",
+      "duration": "May, 2021 - Present",
+      "desc": [
+        "Worked on 8+ UI platforms.",
+        "Developed multiple features across multiple platforms."
+      ],
+      "techStack": [
+        "React JS",
+        "Next JS",
+        "React Native"
+      ]
+    },
+    {
       "title": "FRONTEND DEVELOPER",
       "subtitle": "The Better India",
-      "duration": "Nov, 2019 - Present",
+      "duration": "Nov, 2019 - Apr, 2021",
       "desc": [
         "Developed 2 E-commerce websites from scratch.",
         "Developed 2 mobile apps from scratch.",
