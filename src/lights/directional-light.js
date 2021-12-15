@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import scene from "../scene";
 
-let Light = new THREE.DirectionalLight(0xfdfbd3, 1.0);
+let Light = new THREE.DirectionalLight(0xffffff, 1.0);
 
 Light.position.set(20, 20, 10);
 Light.target.position.set(0, 0, 0);

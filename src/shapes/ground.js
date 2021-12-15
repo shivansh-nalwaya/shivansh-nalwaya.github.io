@@ -9,7 +9,7 @@ var map = Loaders.TextureLoader.load("/assets/images/grass-texture.jpeg", functi
   texture.repeat.set(10, 10);
 });
 
-const material = new THREE.MeshStandardMaterial({ side: THREE.DoubleSide, map, color: 0x676767 });
+const material = new THREE.MeshStandardMaterial({ side: THREE.DoubleSide, map, color: 0x454545 });
 
 const Ground = new THREE.Mesh(geometry, material);
 Ground.rotateX(Math.PI / 2);
