@@ -11,11 +11,18 @@ const animate = () => {
   requestAnimationFrame((t) => {
     animate();
     CharacterWalk.update((t - previousRAF) * 0.001);
-    if (Character.walkForward) Character.position.z -= 0.1;
-    else if (Character.walkBackward) Character.position.z += 0.1;
-    else if (Character.turnLeft) Character.rotation.y += 0.05;
-    else if (Character.turnRight) Character.rotation.y -= 0.05;
-    else CharacterIdle.update((t - previousRAF) * 0.001);
+    if (Character.walkForward) Character.translateZ(0.1);
+    if (Character.turnLeft) {
+      Character.rotation.y += 0.05;
+      if (!Character.walkBackward && !Character.walkForward) Character.translateZ(0.1);
+    }
+    if (Character.turnRight) {
+      Character.rotation.y -= 0.05;
+      if (!Character.walkBackward && !Character.walkForward) Character.translateZ(0.1);
+    }
+    if (!Character.walkForward && !Character.turnLeft && !Character.turnRight) {
+      CharacterIdle.update((t - previousRAF) * 0.001);
+    }
 
     previousRAF = t;
   });
