@@ -1,248 +1,247 @@
 import "./style.css";
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+// import * as THREE from "three";
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+// import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 
-class BasicCharacterControls {
-  constructor(params) {
-    this._Init(params);
-  }
+import start from "./src";
 
-  _Init(params) {
-    this._params = params;
-    this._move = {
-      forward: false,
-      backward: false,
-      left: false,
-      right: false,
-    };
-    this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -10.0);
-    this._acceleration = new THREE.Vector3(1, 1, 60.0);
-    this._velocity = new THREE.Vector3(0, 0, 0);
+// class BasicCharacterControls {
+//   constructor(params) {
+//     this._Init(params);
+//   }
 
-    document.addEventListener("keydown", (e) => this._onKeyDown(e), false);
-    document.addEventListener("keyup", (e) => this._onKeyUp(e), false);
-  }
+//   _Init(params) {
+//     this._params = params;
+//     this._move = {
+//       forward: false,
+//       backward: false,
+//       left: false,
+//       right: false,
+//     };
+//     this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -10.0);
+//     this._acceleration = new THREE.Vector3(1, 1, 60.0);
+//     this._velocity = new THREE.Vector3(0, 0, 0);
 
-  _onKeyDown(event) {
-    switch (event.keyCode) {
-      case 38:
-      case 87: // w
-        this._move.forward = true;
-        break;
-      case 37: // left
-      case 65: // a
-        this._move.left = true;
-        break;
-      // case 40: // down
-      // case 83: // s
-      //   this._move.backward = true;
-      //   break;
-      case 39: // right
-      case 68: // d
-        this._move.right = true;
-        break;
-    }
-  }
+//     document.addEventListener("keydown", (e) => this._onKeyDown(e), false);
+//     document.addEventListener("keyup", (e) => this._onKeyUp(e), false);
+//   }
 
-  _onKeyUp(event) {
-    switch (event.keyCode) {
-      case 38: // up
-      case 87: // w
-        this._move.forward = false;
-        break;
-      case 37: // left
-      case 65: // a
-        this._move.left = false;
-        break;
-      // case 40: // down
-      // case 83: // s
-      //   this._move.backward = false;
-      //   break;
-      case 39: // right
-      case 68: // d
-        this._move.right = false;
-        break;
-    }
-  }
+//   _onKeyDown(event) {
+//     switch (event.keyCode) {
+//       case 38:
+//       case 87: // w
+//         this._move.forward = true;
+//         break;
+//       case 37: // left
+//       case 65: // a
+//         this._move.left = true;
+//         break;
+//       // case 40: // down
+//       // case 83: // s
+//       //   this._move.backward = true;
+//       //   break;
+//       case 39: // right
+//       case 68: // d
+//         this._move.right = true;
+//         break;
+//     }
+//   }
 
-  Update(timeInSeconds) {
-    const velocity = this._velocity;
-    const frameDecceleration = new THREE.Vector3(velocity.x * this._decceleration.x, velocity.y * this._decceleration.y, velocity.z * this._decceleration.z);
-    frameDecceleration.multiplyScalar(timeInSeconds);
-    frameDecceleration.z = Math.sign(frameDecceleration.z) * Math.min(Math.abs(frameDecceleration.z), Math.abs(velocity.z));
+//   _onKeyUp(event) {
+//     switch (event.keyCode) {
+//       case 38: // up
+//       case 87: // w
+//         this._move.forward = false;
+//         break;
+//       case 37: // left
+//       case 65: // a
+//         this._move.left = false;
+//         break;
+//       // case 40: // down
+//       // case 83: // s
+//       //   this._move.backward = false;
+//       //   break;
+//       case 39: // right
+//       case 68: // d
+//         this._move.right = false;
+//         break;
+//     }
+//   }
 
-    velocity.add(frameDecceleration);
+//   Update(timeInSeconds) {
+//     const velocity = this._velocity;
+//     const frameDecceleration = new THREE.Vector3(velocity.x * this._decceleration.x, velocity.y * this._decceleration.y, velocity.z * this._decceleration.z);
+//     frameDecceleration.multiplyScalar(timeInSeconds);
+//     frameDecceleration.z = Math.sign(frameDecceleration.z) * Math.min(Math.abs(frameDecceleration.z), Math.abs(velocity.z));
 
-    const controlObject = this._params.target;
-    const _Q = new THREE.Quaternion();
-    const _A = new THREE.Vector3();
-    const _R = controlObject.quaternion.clone();
+//     velocity.add(frameDecceleration);
 
-    if (this._move.forward) {
-      velocity.z += this._acceleration.z * timeInSeconds;
-      this._params.camera.position.z -= this._acceleration.z * timeInSeconds * 0.1;
-    }
-    if (this._move.backward) {
-      velocity.z -= this._acceleration.z * timeInSeconds;
-    }
-    if (this._move.left) {
-      _A.set(0, 1, 0);
-      _Q.setFromAxisAngle(_A, Math.PI * timeInSeconds * this._acceleration.y);
-      _R.multiply(_Q);
-      this._params.camera.position.x += timeInSeconds * 5;
-    }
-    if (this._move.right) {
-      _A.set(0, 1, 0);
-      _Q.setFromAxisAngle(_A, -Math.PI * timeInSeconds * this._acceleration.y);
-      _R.multiply(_Q);
-    }
-    // this._params.walk.play();
+//     const controlObject = this._params.target;
+//     const _Q = new THREE.Quaternion();
+//     const _A = new THREE.Vector3();
+//     const _R = controlObject.quaternion.clone();
 
-    if (this._move.forward || this._move.backward || this._move.left || this._move.right) {
-      this._params.idle.enabled = false;
-      this._params.walk.enabled = true;
-    } else {
-      this._params.walk.enabled = false;
-      this._params.idle.enabled = true;
-    }
+//     if (this._move.forward) {
+//       velocity.z += this._acceleration.z * timeInSeconds;
+//       this._params.camera.position.z -= this._acceleration.z * timeInSeconds * 0.1;
+//     }
+//     if (this._move.backward) {
+//       velocity.z -= this._acceleration.z * timeInSeconds;
+//     }
+//     if (this._move.left) {
+//       _A.set(0, 1, 0);
+//       _Q.setFromAxisAngle(_A, Math.PI * timeInSeconds * this._acceleration.y);
+//       _R.multiply(_Q);
+//       this._params.camera.position.x += timeInSeconds * 5;
+//     }
+//     if (this._move.right) {
+//       _A.set(0, 1, 0);
+//       _Q.setFromAxisAngle(_A, -Math.PI * timeInSeconds * this._acceleration.y);
+//       _R.multiply(_Q);
+//     }
+//     // this._params.walk.play();
 
-    controlObject.quaternion.copy(_R);
+//     if (this._move.forward || this._move.backward || this._move.left || this._move.right) {
+//       this._params.idle.enabled = false;
+//       this._params.walk.enabled = true;
+//     } else {
+//       this._params.walk.enabled = false;
+//       this._params.idle.enabled = true;
+//     }
 
-    const oldPosition = new THREE.Vector3();
-    oldPosition.copy(controlObject.position);
+//     controlObject.quaternion.copy(_R);
 
-    const forward = new THREE.Vector3(0, 0, 1);
-    forward.applyQuaternion(controlObject.quaternion);
-    forward.normalize();
+//     const oldPosition = new THREE.Vector3();
+//     oldPosition.copy(controlObject.position);
 
-    const sideways = new THREE.Vector3(1, 0, 0);
-    sideways.applyQuaternion(controlObject.quaternion);
-    sideways.normalize();
+//     const forward = new THREE.Vector3(0, 0, 1);
+//     forward.applyQuaternion(controlObject.quaternion);
+//     forward.normalize();
 
-    sideways.multiplyScalar(velocity.x * timeInSeconds);
-    forward.multiplyScalar(velocity.z * timeInSeconds);
+//     const sideways = new THREE.Vector3(1, 0, 0);
+//     sideways.applyQuaternion(controlObject.quaternion);
+//     sideways.normalize();
 
-    controlObject.position.add(forward);
-    controlObject.position.add(sideways);
+//     sideways.multiplyScalar(velocity.x * timeInSeconds);
+//     forward.multiplyScalar(velocity.z * timeInSeconds);
 
-    oldPosition.copy(controlObject.position);
-  }
-}
+//     controlObject.position.add(forward);
+//     controlObject.position.add(sideways);
 
-const loader = new THREE.TextureLoader();
+//     oldPosition.copy(controlObject.position);
+//   }
+// }
 
-const scene = new THREE.Scene();
+// const loader = new THREE.TextureLoader();
 
-const mixers = [];
+// const scene = new THREE.Scene();
 
-scene.background = loader.load("/assets/images/sky-bg.jpeg");
+// const mixers = [];
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+// scene.background = loader.load("/assets/images/sky-bg.jpeg");
 
-const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector("#app"),
-});
+// const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
+// const renderer = new THREE.WebGLRenderer({
+//   canvas: document.querySelector("#app"),
+// });
 
-camera.position.setZ(30);
-camera.position.setY(10);
+// renderer.shadowMap.enabled = true;
+// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+// renderer.setPixelRatio(window.devicePixelRatio);
+// renderer.setSize(window.innerWidth, window.innerHeight);
 
-renderer.render(scene, camera);
+// camera.position.setZ(30);
+// camera.position.setY(10);
 
-const geometry = new THREE.PlaneGeometry(200, 200);
-var texture = loader.load("/assets/images/grass-texture.jpeg", function (texture) {
-  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-  texture.offset.set(0, 0);
-  texture.repeat.set(10, 10);
-});
-const material = new THREE.MeshStandardMaterial({ side: THREE.DoubleSide, map: texture });
-// material.normalMap = loader.load("/assets/maps/grass-map.png", function (texture) {
+// renderer.render(scene, camera);
+
+// const geometry = new THREE.PlaneGeometry(200, 200);
+// var texture = loader.load("/assets/images/grass-texture.jpeg", function (texture) {
 //   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 //   texture.offset.set(0, 0);
 //   texture.repeat.set(10, 10);
 // });
-let walk, idle, charControls;
+// const material = new THREE.MeshStandardMaterial({ side: THREE.DoubleSide, map: texture });
+// const plane = new THREE.Mesh(geometry, material);
+// plane.rotateX(Math.PI / 2);
+// plane.receiveShadow = true;
+// scene.add(plane);
 
-const fbxloader = new FBXLoader();
-const animLoader = new FBXLoader();
-fbxloader.load("/assets/models/character.fbx", (fbx) => {
-  fbx.scale.setScalar(0.07);
-  fbx.rotation.set(0, Math.PI, 0);
-  fbx.position.set(0, 0, 20);
-  fbx.traverse((c) => {
-    c.castShadow = true;
-  });
+// let walk, idle, charControls;
 
-  animLoader.load("/assets/animations/walk.fbx", (anim) => {
-    const m = new THREE.AnimationMixer(fbx);
-    mixers.push(m);
-    walk = m.clipAction(anim.animations[0]);
-    walk.play();
-    animLoader.load("/assets/animations/idle.fbx", (anim) => {
-      const m = new THREE.AnimationMixer(fbx);
-      mixers.push(m);
-      idle = m.clipAction(anim.animations[0]);
-      idle.play();
-      const params = {
-        target: fbx,
-        camera,
-        walk,
-        idle,
-      };
-      charControls = new BasicCharacterControls(params);
-    });
-  });
+// const fbxloader = new FBXLoader();
+// const animLoader = new FBXLoader();
+// fbxloader.load("/assets/models/character.fbx", (fbx) => {
+//   fbx.scale.setScalar(0.07);
+//   fbx.rotation.set(0, Math.PI, 0);
+//   fbx.position.set(0, 0, 20);
+//   fbx.traverse((c) => {
+//     c.castShadow = true;
+//   });
 
-  scene.add(fbx);
-});
+//   animLoader.load("/assets/animations/walk.fbx", (anim) => {
+//     const m = new THREE.AnimationMixer(fbx);
+//     mixers.push(m);
+//     walk = m.clipAction(anim.animations[0]);
+//     walk.play();
+//     animLoader.load("/assets/animations/idle.fbx", (anim) => {
+//       const m = new THREE.AnimationMixer(fbx);
+//       mixers.push(m);
+//       idle = m.clipAction(anim.animations[0]);
+//       idle.play();
+//       const params = {
+//         target: fbx,
+//         camera,
+//         walk,
+//         idle,
+//       };
+//       charControls = new BasicCharacterControls(params);
+//     });
+//   });
 
-const plane = new THREE.Mesh(geometry, material);
-plane.rotateX(Math.PI / 2);
-plane.receiveShadow = true;
-scene.add(plane);
+//   scene.add(fbx);
+// });
 
-let light = new THREE.DirectionalLight(0xfdfbd3, 1.0);
-light.position.set(20, 100, 10);
-light.target.position.set(0, 0, 0);
-light.castShadow = true;
-light.shadow.bias = -0.001;
-light.shadow.mapSize.width = 2048;
-light.shadow.mapSize.height = 2048;
-light.shadow.camera.near = 0.1;
-light.shadow.camera.far = 500.0;
-light.shadow.camera.near = 0.5;
-light.shadow.camera.far = 500.0;
-light.shadow.camera.left = 100;
-light.shadow.camera.right = -100;
-light.shadow.camera.top = 100;
-light.shadow.camera.bottom = -100;
-scene.add(light);
+// let light = new THREE.DirectionalLight(0xfdfbd3, 1.0);
+// light.position.set(20, 100, 10);
+// light.target.position.set(0, 0, 0);
+// light.castShadow = true;
+// light.shadow.bias = -0.001;
+// light.shadow.mapSize.width = 2048;
+// light.shadow.mapSize.height = 2048;
+// light.shadow.camera.near = 0.1;
+// light.shadow.camera.far = 500.0;
+// light.shadow.camera.near = 0.5;
+// light.shadow.camera.far = 500.0;
+// light.shadow.camera.left = 100;
+// light.shadow.camera.right = -100;
+// light.shadow.camera.top = 100;
+// light.shadow.camera.bottom = -100;
+// scene.add(light);
 
-const ambientLight = new THREE.AmbientLight(0xfdfbd3);
-scene.add(ambientLight);
+// const ambientLight = new THREE.AmbientLight(0xfdfbd3);
+// scene.add(ambientLight);
 
-const controls = new OrbitControls(camera, renderer.domElement);
-let previousRAF;
-function animate() {
-  requestAnimationFrame((t) => {
-    if (previousRAF === null) {
-      previousRAF = t;
-    }
+// const controls = new OrbitControls(camera, renderer.domElement);
+// let previousRAF;
+// function animate() {
+//   requestAnimationFrame((t) => {
+//     if (previousRAF === null) {
+//       previousRAF = t;
+//     }
 
-    animate();
+//     animate();
 
-    if (mixers) mixers.map((m) => m.update((t - previousRAF) * 0.001));
-    if (charControls) charControls.Update((t - previousRAF) * 0.001);
+//     if (mixers) mixers.map((m) => m.update((t - previousRAF) * 0.001));
+//     if (charControls) charControls.Update((t - previousRAF) * 0.001);
 
-    previousRAF = t;
-  });
-  controls.update();
-  renderer.render(scene, camera);
-}
+//     previousRAF = t;
+//   });
+//   controls.update();
+//   renderer.render(scene, camera);
+// }
 
-animate();
+// animate();
+
+start();
