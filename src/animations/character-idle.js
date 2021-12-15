@@ -6,7 +6,7 @@ const animation = await Loaders.AnimationLoader.loadAsync("/assets/animations/id
 
 const CharacterIdle = new AnimationMixer(Character);
 
-const idle = CharacterIdle.clipAction(animation.animations[0]);
-idle.play();
+export const CharacterIdleAction = CharacterIdle.clipAction(animation.animations[0]);
+CharacterIdleAction.play();
 
 export default CharacterIdle;
