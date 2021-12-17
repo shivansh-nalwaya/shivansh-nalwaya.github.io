@@ -29,7 +29,7 @@ const animate = () => {
     } else {
       camera.position.copy(Character.position);
       camera.position.x -= Math.sin(Character.rotation.y) * 20;
-      camera.position.z += Math.cos(camera.rotation.y) * 20;
+      camera.position.z -= Math.cos(Character.rotation.y) * 20;
       camera.position.y += 10; // optional
       tempVector.copy(Character.position).y += 10; // the += is optional
       camera.lookAt(tempVector);
