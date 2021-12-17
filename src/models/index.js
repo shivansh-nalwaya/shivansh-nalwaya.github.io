@@ -1,9 +1,9 @@
 import Character from "./character";
-import Building from "./building";
+// import Building from "./building";
 
 const Models = () => ({
   Character,
-  Building,
+  // Building,
 });
 
 export default Models;
