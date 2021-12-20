@@ -1,3 +1,4 @@
+import Physics from "./physics";
 import animate from "./animate";
 import Shapes from "./shapes";
 import Lights from "./lights";
