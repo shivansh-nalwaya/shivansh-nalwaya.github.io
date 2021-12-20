@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import CANNON from "cannon";
+import { Vec3 } from "cannon-es";
 import CharacterIdle from "./animations/character-idle";
 import CharacterWalk from "./animations/character-walk";
 import camera from "./camera";
@@ -15,26 +15,26 @@ let previousRAF = 0,
 const animate = () => {
   requestAnimationFrame((t) => {
     if (Character.walkForward) {
-      characterBody.velocity = characterBody.quaternion.vmult(new CANNON.Vec3(0, 0, 3));
+      characterBody.velocity = characterBody.quaternion.vmult(new Vec3(0, 0, 3));
     }
     if (Character.turnLeft) {
       Character.rotation.y += 0.05;
       characterBody.quaternion.copy(Character.quaternion);
-      if (!Character.walkForward) characterBody.velocity = characterBody.quaternion.vmult(new CANNON.Vec3(0, 0, 3));
+      if (!Character.walkForward) characterBody.velocity = characterBody.quaternion.vmult(new Vec3(0, 0, 3));
     }
     if (Character.turnRight) {
       Character.rotation.y -= 0.05;
       characterBody.quaternion.copy(Character.quaternion);
-      if (!Character.walkForward) characterBody.velocity = characterBody.quaternion.vmult(new CANNON.Vec3(0, 0, 3));
+      if (!Character.walkForward) characterBody.velocity = characterBody.quaternion.vmult(new Vec3(0, 0, 3));
     }
     if (!Character.walkForward && !Character.turnLeft && !Character.turnRight) {
       CharacterIdle.update((t - previousRAF) * 0.001);
     } else {
       CharacterWalk.update((t - previousRAF) * 0.001);
-      camera.position.copy(Character.position);
-      camera.position.x -= Math.sin(Character.rotation.y) * 20;
-      camera.position.z -= Math.cos(Character.rotation.y) * 20;
-      camera.position.y += 10; // optional
+      camera.position.lerp(
+        new Vector3(Character.position.x - Math.sin(Character.rotation.y) * 20, Character.position.y + 10, Character.position.z - Math.cos(Character.rotation.y) * 20),
+        0.1
+      );
       tempVector.copy(Character.position).y += 10; // the += is optional
       camera.lookAt(tempVector);
     }
