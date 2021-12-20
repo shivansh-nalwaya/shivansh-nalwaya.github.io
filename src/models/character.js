@@ -5,7 +5,7 @@ const Character = await Loaders.FBXLoader.loadAsync("/assets/models/character.fb
 
 Character.scale.setScalar(0.07);
 Character.rotation.set(0, Math.PI, 0);
-Character.position.set(0, 45, 60);
+Character.position.set(0, 5.5, 60);
 Character.traverse((c) => {
   c.castShadow = true;
 });

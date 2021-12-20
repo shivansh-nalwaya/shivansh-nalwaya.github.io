@@ -12,7 +12,7 @@ var map = Loaders.TextureLoader.load("/assets/images/grass-texture.jpeg", functi
 const material = new THREE.MeshStandardMaterial({ side: THREE.DoubleSide, map, color: 0x454545 });
 
 const Ground = new THREE.Mesh(geometry, material);
-Ground.rotateX(Math.PI / 2);
+Ground.rotateX(-Math.PI / 2);
 Ground.receiveShadow = true;
 
 scene.add(Ground);

@@ -7,6 +7,7 @@ import world, { cubeMesh, cubeBody, characterBody, cannonDebugRenderer } from ".
 import Character from "./models/character";
 import renderer from "./renderer";
 import scene from "./scene";
+import isDev from "./utils/is-dev";
 
 let previousRAF = 0,
   tempVector = new Vector3();
@@ -45,7 +46,7 @@ const animate = () => {
     // Character.quaternion.copy(characterBody.quaternion);
 
     world.step(1.0 / 60.0, (t - previousRAF) * 0.003);
-    cannonDebugRenderer.update();
+    if (isDev) cannonDebugRenderer.update();
     previousRAF = t;
     animate();
   });

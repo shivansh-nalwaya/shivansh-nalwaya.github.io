@@ -1,6 +1,7 @@
 import * as CANNON from "cannon-es";
 import * as THREE from "three";
 import CannonDebugRenderer from "../utils/cdr";
+import isDev from "../utils/is-dev";
 import Character from "../models/character";
 import scene from "../scene";
 
@@ -35,6 +36,6 @@ characterBody.position.copy(Character.position);
 characterBody.quaternion.copy(Character.quaternion);
 world.addBody(characterBody);
 
-export const cannonDebugRenderer = new CannonDebugRenderer(scene, world);
+export const cannonDebugRenderer = isDev ? new CannonDebugRenderer(scene, world) : null;
 
 export default world;
