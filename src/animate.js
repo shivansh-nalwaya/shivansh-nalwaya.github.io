@@ -3,11 +3,12 @@ import { Vec3 } from "cannon-es";
 import CharacterIdle from "./animations/character-idle";
 import CharacterWalk from "./animations/character-walk";
 import camera from "./camera";
-import world, { cubeMesh, cubeBody, characterBody, cannonDebugRenderer } from "./physics";
+import world, { shape, characterBody, cannonDebugRenderer } from "./physics";
 import Character from "./models/character";
 import renderer from "./renderer";
 import scene from "./scene";
 import isDev from "./utils/is-dev";
+import { ShapeType, threeToCannon } from "three-to-cannon";
 
 let previousRAF = 0,
   tempVector = new Vector3();
@@ -15,7 +16,8 @@ let previousRAF = 0,
 const animate = () => {
   requestAnimationFrame((t) => {
     if (Character.walkForward) {
-      characterBody.velocity = characterBody.quaternion.vmult(new Vec3(0, 0, 3));
+      characterBody.velocity.x = characterBody.quaternion.vmult(new Vec3(0, 0, 3)).x;
+      characterBody.velocity.z = characterBody.quaternion.vmult(new Vec3(0, 0, 3)).z;
     }
     if (Character.turnLeft) {
       Character.rotation.y += 0.05;
@@ -38,9 +40,6 @@ const animate = () => {
       tempVector.copy(Character.position).y += 10; // the += is optional
       camera.lookAt(tempVector);
     }
-
-    cubeMesh.position.copy(cubeBody.position);
-    cubeMesh.quaternion.copy(cubeBody.quaternion);
     Character.position.copy(characterBody.position);
     Character.position.y -= 5.5;
     // Character.quaternion.copy(characterBody.quaternion);

@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@types/three@^0.127.1":
+  version "0.127.1"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.127.1.tgz#0978054e5daa6485946a3f1518a76412186ae81f"
+  integrity sha512-e90iYq3zde3axANg7BPZY0fKrez1AzveamIIFk23PMh9WtCx91geokDy+yEAIymdIldgUpvezAP6+zCV3oekXw==
+
 cannon-es@^0.18.0:
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/cannon-es/-/cannon-es-0.18.0.tgz#ae831ff9df2352d5faabb269c11ea0f10bc35c7e"
@@ -182,6 +187,13 @@ source-map-js@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.1.tgz#a1741c131e3c77d048252adfa24e23b908670caf"
   integrity sha512-4+TN2b3tqOCd/kaGRJ/sTYA0tR0mdXx26ipdolxcwtJVqEnqNYvlCAt1q3ypy4QMlYus+Zh34RNtYLoq2oQ4IA==
+
+three-to-cannon@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/three-to-cannon/-/three-to-cannon-4.0.2.tgz#5123d897d3dee6bc37e4c48a71dc3e7fe2d87266"
+  integrity sha512-JhhR3+cljNrdwkzgRrENLVFvusojq5YWUmvsngKeLp9tOI8k7+GCjFyE/M2mRpyBz+dtzDxCXBfCs+blEi9uBg==
+  dependencies:
+    "@types/three" "^0.127.1"
 
 three@^0.135.0:
   version "0.135.0"
