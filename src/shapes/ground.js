@@ -2,7 +2,7 @@ import * as THREE from "three";
 import Loaders from "../loaders";
 import scene from "../scene";
 
-const geometry = new THREE.PlaneGeometry(400, 200);
+const geometry = new THREE.PlaneGeometry(400, 400);
 
 var map = Loaders.TextureLoader.load("/assets/images/grass-texture.jpeg", function (texture) {
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
