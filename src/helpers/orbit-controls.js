@@ -3,6 +3,6 @@ import camera from "../camera";
 import renderer from "../renderer";
 import isDev from "../utils/is-dev";
 
-const Control = isDev ? new OrbitControls(camera, renderer.domElement) : null;
+const Control = isDev || true ? new OrbitControls(camera, renderer.domElement) : null;
 
 export default Control;

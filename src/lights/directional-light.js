@@ -3,7 +3,7 @@ import scene from "../scene";
 
 let Light = new THREE.DirectionalLight(0xffffff, 1.0);
 
-Light.position.set(20, 20, 10);
+Light.position.set(100, 200, 10);
 Light.target.position.set(0, 0, 0);
 Light.castShadow = true;
 Light.shadow.bias = -0.001;
