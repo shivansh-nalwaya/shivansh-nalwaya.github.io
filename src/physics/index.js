@@ -1,22 +1,12 @@
 import * as CANNON from "cannon-es";
-import * as THREE from "three";
 import CannonDebugRenderer from "../utils/cdr";
 import isDev from "../utils/is-dev";
-import Character from "../models/character";
 import scene from "../scene";
-import Loaders from "../loaders";
 
 const world = new CANNON.World({
   gravity: new CANNON.Vec3(0, -10, 0),
 });
 world.solver.iterations = 10;
-
-const groundBody = new CANNON.Body({
-  type: CANNON.Body.STATIC,
-  shape: new CANNON.Plane(),
-});
-groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0); // make it face up
-world.addBody(groundBody);
 
 // const normalMaterial = new THREE.MeshNormalMaterial();
 // const cubeGeometry = new THREE.BoxGeometry(10, 1, 2);
@@ -89,12 +79,6 @@ world.addBody(groundBody);
 // mesh.rotation.set(-Math.PI / 2, 0, 0);
 // mesh.position.set(0, -5, 0);
 // scene.add(mesh);
-
-export const shape = new CANNON.Box(new CANNON.Vec3(2, 5.5, 2));
-export const characterBody = new CANNON.Body({ mass: 60, shape, angularDamping: 1 });
-characterBody.position.copy(Character.position);
-characterBody.quaternion.copy(Character.quaternion);
-world.addBody(characterBody);
 
 export const cannonDebugRenderer = isDev ? new CannonDebugRenderer(scene, world) : null;
 
