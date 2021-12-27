@@ -51,44 +51,44 @@ world.addBody(groundBody);
 // elevationBody.position = new CANNON.Vec3(0, 0, 31.6);
 // world.addBody(elevationBody);
 
-var w = 400,
-  h = 400;
-var hfdata = [];
-for (let i = 0; i < w; i++) {
-  var data = [];
-  for (let j = 0; j < h; j++) {
-    const dataPoint = 10 + -10 * Math.sin((i / 400) * Math.PI) * Math.sin((j / 400) * Math.PI);
-    data.push(dataPoint);
-  }
-  hfdata.push(data);
-}
-const heightfieldShape = new CANNON.Heightfield(hfdata, {
-  elementSize: 1,
-  minValue: -10,
-  maxValue: 10,
-});
-const heightfieldBody = new CANNON.Body({ shape: heightfieldShape, mass: 0 });
-heightfieldBody.position = new CANNON.Vec3(-200, -5, 200);
-heightfieldBody.quaternion = new CANNON.Quaternion(0, 0, 0, 0).setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
-world.addBody(heightfieldBody);
+// var w = 400,
+//   h = 400;
+// var hfdata = [];
+// for (let i = 0; i < w; i++) {
+//   var data = [];
+//   for (let j = 0; j < h; j++) {
+//     const dataPoint = 10 + -10 * Math.sin((i / 400) * Math.PI) * Math.sin((j / 400) * Math.PI);
+//     data.push(dataPoint);
+//   }
+//   hfdata.push(data);
+// }
+// const heightfieldShape = new CANNON.Heightfield(hfdata, {
+//   elementSize: 1,
+//   minValue: -10,
+//   maxValue: 10,
+// });
+// const heightfieldBody = new CANNON.Body({ shape: heightfieldShape, mass: 0 });
+// heightfieldBody.position = new CANNON.Vec3(-200, -5, 200);
+// heightfieldBody.quaternion = new CANNON.Quaternion(0, 0, 0, 0).setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+// world.addBody(heightfieldBody);
 
-const geometry = new THREE.PlaneBufferGeometry(400, 400, 256, 256);
-const count = geometry.attributes.position.count;
-for (var i = 0; i < count; i++) {
-  const x = geometry.attributes.position.getX(i) + 200;
-  const y = geometry.attributes.position.getY(i) + 200;
-  const xsin = Math.sin((x / 400) * Math.PI);
-  const ysin = Math.sin((y / 400) * Math.PI);
-  geometry.attributes.position.setZ(i, 10 + -10 * xsin * ysin);
-}
+// const geometry = new THREE.PlaneBufferGeometry(400, 400, 256, 256);
+// const count = geometry.attributes.position.count;
+// for (var i = 0; i < count; i++) {
+//   const x = geometry.attributes.position.getX(i) + 200;
+//   const y = geometry.attributes.position.getY(i) + 200;
+//   const xsin = Math.sin((x / 400) * Math.PI);
+//   const ysin = Math.sin((y / 400) * Math.PI);
+//   geometry.attributes.position.setZ(i, 10 + -10 * xsin * ysin);
+// }
 
-const material = new THREE.MeshStandardMaterial({ color: 0x22350e });
-const mesh = new THREE.Mesh(geometry, material);
-mesh.receiveShadow = true;
-mesh.castShadow = true;
-mesh.rotation.set(-Math.PI / 2, 0, 0);
-mesh.position.set(0, -5, 0);
-scene.add(mesh);
+// const material = new THREE.MeshStandardMaterial({ color: 0x22350e });
+// const mesh = new THREE.Mesh(geometry, material);
+// mesh.receiveShadow = true;
+// mesh.castShadow = true;
+// mesh.rotation.set(-Math.PI / 2, 0, 0);
+// mesh.position.set(0, -5, 0);
+// scene.add(mesh);
 
 export const shape = new CANNON.Box(new CANNON.Vec3(2, 5.5, 2));
 export const characterBody = new CANNON.Body({ mass: 60, shape, angularDamping: 1 });

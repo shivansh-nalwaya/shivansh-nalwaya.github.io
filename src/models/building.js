@@ -2,23 +2,12 @@ import * as THREE from "three";
 import Loaders from "../loaders";
 import scene from "../scene";
 
-const Tree1 = await Loaders.GLTFLoader.loadAsync("/assets/models/tree-1/scene.gltf");
+const Tree = await Loaders.GLTFLoader.loadAsync("/assets/models/tree-2/scene.gltf");
 
-Tree1.scene.scale.setScalar(0.06);
-Tree1.scene.rotation.set(0, -Math.PI / 2, 0);
-Tree1.scene.position.set(0, 0, 0);
-Tree1.scene.traverse((c) => {
-  c.castShadow = true;
-});
-
-scene.add(Tree1.scene);
-
-const Tree2 = await Loaders.GLTFLoader.loadAsync("/assets/models/tree-2/scene.gltf");
-
-Tree2.scene.scale.setScalar(10);
-Tree2.scene.rotation.set(0, -Math.PI / 2, 0);
-Tree2.scene.position.set(0, -2, 10);
-Tree2.scene.traverse((c) => {
+Tree.scene.scale.setScalar(10);
+Tree.scene.rotation.set(0, -Math.PI / 2, 0);
+Tree.scene.position.set(0, -2, 0);
+Tree.scene.traverse((c) => {
   c.castShadow = true;
   if (c.isMesh) {
     if (c.material.name == "Material_001") c.material.color = new THREE.Color(0x1e4407);
@@ -26,22 +15,26 @@ Tree2.scene.traverse((c) => {
   }
 });
 
-scene.add(Tree2.scene);
-
-const Tree4 = await Loaders.GLTFLoader.loadAsync("/assets/models/tree-4/scene.gltf");
-
-Tree4.scene.scale.setScalar(1);
-Tree4.scene.rotation.set(0, -Math.PI / 2, 0);
-Tree4.scene.position.set(-50, 0, 10);
-Tree4.scene.traverse((c) => {
-  c.castShadow = true;
-  if (c.isMesh) {
-    console.log(c.material.name);
-    if (c.material.name == "tree_wood") c.material.color = new THREE.Color(0x3a1705);
-    // else c.material.color = new THREE.Color(0x3a1705);
+const onBoundary = 20,
+  w = 400,
+  h = 400;
+for (let i = 0; i < 4; i++) {
+  for (let j = 0; j < onBoundary; j++) {
+    const Tree = Tree.scene.clone();
+    if (i == 0) {
+      if (j < onBoundary - 2) Tree.position.set(-180, -2, (j + 1 - onBoundary / 2) * (h / onBoundary));
+    }
+    if (i == 1) {
+      if (j < onBoundary - 2) Tree.position.set(180, -2, (j + 1 - onBoundary / 2) * (h / onBoundary));
+    }
+    if (i == 2) {
+      if (j < onBoundary - 2) Tree.position.set((j + 2 - onBoundary / 2) * (w / onBoundary), -2, 170);
+    }
+    if (i == 3) {
+      if (j < onBoundary - 2) Tree.position.set((j + 2 - onBoundary / 2) * (w / onBoundary), -2, -190);
+    }
+    scene.add(Tree);
   }
-});
+}
 
-scene.add(Tree4.scene);
-
-export default Tree1;
+export default Tree;
