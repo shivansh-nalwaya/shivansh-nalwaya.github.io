@@ -20,20 +20,20 @@ const onBoundary = 20,
   h = 400;
 for (let i = 0; i < 4; i++) {
   for (let j = 0; j < onBoundary; j++) {
-    const Tree = Tree.scene.clone();
+    const tree = Tree.scene.clone();
     if (i == 0) {
-      if (j < onBoundary - 2) Tree.position.set(-180, -2, (j + 1 - onBoundary / 2) * (h / onBoundary));
+      if (j < onBoundary - 2) tree.position.set(-180, -2, (j + 1 - onBoundary / 2) * (h / onBoundary));
     }
     if (i == 1) {
-      if (j < onBoundary - 2) Tree.position.set(180, -2, (j + 1 - onBoundary / 2) * (h / onBoundary));
+      if (j < onBoundary - 2) tree.position.set(180, -2, (j + 1 - onBoundary / 2) * (h / onBoundary));
     }
     if (i == 2) {
-      if (j < onBoundary - 2) Tree.position.set((j + 2 - onBoundary / 2) * (w / onBoundary), -2, 170);
+      if (j < onBoundary - 2) tree.position.set((j + 2 - onBoundary / 2) * (w / onBoundary), -2, 170);
     }
     if (i == 3) {
-      if (j < onBoundary - 2) Tree.position.set((j + 2 - onBoundary / 2) * (w / onBoundary), -2, -190);
+      if (j < onBoundary - 2) tree.position.set((j + 2 - onBoundary / 2) * (w / onBoundary), -2, -190);
     }
-    scene.add(Tree);
+    scene.add(tree);
   }
 }
 
