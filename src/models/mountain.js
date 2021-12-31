@@ -15,6 +15,16 @@ Mountain.scene.traverse((c) => {
 
 scene.add(Mountain.scene);
 
+const python = await Loaders.GLTFLoader.loadAsync("/assets/models/python.gltf");
+
+python.scene.scale.setScalar(1);
+python.scene.position.set(0, 1, -50);
+python.scene.rotation.set(0, 0, Math.PI / 2);
+python.scene.traverse((c) => {
+  c.castShadow = true;
+});
+scene.add(python.scene);
+
 const Mountain2 = Mountain.scene.clone();
 Mountain2.position.set(500, -110, 320);
 scene.add(Mountain2);

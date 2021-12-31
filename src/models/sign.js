@@ -1,4 +1,4 @@
-import { MeshPhongMaterial, Mesh } from "three";
+import { MeshPhongMaterial, MeshStandardMaterial, Mesh } from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import Loaders from "../loaders";
 import scene from "../scene";
@@ -25,8 +25,8 @@ const textGeo = new TextGeometry("Experiences", {
 
 const textMesh = new Mesh(textGeo, new MeshPhongMaterial({ color: 0xffffff, flatShading: true }));
 textMesh.scale.setScalar(0.014);
-scene.add(textMesh);
 textMesh.position.set(76.2, 9, -19.3);
+scene.add(textMesh);
 
 scene.add(Sign.scene);
 

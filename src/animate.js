@@ -8,7 +8,6 @@ import Character, { characterBody } from "./models/character";
 import renderer from "./renderer";
 import scene from "./scene";
 import isDev from "./utils/is-dev";
-import { flag } from "./models/mountain";
 
 let previousRAF = 0,
   tempVector = new Vector3();

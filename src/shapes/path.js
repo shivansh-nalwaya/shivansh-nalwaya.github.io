@@ -25,9 +25,9 @@ const path = new Mesh(geometry, material);
 
 path.receiveShadow = true;
 path.rotateX(Math.PI / 2);
-path.position.setY(0.5);
+path.position.setY(8);
 path.position.setZ(0);
 
-scene.add(path);
+// scene.add(path);
 
 export default path;
