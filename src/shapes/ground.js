@@ -1,6 +1,4 @@
 import { CircleGeometry, MeshLambertMaterial, MeshStandardMaterial, Mesh, PlaneGeometry, BoxGeometry } from "three";
-import { Body, Plane } from "cannon-es";
-import world from "../physics";
 import scene from "../scene";
 import Loaders from "../loaders";
 
