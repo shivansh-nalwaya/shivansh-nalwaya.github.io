@@ -2,34 +2,24 @@ import { Color, CylinderGeometry, MeshPhongMaterial, Mesh, PlaneGeometry, MeshLa
 import Loaders from "../loaders";
 import scene from "../scene";
 
-const Mountain = await Loaders.GLTFLoader.loadAsync("/assets/models/mountain/source/Unity2Skfb/Unity2Skfb.gltf");
+const Mountain = (await Loaders.GLTFLoader.loadAsync("/assets/models/mountain/source/Unity2Skfb/Unity2Skfb.gltf")).scene;
 
-Mountain.scene.scale.setScalar(1);
-Mountain.scene.position.set(400, -110, 220);
-Mountain.scene.traverse((c) => {
+Mountain.scale.setScalar(1);
+Mountain.position.set(400, -110, 220);
+Mountain.traverse((c) => {
   c.castShadow = true;
   if (c.isMesh) {
     c.material.color = new Color(0x977c53);
   }
 });
 
-scene.add(Mountain.scene);
+scene.add(Mountain);
 
-const python = await Loaders.GLTFLoader.loadAsync("/assets/models/python.gltf");
-
-python.scene.scale.setScalar(0.5);
-python.scene.position.set(-20, 0, -30);
-python.scene.rotation.set(0, 0, Math.PI / 2);
-python.scene.traverse((c) => {
-  c.castShadow = true;
-});
-scene.add(python.scene);
-
-const Mountain2 = Mountain.scene.clone();
+const Mountain2 = Mountain.clone();
 Mountain2.position.set(500, -110, 320);
 scene.add(Mountain2);
 
-const Mountain3 = Mountain.scene.clone();
+const Mountain3 = Mountain.clone();
 Mountain3.position.set(550, -110, 180);
 scene.add(Mountain3);
 
@@ -79,4 +69,4 @@ flag3.position.set(300, 73, -97.5);
 flag3.material = flagMaterial3;
 scene.add(flag3);
 
-export default Mountain;
+export default [Mountain, Mountain2, Mountain3];

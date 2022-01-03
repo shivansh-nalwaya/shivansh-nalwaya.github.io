@@ -1,22 +1,33 @@
-import animate from "./animate";
 import Shapes from "./shapes";
 import Lights from "./lights";
 import Helpers from "./helpers";
 import Models from "./models";
-import Animations from "./animations";
+import Characters from "./characters";
 import Events from "./events";
+import renderer from "./renderer";
+import scene from "./scene";
+import camera from "./camera";
 
 Shapes();
 Lights();
 Helpers();
 Models();
-Animations();
+const { Main } = Characters();
 
 const { KeyDown, KeyUp } = Events();
 
 document.addEventListener("keydown", KeyDown);
 document.addEventListener("keyup", KeyUp);
 
-const start = animate;
+let previousRAF = 0;
 
-export default start;
+const run = () => {
+  requestAnimationFrame((t) => {
+    run();
+    Main.customAnimation((t - previousRAF) * 0.001);
+    previousRAF = t;
+  });
+  renderer.render(scene, camera);
+};
+
+export default run;

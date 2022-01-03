@@ -1,11 +1,9 @@
-import Character from "./character";
 import Sign from "./sign";
-import Mountain from "./mountain";
+import Mountains from "./mountains";
 
 const Models = () => ({
-  Character,
   Sign,
-  Mountain,
+  Mountains,
 });
 
 export default Models;

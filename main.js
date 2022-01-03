@@ -1,4 +1,4 @@
 import "./style.css";
-import start from "./src";
+import run from "./src";
 
-start();
+run();
