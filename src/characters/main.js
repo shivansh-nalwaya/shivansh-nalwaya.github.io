@@ -2,6 +2,9 @@ import { Vector3, Raycaster, AnimationMixer } from "three";
 import camera from "../camera";
 import Loaders from "../loaders";
 import scene from "../scene";
+import Models from "../models";
+
+const models = Object.values(Models());
 
 const Main = await Loaders.FBXLoader.loadAsync("/assets/models/character.fbx");
 
@@ -29,30 +32,40 @@ MainWalkAction.play();
 const tempVector = new Vector3(),
   ray = new Raycaster(),
   rayPos = new Vector3();
+let walkSpeed = 0.4;
 
 Main.customAnimation = (t) => {
   rayPos.set(Main.position.x, 100, Main.position.z);
   var rayDir = new Vector3(0, -1, 0);
 
   ray.set(rayPos, rayDir);
-  // Mountains.forEach((mountain) => {
-  //   let intersect = ray.intersectObject(mountain);
-  //   if (Object.keys(intersect).length > 0) {
-  //     const y = intersect[0].point.y < 0 ? 0 : intersect[0].point.y;
-  //     Main.position.setY(y);
-  //   }
-  // });
+  models.forEach((model) => {
+    let intersect = ray.intersectObject(model);
+    if (Object.keys(intersect).length > 0) {
+      if (model.climbable) {
+        const y = intersect[0].point.y;
+        Main.position.setY(y);
+      } else {
+        walkSpeed = 0;
+        const vec = intersect[0].face.normal;
+        if (Math.abs(vec.x) > Math.abs(vec.z)) Main.position.x += vec.x;
+        else Main.position.z += vec.z;
+      }
+    } else {
+      walkSpeed = 0.4;
+    }
+  });
 
   if (Main.walkForward) {
-    Main.translateZ(0.4);
+    Main.translateZ(walkSpeed);
   }
   if (Main.turnLeft) {
     Main.rotation.y += 0.05;
-    if (!Main.walkBackward && !Main.walkForward) Main.translateZ(0.4);
+    if (!Main.walkBackward && !Main.walkForward) Main.translateZ(walkSpeed);
   }
   if (Main.turnRight) {
     Main.rotation.y -= 0.05;
-    if (!Main.walkBackward && !Main.walkForward) Main.translateZ(0.4);
+    if (!Main.walkBackward && !Main.walkForward) Main.translateZ(walkSpeed);
   }
   if (!Main.walkForward && !Main.turnLeft && !Main.turnRight) {
     MainIdle.update(t);

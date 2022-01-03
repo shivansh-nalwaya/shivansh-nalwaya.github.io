@@ -1,7 +1,6 @@
 import Shapes from "./shapes";
 import Lights from "./lights";
 import Helpers from "./helpers";
-import Models from "./models";
 import Characters from "./characters";
 import Events from "./events";
 import renderer from "./renderer";
@@ -11,7 +10,6 @@ import camera from "./camera";
 Shapes();
 Lights();
 Helpers();
-Models();
 const { Main } = Characters();
 
 const { KeyDown, KeyUp } = Events();

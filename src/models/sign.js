@@ -3,11 +3,11 @@ import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import Loaders from "../loaders";
 import scene from "../scene";
 
-const Sign = await Loaders.GLTFLoader.loadAsync("/assets/models/sign/scene.gltf");
+const Sign = (await Loaders.GLTFLoader.loadAsync("/assets/models/sign/scene.gltf")).scene;
 
-Sign.scene.scale.setScalar(8);
-Sign.scene.position.set(80, 7, -20);
-Sign.scene.traverse((c) => {
+Sign.scale.setScalar(8);
+Sign.position.set(80, 7, -20);
+Sign.traverse((c) => {
   c.castShadow = true;
 });
 
@@ -28,6 +28,6 @@ textMesh.scale.setScalar(0.014);
 textMesh.position.set(76.2, 9, -19.3);
 scene.add(textMesh);
 
-scene.add(Sign.scene);
+scene.add(Sign);
 
 export default Sign;
