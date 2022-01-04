@@ -1,4 +1,4 @@
-import { Vector3, Raycaster, AnimationMixer } from "three";
+import { Vector3, Raycaster, AnimationMixer, Box3, Box3Helper } from "three";
 import camera from "../camera";
 import Loaders from "../loaders";
 import scene from "../scene";
@@ -31,30 +31,29 @@ MainWalkAction.play();
 
 const tempVector = new Vector3(),
   ray = new Raycaster(),
-  rayPos = new Vector3();
+  ray2 = new Raycaster(),
+  ray3 = new Raycaster(),
+  ray4 = new Raycaster();
 let walkSpeed = 0.4;
 
 Main.customAnimation = (t) => {
-  rayPos.set(Main.position.x, 100, Main.position.z);
-  var rayDir = new Vector3(0, -1, 0);
+  ray.set(new Vector3(Main.position.x + 1.8, 100, Main.position.z + 1.8), new Vector3(0, -1, 0));
+  ray2.set(new Vector3(Main.position.x - 1.8, 100, Main.position.z + 1.8), new Vector3(0, -1, 0));
+  ray3.set(new Vector3(Main.position.x + 1.8, 100, Main.position.z - 1.8), new Vector3(0, -1, 0));
+  ray4.set(new Vector3(Main.position.x - 1.8, 100, Main.position.z - 1.8), new Vector3(0, -1, 0));
 
-  ray.set(rayPos, rayDir);
-  models.forEach((model) => {
-    let intersect = ray.intersectObject(model);
-    if (Object.keys(intersect).length > 0) {
-      if (model.climbable) {
-        const y = intersect[0].point.y;
-        Main.position.setY(y);
-      } else {
-        walkSpeed = 0;
-        const vec = intersect[0].face.normal;
-        if (Math.abs(vec.x) > Math.abs(vec.z)) Main.position.x += vec.x;
-        else Main.position.z += vec.z;
-      }
-    } else {
-      walkSpeed = 0.4;
-    }
-  });
+  let intersect = ray.intersectObjects(models);
+  if (intersect.length == 0) intersect = ray2.intersectObjects(models);
+  if (intersect.length == 0) intersect = ray3.intersectObjects(models);
+  if (intersect.length == 0) intersect = ray4.intersectObjects(models);
+  if (intersect.length > 0) {
+    walkSpeed = 0;
+    const vec = intersect[0].face.normal;
+    if (Math.abs(vec.x) > Math.abs(vec.z)) Main.position.x += vec.x * 0.1;
+    else Main.position.z += vec.z * 0.1;
+  } else {
+    walkSpeed = 0.4;
+  }
 
   if (Main.walkForward) {
     Main.translateZ(walkSpeed);

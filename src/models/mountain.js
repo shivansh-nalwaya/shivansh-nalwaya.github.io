@@ -4,7 +4,6 @@ import scene from "../scene";
 
 const Mountain = (await Loaders.GLTFLoader.loadAsync("/assets/models/mnt.gltf")).scene;
 
-Mountain.scale.setScalar(1);
 Mountain.position.set(145, 0, -70);
 Mountain.traverse((c) => {
   c.castShadow = true;
