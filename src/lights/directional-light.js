@@ -13,10 +13,10 @@ Light.shadow.camera.near = 0.1;
 Light.shadow.camera.far = 500.0;
 Light.shadow.camera.near = 0.5;
 Light.shadow.camera.far = 500.0;
-Light.shadow.camera.left = 100;
-Light.shadow.camera.right = -100;
-Light.shadow.camera.top = 100;
-Light.shadow.camera.bottom = -100;
+Light.shadow.camera.left = 250;
+Light.shadow.camera.right = -250;
+Light.shadow.camera.top = 250;
+Light.shadow.camera.bottom = -250;
 
 scene.add(Light);
 

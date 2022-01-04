@@ -3,6 +3,7 @@ import camera from "../camera";
 import Loaders from "../loaders";
 import scene from "../scene";
 import Models from "../models";
+import Ground from "../shapes/ground";
 
 const models = Object.values(Models());
 
@@ -53,6 +54,13 @@ Main.customAnimation = (t) => {
     else Main.position.z += vec.z * 0.1;
   } else {
     walkSpeed = 0.4;
+  }
+
+  let intersect2 = ray.intersectObject(Ground);
+  if (intersect2.length > 0) {
+    const y = intersect2[0].point.y < -2 ? -2 : intersect2[0].point.y;
+    if (y == -2) walkSpeed = 0.2;
+    Main.position.setY(y);
   }
 
   if (Main.walkForward) {
