@@ -1,13 +1,13 @@
 import Mountain from "./mountain";
-import Mountain2 from "./mountain-2";
-import Mountain3 from "./mountain-3";
-import PLGarden from "./pl-garden";
+import SkillPatk from "./skill-park";
+import ProjectExhibition from "./project-exhibition";
+import CertificateGallary from "./certificate-gallary";
 
 const Models = () => ({
-  Mountain,
-  Mountain2,
-  Mountain3,
-  ...PLGarden,
+  ...CertificateGallary,
+  ...Mountain,
+  ...SkillPatk,
+  ...ProjectExhibition,
 });
 
 export default Models;
