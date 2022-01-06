@@ -36,7 +36,7 @@ const tempVector = new Vector3(),
   ray2 = new Raycaster(),
   ray3 = new Raycaster(),
   ray4 = new Raycaster();
-let walkSpeed = 0.4;
+let walkSpeed = 0.2;
 
 // camera.position.copy(Main.position);
 // camera.position.x -= Math.sin(Main.rotation.y) * 20;
@@ -66,9 +66,9 @@ Main.customAnimation = (t) => {
       // if (Math.abs(vec.x) > Math.abs(vec.z)) Main.position.x += vec.x * 0.1;
       // else Main.position.z += vec.z * 0.1;
       if (stuck) {
-        walkSpeed = 0.4;
+        walkSpeed = 0.2;
       } else {
-        walkSpeed = 0.4;
+        walkSpeed = 0.2;
       }
       stuck = true;
     }
@@ -85,12 +85,12 @@ Main.customAnimation = (t) => {
     Main.translateZ(walkSpeed);
   }
   if (Main.turnLeft) {
-    Main.rotation.y += 0.05;
+    Main.rotation.y += 0.03;
     if (!Main.walkBackward && !Main.walkForward) Main.translateZ(walkSpeed);
     stuck = false;
   }
   if (Main.turnRight) {
-    Main.rotation.y -= 0.05;
+    Main.rotation.y -= 0.03;
     if (!Main.walkBackward && !Main.walkForward) Main.translateZ(walkSpeed);
     stuck = false;
   }

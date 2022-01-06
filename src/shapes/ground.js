@@ -3,6 +3,7 @@ import scene from "../scene";
 import Loaders from "../loaders";
 
 const Ground = (await Loaders.GLTFLoader.loadAsync("/assets/models/untitled.gltf")).scene;
+Ground.scale.setScalar(80);
 Ground.traverse((c) => {
   c.castShadow = true;
   c.receiveShadow = true;
