@@ -1,5 +1,5 @@
 {
-  "name": "portfolio",
+  "name": "enable-3d",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,8 @@
     "vite": "^2.7.2"
   },
   "dependencies": {
-    "three": "^0.135.0"
+    "enable3d": "^0.24.1",
+    "matter-js": "^0.18.0",
+    "three": "^0.136.0"
   }
 }
