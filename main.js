@@ -13,23 +13,63 @@ class MainScene extends Scene3D {
   }
 
   async preload() {
+    const gallary = this.load.preload("gallary", "/assets/gallary.gltf");
     const character = this.load.preload("character", "/assets/character.fbx");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
 
-    await Promise.all([character, idle, walk]);
+    await Promise.all([character, idle, walk, gallary]);
   }
 
   async create() {
-    const { ground } = await this.warpSpeed("-grid");
+    const { lights } = await this.warpSpeed("-ground", "-grid");
 
-    ground.material.color = new THREE.Color(0x00ff00);
+    lights.directionalLight.shadow.bias = -0.001;
+    lights.directionalLight.shadow.mapSize.width = 2048;
+    lights.directionalLight.shadow.mapSize.height = 2048;
+    lights.directionalLight.shadow.camera.near = 0.1;
+    lights.directionalLight.shadow.camera.far = 500.0;
+    lights.directionalLight.shadow.camera.near = 0.5;
+    lights.directionalLight.shadow.camera.far = 500.0;
+    lights.directionalLight.shadow.camera.left = 250;
+    lights.directionalLight.shadow.camera.right = -250;
+    lights.directionalLight.shadow.camera.top = 250;
+    lights.directionalLight.shadow.camera.bottom = -250;
+
+    this.ground = this.add.plane({ height: 200, width: 200 }, { lambert: { color: 0x00ff00 } });
+    this.ground.rotation.x = Math.PI / 2;
+    this.physics.add.existing(this.ground, {
+      shape: "plane",
+      mass: 0,
+      collisionFlags: 1,
+    });
 
     this.physics.debug.enable();
 
     this.camera.position.set(0, 3, 13);
 
-    this.box = this.physics.add.box({ height: 3, width: 3, depth: 3, mass: 1, collisionFlags: 2 }, { lambert: { color: 0xffff00 } });
+    const gallary = (await this.load.gltf("gallary")).scene;
+    gallary.scale.setScalar(10);
+    this.gallary = new ExtendedObject3D();
+    this.gallary.name = "gallary";
+    this.gallary.add(gallary);
+    this.gallary.rotation.set(0, 0, 0);
+    this.gallary.position.set(0, -0.1, 20);
+    this.gallary.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = child.receiveShadow = true;
+        child.material.color = new THREE.Color(0xffff00);
+      }
+    });
+    this.add.existing(this.gallary);
+    this.physics.add.existing(this.gallary, {
+      shape: "concave",
+      mass: 1,
+      collisionFlags: 2,
+    });
+
+    this.floor = this.add.cylinder({ height: 0.1, radiusBottom: 9.99, radiusTop: 9.99, radiusSegments: 10 }, { lambert: 0x00ff00 });
+    this.floor.position.set(0, 0, 20);
 
     const man = await this.load.fbx("character");
 
@@ -61,7 +101,6 @@ class MainScene extends Scene3D {
     this.add.existing(this.man);
     this.physics.add.existing(this.man, {
       shape: "box",
-      // radius: 0.25,
       width: 0.5,
       offset: { y: -0.25 },
     });
