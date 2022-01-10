@@ -4,7 +4,7 @@ let tempVector = new THREE.Vector3();
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
-    this.speed = 8;
+    this.speed = 3;
   }
 
   async init() {
@@ -13,13 +13,13 @@ class MainScene extends Scene3D {
   }
 
   async preload() {
+    const mnt = this.load.preload("mnt", "/assets/mnt.gltf");
     const untitled = this.load.preload("untitled", "/assets/untitled.gltf");
-    const gallary = this.load.preload("gallary", "/assets/gallary.gltf");
     const character = this.load.preload("character", "/assets/character.fbx");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
 
-    await Promise.all([character, idle, walk, gallary, untitled]);
+    await Promise.all([character, idle, walk, untitled, mnt]);
   }
 
   async create() {
@@ -37,9 +37,9 @@ class MainScene extends Scene3D {
     lights.directionalLight.shadow.camera.top = 250;
     lights.directionalLight.shadow.camera.bottom = -250;
 
-    this.physics.debug.enable();
+    // this.physics.debug.enable();
 
-    this.camera.position.set(0, 3, 13);
+    this.camera.position.set(10, 10, 10);
 
     const untitled = (await this.load.gltf("untitled")).scene;
     untitled.scale.setScalar(10);
@@ -55,37 +55,31 @@ class MainScene extends Scene3D {
     });
     this.add.existing(this.untitled);
     this.physics.add.existing(this.untitled, {
-      shape: "box",
-      width: 100,
-      depth: 100,
-      height: 0,
-      mass: 0,
-      collisionFlags: 1,
-    });
-
-    const gallary = (await this.load.gltf("gallary")).scene;
-    gallary.scale.setScalar(10);
-    this.gallary = new ExtendedObject3D();
-    this.gallary.name = "gallary";
-    this.gallary.add(gallary);
-    this.gallary.rotation.set(0, Math.PI / 2, 0);
-    this.gallary.position.set(0, -0.1, 32);
-    this.gallary.traverse((child) => {
-      if (child.isMesh) {
-        child.castShadow = child.receiveShadow = true;
-        child.material.color = new THREE.Color(0xbbbb00);
-      }
-    });
-    this.add.existing(this.gallary);
-    this.physics.add.existing(this.gallary, {
       shape: "concave",
       mass: 1,
       collisionFlags: 2,
     });
 
-    this.floor = this.add.cylinder({ height: 0.1, radiusBottom: 9.99, radiusTop: 9.99, radiusSegments: 10 }, { lambert: 0x00ff00 });
-    this.floor.position.set(0, 0, 32);
-    this.floor.rotation.set(0, Math.PI / 2, 0);
+    const mnt = (await this.load.gltf("mnt")).scene;
+    mnt.scale.setScalar(0.12);
+    mnt.position.set(4, 0, 0);
+    const mnt2 = mnt.clone();
+    mnt2.position.set(18, 0, 10);
+    const mnt3 = mnt.clone();
+    mnt3.position.set(25, 0, -6);
+    this.mnt = new ExtendedObject3D();
+    this.mnt.name = "mnt";
+    this.mnt.add(mnt);
+    this.mnt.add(mnt2, mnt3);
+    this.mnt.position.set(13, 0, -14);
+    this.mnt.traverse((child) => (child.castShadow = child.receiveShadow = child.isMesh));
+    this.add.existing(this.mnt);
+    this.physics.add.existing(this.mnt, {
+      shape: "concave",
+      mass: 1,
+      collisionFlags: 2,
+    });
+    this.mnt.body.setFriction(50);
 
     const man = await this.load.fbx("character");
 
@@ -107,7 +101,7 @@ class MainScene extends Scene3D {
     this.man.name = "character";
     this.man.add(man);
     this.man.rotation.set(0, 0, 0);
-    this.man.position.set(0, 0, 0);
+    this.man.position.set(0, 10, 0);
     this.man.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
@@ -116,11 +110,11 @@ class MainScene extends Scene3D {
 
     this.add.existing(this.man);
     this.physics.add.existing(this.man, {
-      shape: "box",
-      width: 0.5,
+      shape: "sphere",
+      radius: 0.5,
       offset: { y: -0.25 },
     });
-    this.man.body.setFriction(10);
+    this.man.body.setFriction(5);
     this.man.body.setAngularFactor(0, 0, 0);
     this.man.body.setCcdMotionThreshold(1e-7);
     this.man.body.setCcdSweptSphereRadius(0.25);
