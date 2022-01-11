@@ -1,5 +1,4 @@
 import { Project, Scene3D, PhysicsLoader, ExtendedObject3D, THREE } from "enable3d";
-
 let tempVector = new THREE.Vector3();
 class MainScene extends Scene3D {
   constructor() {
@@ -16,10 +15,11 @@ class MainScene extends Scene3D {
     const mnt = this.load.preload("mnt", "/assets/mnt.gltf");
     const untitled = this.load.preload("untitled", "/assets/untitled.gltf");
     const character = this.load.preload("character", "/assets/character.fbx");
+    const python = this.load.preload("python", "/assets/python.gltf");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
 
-    await Promise.all([character, idle, walk, untitled, mnt]);
+    await Promise.all([character, idle, walk, untitled, mnt, python]);
   }
 
   async create() {
@@ -80,6 +80,16 @@ class MainScene extends Scene3D {
       collisionFlags: 2,
     });
     this.mnt.body.setFriction(50);
+
+    const python = (await this.load.gltf("python")).scene;
+    python.scale.setScalar(0.03);
+    python.position.set(0, 2, 0);
+    python.rotation.set(Math.PI / 2, 0, 5.4);
+    this.python = new ExtendedObject3D();
+    this.python.name = "python";
+    this.python.add(python);
+    this.python.position.set(-32, 0, -30);
+    this.add.existing(this.python);
 
     const man = await this.load.fbx("character");
 
