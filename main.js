@@ -60,37 +60,6 @@ class MainScene extends Scene3D {
       collisionFlags: 2,
     });
 
-    const mnt = (await this.load.gltf("mnt")).scene;
-    mnt.scale.setScalar(0.12);
-    mnt.position.set(4, 0, 0);
-    const mnt2 = mnt.clone();
-    mnt2.position.set(18, 0, 10);
-    const mnt3 = mnt.clone();
-    mnt3.position.set(25, 0, -6);
-    this.mnt = new ExtendedObject3D();
-    this.mnt.name = "mnt";
-    this.mnt.add(mnt);
-    this.mnt.add(mnt2, mnt3);
-    this.mnt.position.set(13, 0, -14);
-    this.mnt.traverse((child) => (child.castShadow = child.receiveShadow = child.isMesh));
-    this.add.existing(this.mnt);
-    this.physics.add.existing(this.mnt, {
-      shape: "concave",
-      mass: 1,
-      collisionFlags: 2,
-    });
-    this.mnt.body.setFriction(50);
-
-    const python = (await this.load.gltf("python")).scene;
-    python.scale.setScalar(0.03);
-    python.position.set(0, 2, 0);
-    python.rotation.set(Math.PI / 2, 0, 5.4);
-    this.python = new ExtendedObject3D();
-    this.python.name = "python";
-    this.python.add(python);
-    this.python.position.set(-32, 0, -30);
-    this.add.existing(this.python);
-
     const man = await this.load.fbx("character");
 
     const idle = await this.load.fbx("idle");
@@ -111,7 +80,7 @@ class MainScene extends Scene3D {
     this.man.name = "character";
     this.man.add(man);
     this.man.rotation.set(0, 0, 0);
-    this.man.position.set(0, 10, 0);
+    this.man.position.set(0, 10, 5);
     this.man.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
