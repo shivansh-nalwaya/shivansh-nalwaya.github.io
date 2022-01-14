@@ -13,7 +13,7 @@ class MainScene extends Scene3D {
 
   async preload() {
     const mnt = this.load.preload("mnt", "/assets/mnt.gltf");
-    const untitled = this.load.preload("untitled", "/assets/untitled.gltf");
+    const untitled = this.load.preload("untitled", "/assets/scene.gltf");
     const character = this.load.preload("character", "/assets/character.fbx");
     const python = this.load.preload("python", "/assets/python.gltf");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
