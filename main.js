@@ -1,16 +1,13 @@
-import { GUI } from "dat.gui";
 import { Project, Scene3D, PhysicsLoader, ExtendedObject3D, THREE } from "enable3d";
 import { TextureLoader } from "three";
-let tempVector = new THREE.Vector3();
 
+let tempVector = new THREE.Vector3();
 let activeAction = "idle",
-  previousAction,
-  timer,
-  flag = false;
+  previousAction;
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
-    this.speed = 5;
+    this.speed = 10;
   }
 
   async init() {
@@ -120,21 +117,8 @@ class MainScene extends Scene3D {
     this.man.body.setCcdMotionThreshold(1e-7);
     this.man.body.setCcdSweptSphereRadius(0.25);
 
-    const textures = await Promise.all([this.load.texture("/assets/Water_1_M_Normal.jpeg"), this.load.texture("/assets/Water_2_M_Normal.jpeg")]);
-
-    textures[0].needsUpdate = true;
-    textures[1].needsUpdate = true;
-
-    this.misc.water({
-      x: -53,
-      z: 0,
-      y: -0.2,
-      height: 12,
-      normalMap0: textures[0],
-      normalMap1: textures[1],
-      flowX: 0,
-      flowY: 0,
-    });
+    this.water = this.add.plane({ x: -53, z: 0, y: -0.1, height: 12, width: 18 }, { lambert: { color: 0x24a8af, opacity: 0.8, transparent: true } });
+    this.water.rotateX(Math.PI / 2);
 
     this.keys = {
       up: { isDown: false },
@@ -168,7 +152,6 @@ class MainScene extends Scene3D {
     }
     previousAction = activeAction;
     activeAction = name;
-    flag = true;
     this.actions[previousAction].fadeOut(duration);
     this.actions[activeAction].reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration);
   }
