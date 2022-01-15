@@ -3,7 +3,7 @@ let tempVector = new THREE.Vector3();
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
-    this.speed = 3;
+    this.speed = 10;
   }
 
   async init() {
