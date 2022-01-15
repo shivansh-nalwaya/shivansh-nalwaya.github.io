@@ -2,10 +2,15 @@ import { GUI } from "dat.gui";
 import { Project, Scene3D, PhysicsLoader, ExtendedObject3D, THREE } from "enable3d";
 import { TextureLoader } from "three";
 let tempVector = new THREE.Vector3();
+
+let activeAction = "idle",
+  previousAction,
+  timer,
+  flag = false;
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
-    this.speed = 10;
+    this.speed = 5;
   }
 
   async init() {
@@ -20,8 +25,9 @@ class MainScene extends Scene3D {
     const python = this.load.preload("python", "/assets/python.gltf");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
+    const swim = this.load.preload("swim", "/assets/swim.fbx");
 
-    await Promise.all([character, idle, walk, untitled, mnt, python]);
+    await Promise.all([character, idle, walk, swim, untitled, mnt, python]);
   }
 
   async create() {
@@ -70,15 +76,23 @@ class MainScene extends Scene3D {
 
     const man = await this.load.fbx("character");
 
+    const manAnims = new THREE.AnimationMixer(man);
+    this.animationMixers.add(manAnims);
+
     const idle = await this.load.fbx("idle");
-    const manIdle = new THREE.AnimationMixer(man);
-    this.manIdleAction = manIdle.clipAction(idle.animations[0]);
-    this.animationMixers.add(manIdle);
+    this.manIdleAction = manAnims.clipAction(idle.animations[0]);
 
     const walk = await this.load.fbx("walk");
-    const manWalk = new THREE.AnimationMixer(man);
-    this.manWalkAction = manWalk.clipAction(walk.animations[0]);
-    this.animationMixers.add(manWalk);
+    this.manWalkAction = manAnims.clipAction(walk.animations[0]);
+
+    const swim = await this.load.fbx("swim");
+    this.manSwimAction = manAnims.clipAction(swim.animations[0]);
+
+    this.actions = {
+      walk: this.manWalkAction,
+      idle: this.manIdleAction,
+      swim: this.manSwimAction,
+    };
 
     man.scale.setScalar(0.01);
     man.position.set(0, -0.25, 0);
@@ -87,7 +101,7 @@ class MainScene extends Scene3D {
     this.man = new ExtendedObject3D();
     this.man.name = "character";
     this.man.add(man);
-    this.man.rotation.set(0, 0, 0);
+    this.man.rotation.set(0, Math.PI / 2, 0);
     this.man.position.set(0, 10, 5);
     this.man.traverse((child) => {
       if (child.isMesh) {
@@ -106,21 +120,21 @@ class MainScene extends Scene3D {
     this.man.body.setCcdMotionThreshold(1e-7);
     this.man.body.setCcdSweptSphereRadius(0.25);
 
-    // const textures = await Promise.all([this.load.texture("/assets/Water_1_M_Normal.jpeg"), this.load.texture("/assets/Water_2_M_Normal.jpeg")]);
+    const textures = await Promise.all([this.load.texture("/assets/Water_1_M_Normal.jpeg"), this.load.texture("/assets/Water_2_M_Normal.jpeg")]);
 
-    // textures[0].needsUpdate = true;
-    // textures[1].needsUpdate = true;
+    textures[0].needsUpdate = true;
+    textures[1].needsUpdate = true;
 
-    // this.misc.water({
-    //   x: -53,
-    //   z: 0,
-    //   y: -0.2,
-    //   height: 12,
-    //   normalMap0: textures[0],
-    //   normalMap1: textures[1],
-    //   flowX: 0,
-    //   flowY: 0,
-    // });
+    this.misc.water({
+      x: -53,
+      z: 0,
+      y: -0.2,
+      height: 12,
+      normalMap0: textures[0],
+      normalMap1: textures[1],
+      flowX: 0,
+      flowY: 0,
+    });
 
     this.keys = {
       up: { isDown: false },
@@ -147,6 +161,18 @@ class MainScene extends Scene3D {
     document.addEventListener("keyup", (e) => press(e, false));
   }
 
+  fadeToAction(name, duration) {
+    if (name == activeAction) {
+      this.actions[activeAction].play();
+      return;
+    }
+    previousAction = activeAction;
+    activeAction = name;
+    flag = true;
+    this.actions[previousAction].fadeOut(duration);
+    this.actions[activeAction].reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration);
+  }
+
   update() {
     if (this.keys.left.isDown) this.man.body.setAngularVelocityY(this.speed);
     else if (this.keys.right.isDown) this.man.body.setAngularVelocityY(-this.speed);
@@ -155,12 +181,15 @@ class MainScene extends Scene3D {
       this.man.body.setVelocityZ(Math.cos(this.man.body.rotation.y) * -this.speed);
       this.man.body.setVelocityX(Math.sin(this.man.body.rotation.y) * -this.speed);
     }
-    if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
-      this.manIdleAction.stop();
-      this.manWalkAction.play();
+    if ((this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) && this.man.position.y > -1) {
+      this.fadeToAction("walk", 0.5);
+      this.man.children[0].position.y = 0;
+    } else if (this.man.position.y <= -1) {
+      this.fadeToAction("swim", 0.5);
+      this.man.children[0].position.y = 0.2;
     } else {
-      this.manWalkAction.stop();
-      this.manIdleAction.play();
+      this.fadeToAction("idle", 0.5);
+      this.man.children[0].position.y = 0;
     }
     this.camera.position.copy(this.man.body.position);
     this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5;
