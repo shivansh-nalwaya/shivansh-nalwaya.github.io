@@ -1,4 +1,6 @@
+import { GUI } from "dat.gui";
 import { Project, Scene3D, PhysicsLoader, ExtendedObject3D, THREE } from "enable3d";
+import { TextureLoader } from "three";
 let tempVector = new THREE.Vector3();
 class MainScene extends Scene3D {
   constructor() {
@@ -48,9 +50,15 @@ class MainScene extends Scene3D {
     this.untitled.add(untitled);
     this.untitled.rotation.set(0, 0, 0);
     this.untitled.position.set(0, 0, 0);
+    const loader = new TextureLoader();
     this.untitled.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true;
+        if (child.name == "Sand") {
+          console.log(child);
+          child.material.map = loader.load("/assets/sand-map.png");
+          child.material.normalMap = loader.load("/assets/sand-normal.png");
+        }
       }
     });
     this.add.existing(this.untitled);
