@@ -7,7 +7,7 @@ let activeAction = "idle",
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
-    this.speed = 3;
+    this.speed = 4;
     this.turnSpeed = 3;
   }
 
@@ -142,12 +142,12 @@ class MainScene extends Scene3D {
         case 38: // up
           this.keys.up.isDown = isDown;
           break;
-        case 39: // left
+        case 39: // right
           this.keys.right.isDown = isDown;
           break;
       }
       if (e.shiftKey) {
-        this.speed = 10;
+        this.speed = 8;
         this.running = true;
       } else {
         this.speed = 4;
