@@ -122,7 +122,7 @@ class MainScene extends Scene3D {
     this.man.body.setCcdMotionThreshold(1e-7);
     this.man.body.setCcdSweptSphereRadius(0.25);
 
-    this.water = this.add.plane({ x: -53, z: 0, y: -0.1, height: 12, width: 18 }, { lambert: { color: 0x24a8af, opacity: 0.8, transparent: true } });
+    this.water = this.add.plane({ x: -54, z: 0, y: -0.1, height: 12, width: 19 }, { lambert: { color: 0x24a8af, opacity: 0.8, transparent: true } });
     this.water.rotateX(Math.PI / 2);
 
     this.keys = {
@@ -130,6 +130,7 @@ class MainScene extends Scene3D {
       left: { isDown: false },
       right: { isDown: false },
       down: { isDown: false },
+      shift: { isDown: false },
     };
 
     const press = (e, isDown) => {
