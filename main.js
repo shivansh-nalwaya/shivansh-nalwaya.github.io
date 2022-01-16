@@ -17,8 +17,7 @@ class MainScene extends Scene3D {
   }
 
   async preload() {
-    const mnt = this.load.preload("mnt", "/assets/mnt.gltf");
-    const untitled = this.load.preload("untitled", "/assets/scene.gltf");
+    const map = this.load.preload("map", "/assets/scene.gltf");
     const character = this.load.preload("character", "/assets/character.fbx");
     const python = this.load.preload("python", "/assets/python.gltf");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
@@ -26,7 +25,7 @@ class MainScene extends Scene3D {
     const run = this.load.preload("run", "/assets/run.fbx");
     const swim = this.load.preload("swim", "/assets/swim.fbx");
 
-    await Promise.all([character, idle, walk, run, swim, untitled, mnt, python]);
+    await Promise.all([character, idle, walk, run, swim, map, python]);
   }
 
   async create() {
@@ -48,15 +47,15 @@ class MainScene extends Scene3D {
 
     this.camera.position.set(10, 10, 10);
 
-    const untitled = (await this.load.gltf("untitled")).scene;
-    untitled.scale.setScalar(10);
-    this.untitled = new ExtendedObject3D();
-    this.untitled.name = "untitled";
-    this.untitled.add(untitled);
-    this.untitled.rotation.set(0, 0, 0);
-    this.untitled.position.set(0, 0, 0);
+    const map = (await this.load.gltf("map")).scene;
+    map.scale.setScalar(10);
+    this.map = new ExtendedObject3D();
+    this.map.name = "map";
+    this.map.add(map);
+    this.map.rotation.set(0, 0, 0);
+    this.map.position.set(0, 0, 0);
     const loader = new TextureLoader();
-    this.untitled.traverse((child) => {
+    this.map.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true;
         if (child.name == "Sand") {
@@ -66,8 +65,8 @@ class MainScene extends Scene3D {
         }
       }
     });
-    this.add.existing(this.untitled);
-    this.physics.add.existing(this.untitled, {
+    this.add.existing(this.map);
+    this.physics.add.existing(this.map, {
       shape: "concave",
       mass: 1,
       collisionFlags: 2,
@@ -191,7 +190,7 @@ class MainScene extends Scene3D {
     this.camera.position.copy(this.man.body.position);
     this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5;
     this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5;
-    this.camera.position.y += 1.5;
+    this.camera.position.y += 3;
     tempVector.copy(this.man.body.position).y += 1.5;
     this.camera.lookAt(tempVector);
   }
