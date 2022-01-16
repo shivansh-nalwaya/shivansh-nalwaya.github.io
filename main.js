@@ -7,7 +7,8 @@ let activeAction = "idle",
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
-    this.speed = 10;
+    this.speed = 3;
+    this.turnSpeed = 3;
   }
 
   async init() {
@@ -22,9 +23,10 @@ class MainScene extends Scene3D {
     const python = this.load.preload("python", "/assets/python.gltf");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
+    const run = this.load.preload("run", "/assets/run.fbx");
     const swim = this.load.preload("swim", "/assets/swim.fbx");
 
-    await Promise.all([character, idle, walk, swim, untitled, mnt, python]);
+    await Promise.all([character, idle, walk, run, swim, untitled, mnt, python]);
   }
 
   async create() {
@@ -85,10 +87,14 @@ class MainScene extends Scene3D {
     const swim = await this.load.fbx("swim");
     this.manSwimAction = manAnims.clipAction(swim.animations[0]);
 
+    const run = await this.load.fbx("run");
+    this.manRunAction = manAnims.clipAction(run.animations[0]);
+
     this.actions = {
       walk: this.manWalkAction,
       idle: this.manIdleAction,
       swim: this.manSwimAction,
+      run: this.manRunAction,
     };
 
     man.scale.setScalar(0.01);
@@ -140,6 +146,13 @@ class MainScene extends Scene3D {
           this.keys.right.isDown = isDown;
           break;
       }
+      if (e.shiftKey) {
+        this.speed = 10;
+        this.running = true;
+      } else {
+        this.speed = 4;
+        this.running = false;
+      }
     };
     document.addEventListener("keydown", (e) => press(e, true));
     document.addEventListener("keyup", (e) => press(e, false));
@@ -157,18 +170,19 @@ class MainScene extends Scene3D {
   }
 
   update() {
-    if (this.keys.left.isDown) this.man.body.setAngularVelocityY(this.speed);
-    else if (this.keys.right.isDown) this.man.body.setAngularVelocityY(-this.speed);
+    if (this.keys.left.isDown) this.man.body.setAngularVelocityY(this.turnSpeed);
+    else if (this.keys.right.isDown) this.man.body.setAngularVelocityY(-this.turnSpeed);
     else this.man.body.setAngularVelocityY(0);
     if (this.keys.up.isDown) {
       this.man.body.setVelocityZ(Math.cos(this.man.body.rotation.y) * -this.speed);
       this.man.body.setVelocityX(Math.sin(this.man.body.rotation.y) * -this.speed);
     }
     if ((this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) && this.man.position.y > -1) {
-      this.fadeToAction("walk", 0.5);
+      if (this.running) this.fadeToAction("run", 0.5);
+      else this.fadeToAction("walk", 0.5);
       this.man.children[0].position.y = 0;
     } else if (this.man.position.y <= -1) {
-      this.fadeToAction("swim", 0.5);
+      this.fadeToAction("swim", 0.1);
       this.man.children[0].position.y = 0.2;
     } else {
       this.fadeToAction("idle", 0.5);
