@@ -7,7 +7,7 @@ let activeAction = "idle",
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
-    this.speed = 4;
+    this.speed = 10;
     this.turnSpeed = 3;
   }
 
@@ -103,7 +103,7 @@ class MainScene extends Scene3D {
     this.man = new ExtendedObject3D();
     this.man.name = "character";
     this.man.add(man);
-    this.man.rotation.set(0, Math.PI / 2, 0);
+    // this.man.rotation.set(0, -Math.PI / 2.5, 0);
     this.man.position.set(0, 10, 5);
     this.man.traverse((child) => {
       if (child.isMesh) {
@@ -150,7 +150,7 @@ class MainScene extends Scene3D {
         this.speed = 8;
         this.running = true;
       } else {
-        this.speed = 4;
+        this.speed = 10;
         this.running = false;
       }
     };
@@ -191,7 +191,7 @@ class MainScene extends Scene3D {
     this.camera.position.copy(this.man.body.position);
     this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5;
     this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5;
-    this.camera.position.y += 3;
+    this.camera.position.y += 1.5;
     tempVector.copy(this.man.body.position).y += 1.5;
     this.camera.lookAt(tempVector);
   }
