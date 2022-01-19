@@ -7,7 +7,7 @@ let activeAction = "idle",
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
-    this.speed = 10;
+    this.speed = 3;
     this.turnSpeed = 3;
   }
 
@@ -150,7 +150,7 @@ class MainScene extends Scene3D {
         this.speed = 8;
         this.running = true;
       } else {
-        this.speed = 10;
+        this.speed = 3;
         this.running = false;
       }
     };
