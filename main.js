@@ -57,9 +57,8 @@ class MainScene extends Scene3D {
     const loader = new TextureLoader();
     this.map.traverse((child) => {
       if (child.isMesh) {
-        child.castShadow = true;
+        child.castShadow = child.receiveShadow = true;
         if (child.name == "Sand") {
-          // console.log(child);
           child.material.map = loader.load("/assets/sand-map.png");
           child.material.normalMap = loader.load("/assets/sand-normal.png");
         }
@@ -97,13 +96,11 @@ class MainScene extends Scene3D {
     };
 
     man.scale.setScalar(0.01);
-    man.position.set(0, -0.25, 0);
     man.rotateY(Math.PI);
 
     this.man = new ExtendedObject3D();
     this.man.name = "character";
     this.man.add(man);
-    // this.man.rotation.set(0, -Math.PI / 2.5, 0);
     this.man.position.set(0, 10, 5);
     this.man.traverse((child) => {
       if (child.isMesh) {
@@ -115,7 +112,7 @@ class MainScene extends Scene3D {
     this.physics.add.existing(this.man, {
       shape: "sphere",
       radius: 0.5,
-      offset: { y: -0.25 },
+      offset: { y: -0.5 },
     });
     this.man.body.setFriction(5);
     this.man.body.setAngularFactor(0, 0, 0);
@@ -183,7 +180,7 @@ class MainScene extends Scene3D {
       this.man.children[0].position.y = 0;
     } else if (this.man.position.y <= -1) {
       this.fadeToAction("swim", 0.1);
-      this.man.children[0].position.y = 0.2;
+      this.man.children[0].position.y = 0.5;
     } else {
       this.fadeToAction("idle", 0.5);
       this.man.children[0].position.y = 0;
