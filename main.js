@@ -1,5 +1,9 @@
 import { Project, Scene3D, PhysicsLoader, ExtendedObject3D, THREE } from "enable3d";
 import { TextureLoader } from "three";
+import Stats from "three/examples/jsm/libs/stats.module";
+
+const stats = Stats();
+document.body.appendChild(stats.dom);
 
 let tempVector = new THREE.Vector3();
 let activeAction = "idle",
@@ -144,7 +148,7 @@ class MainScene extends Scene3D {
           break;
       }
       if (e.shiftKey) {
-        this.speed = 8;
+        this.speed = 20;
         this.running = true;
       } else {
         this.speed = 3;
@@ -191,9 +195,13 @@ class MainScene extends Scene3D {
     this.camera.position.y += 1.5;
     tempVector.copy(this.man.body.position).y += 1.5;
     this.camera.lookAt(tempVector);
+
+    stats.update();
   }
 }
 
 const config = { scenes: [MainScene], antialias: true };
 
 PhysicsLoader("/lib", () => new Project(config));
+
+9146539656347357;
