@@ -1161,7 +1161,7 @@
         },
         {
             "extras" : {
-                "viewable" : 1
+                "emissive" : 1
             },
             "mesh" : 68,
             "name" : "Project 1",
@@ -1203,6 +1203,9 @@
             ]
         },
         {
+            "extras" : {
+                "emissive" : 1
+            },
             "mesh" : 70,
             "name" : "Project 4",
             "rotation" : [
@@ -1223,6 +1226,9 @@
             ]
         },
         {
+            "extras" : {
+                "emissive" : 1
+            },
             "mesh" : 71,
             "name" : "Project 5",
             "rotation" : [
@@ -1244,7 +1250,7 @@
         },
         {
             "extras" : {
-                "viewable" : 0
+                "emissive" : 1
             },
             "mesh" : 72,
             "name" : "Project 2",
@@ -1266,6 +1272,9 @@
             ]
         },
         {
+            "extras" : {
+                "emissive" : 1
+            },
             "mesh" : 73,
             "name" : "Project 3",
             "rotation" : [
@@ -1286,6 +1295,9 @@
             ]
         },
         {
+            "extras" : {
+                "emissive" : 1
+            },
             "mesh" : 74,
             "name" : "Project 6",
             "rotation" : [
@@ -2057,6 +2069,9 @@
             ]
         },
         {
+            "extras" : {
+                "emissive" : 1
+            },
             "mesh" : 114,
             "name" : "Mountain",
             "scale" : [
@@ -2071,6 +2086,9 @@
             ]
         },
         {
+            "extras" : {
+                "emissive" : 1
+            },
             "mesh" : 115,
             "name" : "Mountain.001",
             "scale" : [
@@ -2085,6 +2103,9 @@
             ]
         },
         {
+            "extras" : {
+                "emissive" : 1
+            },
             "mesh" : 116,
             "name" : "Mountain.002",
             "rotation" : [

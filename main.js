@@ -1,5 +1,6 @@
 import { Project, Scene3D, PhysicsLoader, ExtendedObject3D, THREE } from "enable3d";
-import { TextureLoader } from "three";
+import { Vector3 } from "three";
+import { Frustum, TextureLoader, Matrix4 } from "three";
 import Stats from "three/examples/jsm/libs/stats.module";
 
 const stats = Stats();
@@ -161,6 +162,8 @@ class MainScene extends Scene3D {
     };
     document.addEventListener("keydown", (e) => press(e, true));
     document.addEventListener("keyup", (e) => press(e, false));
+
+    this.frustum = new Frustum();
   }
 
   fadeToAction(name, duration) {
@@ -199,17 +202,27 @@ class MainScene extends Scene3D {
     this.camera.position.y += 1.5;
     tempVector.copy(this.man.body.position).y += 1.5;
     this.camera.lookAt(tempVector);
+    this.camera.updateMatrix();
+    this.camera.updateMatrixWorld();
 
+    this.frustum.setFromProjectionMatrix(new Matrix4().multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse));
+    let minToEmission = null,
+      minDist = 21;
     this.map.traverse((child) => {
       if (child.isMesh) {
-        var point1 = this.camera.matrixWorld.getPosition().clone();
+        var point1 = this.man.matrixWorld.getPosition().clone();
         var point2 = child.matrixWorld.getPosition().clone();
         var distance = point1.distanceTo(point2);
-        if (child.parent.userData.viewable == 1 && distance < 10) {
-          child.material.emissive.setHex(0x777777);
-        } else child.material.emissive.setHex(0x000000);
+        if (child.parent.userData.emissive == 1 && distance < 20) {
+          if (distance < minDist) {
+            minDist = distance;
+            minToEmission = child;
+          }
+        }
+        child.material.emissive.setHex(0x000000);
       }
     });
+    if (minToEmission) minToEmission.material.emissive.setHex(0xffffaa);
 
     stats.update();
   }
