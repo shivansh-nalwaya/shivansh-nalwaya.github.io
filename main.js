@@ -62,6 +62,10 @@ class MainScene extends Scene3D {
     this.map.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
+        // if (child.parent.userData.name == "Project 1" && child.name == "Project_1_2") {
+        //   console.log(child);
+        //   child.material.map = loader.load("https://shivansh-nalwaya.github.io/assets/images/project-1.png");
+        // }
         if (child.name == "Sand") {
           child.material.map = loader.load("/assets/sand-map.png");
           child.material.normalMap = loader.load("/assets/sand-normal.png");
@@ -196,6 +200,17 @@ class MainScene extends Scene3D {
     tempVector.copy(this.man.body.position).y += 1.5;
     this.camera.lookAt(tempVector);
 
+    this.map.traverse((child) => {
+      if (child.isMesh) {
+        var point1 = this.camera.matrixWorld.getPosition().clone();
+        var point2 = child.matrixWorld.getPosition().clone();
+        var distance = point1.distanceTo(point2);
+        if (child.parent.userData.viewable == 1 && distance < 10) {
+          child.material.emissive.setHex(0x777777);
+        } else child.material.emissive.setHex(0x000000);
+      }
+    });
+
     stats.update();
   }
 }
@@ -203,5 +218,3 @@ class MainScene extends Scene3D {
 const config = { scenes: [MainScene], antialias: true };
 
 PhysicsLoader("/lib", () => new Project(config));
-
-9146539656347357;
