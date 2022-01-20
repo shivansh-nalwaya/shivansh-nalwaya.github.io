@@ -1,6 +1,6 @@
-import { Project, Scene3D, PhysicsLoader, ExtendedObject3D, THREE } from "enable3d";
-import { Vector3 } from "three";
-import { Frustum, TextureLoader, Matrix4 } from "three";
+import { ExtendedObject3D, PhysicsLoader, Project, Scene3D, THREE } from "enable3d";
+import { MeshFaceMaterial } from "three";
+import { Frustum, Matrix4, TextureLoader, Vector3 } from "three";
 import Stats from "three/examples/jsm/libs/stats.module";
 
 const stats = Stats();
@@ -63,10 +63,9 @@ class MainScene extends Scene3D {
     this.map.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
-        // if (child.parent.userData.name == "Project 1" && child.name == "Project_1_2") {
-        //   console.log(child);
-        //   child.material.map = loader.load("https://shivansh-nalwaya.github.io/assets/images/project-1.png");
-        // }
+        if (child.parent.userData.name == "Frame 1" && child.name == "Cube_1") {
+          // child.material.map = loader.load("https://shivansh-nalwaya.github.io/assets/images/python-certificate.png");
+        }
         if (child.name == "Sand") {
           child.material.map = loader.load("/assets/sand-map.png");
           child.material.normalMap = loader.load("/assets/sand-normal.png");
@@ -210,8 +209,10 @@ class MainScene extends Scene3D {
       minDist = 21;
     this.map.traverse((child) => {
       if (child.isMesh) {
-        var point1 = this.man.matrixWorld.getPosition().clone();
-        var point2 = child.matrixWorld.getPosition().clone();
+        var point1 = new Vector3(),
+          point2 = new Vector3();
+        point1.setFromMatrixPosition(this.man.matrixWorld);
+        point2.setFromMatrixPosition(child.matrixWorld);
         var distance = point1.distanceTo(point2);
         if (child.parent.userData.emissive == 1 && distance < 20) {
           if (distance < minDist) {
@@ -219,10 +220,16 @@ class MainScene extends Scene3D {
             minToEmission = child;
           }
         }
-        child.material.emissive.setHex(0x000000);
       }
     });
-    if (minToEmission) minToEmission.material.emissive.setHex(0xffffaa);
+    this.map.traverse((child) => {
+      if (child.isMesh) {
+        if (minToEmission && minToEmission.parent == child.parent) {
+          child.material.emissive.setHex(0xffffaa);
+          child.material.emissiveIntensity = minToEmission.parent.userData.emissionIntensity || 1;
+        } else child.material.emissive.setHex(0x000000);
+      }
+    });
 
     stats.update();
   }
