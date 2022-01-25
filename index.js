@@ -7,7 +7,8 @@ const { TextureLoader, Matrix4, Vector3, AnimationMixer } = THREE;
 // document.body.appendChild(stats.dom);
 
 const isMobile = window.outerWidth < 1000,
-  isTouchDevice = "ontouchstart" in window;
+  isTouchDevice = "ontouchstart" in window,
+  rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 let tempVector = new Vector3();
 let activeAction = "idle",
   previousAction;
@@ -163,7 +164,7 @@ class MainScene extends Scene3D {
     if (isTouchDevice) {
       const joystick = new JoyStick();
       const axis = joystick.add.axis({
-        styles: { right: 50, bottom: 100, size: 100 },
+        styles: { right: 2 * rem, bottom: 3 * rem, size: 100 },
       });
       axis.onMove((event) => {
         const { top, right } = event;
