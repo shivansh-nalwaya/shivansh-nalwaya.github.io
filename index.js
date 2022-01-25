@@ -1,10 +1,12 @@
-import { ExtendedObject3D, PhysicsLoader, Project, Scene3D, THREE } from "enable3d";
-import { MeshFaceMaterial } from "three";
-import { Frustum, Matrix4, TextureLoader, Vector3 } from "three";
-import Stats from "three/examples/jsm/libs/stats.module";
+// import { ExtendedObject3D, PhysicsLoader, Project, Scene3D, THREE } from "enable3d";
+// import { Frustum, Matrix4, TextureLoader, Vector3 } from "three";
+// import Stats from "three/examples/jsm/libs/stats.module";
 
-const stats = Stats();
-document.body.appendChild(stats.dom);
+const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, THREE } = ENABLE3D;
+const { TextureLoader, Frustum, Matrix4, Vector3 } = THREE;
+
+// const stats = Stats();
+// document.body.appendChild(stats.dom);
 
 let tempVector = new THREE.Vector3();
 let activeAction = "idle",
@@ -231,7 +233,7 @@ class MainScene extends Scene3D {
       }
     });
 
-    stats.update();
+    // stats.update();
   }
 }
 
