@@ -1,11 +1,13 @@
 // import Stats from "three/examples/jsm/libs/stats.module";
 
-const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, THREE } = ENABLE3D;
+const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, JoyStick, THREE } = ENABLE3D;
 const { TextureLoader, Matrix4, Vector3, AnimationMixer } = THREE;
 
 // const stats = Stats();
 // document.body.appendChild(stats.dom);
 
+const isMobile = window.outerWidth < 1000,
+  isTouchDevice = "ontouchstart" in window;
 let tempVector = new Vector3();
 let activeAction = "idle",
   previousAction;
@@ -39,8 +41,6 @@ class MainScene extends Scene3D {
     lights.directionalLight.shadow.bias = -0.001;
     lights.directionalLight.shadow.mapSize.width = 2048;
     lights.directionalLight.shadow.mapSize.height = 2048;
-    lights.directionalLight.shadow.camera.near = 0.1;
-    lights.directionalLight.shadow.camera.far = 500.0;
     lights.directionalLight.shadow.camera.near = 0.5;
     lights.directionalLight.shadow.camera.far = 500.0;
     lights.directionalLight.shadow.camera.left = 250;
@@ -161,6 +161,21 @@ class MainScene extends Scene3D {
     };
     document.addEventListener("keydown", (e) => press(e, true));
     document.addEventListener("keyup", (e) => press(e, false));
+
+    if (isTouchDevice) {
+      const joystick = new JoyStick();
+      const axis = joystick.add.axis({
+        styles: { right: 50, bottom: 100, size: 100 },
+      });
+      axis.onMove((event) => {
+        const { top, right } = event;
+        this.keys.up.isDown = top > 0;
+        this.keys.left.isDown = right < 0;
+        this.keys.right.isDown = right > 0;
+        this.speed = Math.abs(top) * 6;
+        this.turnSpeed = Math.abs(right);
+      });
+    }
   }
 
   fadeToAction(name, duration) {
@@ -194,9 +209,9 @@ class MainScene extends Scene3D {
       this.man.children[0].position.y = 0;
     }
     this.camera.position.copy(this.man.body.position);
-    this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5;
-    this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5 * (window.outerWidth < 1000 ? 2 : 1);
-    this.camera.position.y += 1.5;
+    this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5 * (isMobile ? 2 : 1);
+    this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5 * (isMobile ? 2 : 1);
+    this.camera.position.y += 1.5 * (isMobile ? 2 : 1);
     tempVector.copy(this.man.body.position).y += 1.5;
     this.camera.lookAt(tempVector);
     this.camera.updateMatrix();
