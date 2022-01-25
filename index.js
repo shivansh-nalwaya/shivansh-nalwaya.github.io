@@ -1,14 +1,12 @@
-// import { ExtendedObject3D, PhysicsLoader, Project, Scene3D, THREE } from "enable3d";
-// import { Frustum, Matrix4, TextureLoader, Vector3 } from "three";
 // import Stats from "three/examples/jsm/libs/stats.module";
 
 const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, THREE } = ENABLE3D;
-const { TextureLoader, Frustum, Matrix4, Vector3 } = THREE;
+const { TextureLoader, Matrix4, Vector3, AnimationMixer } = THREE;
 
 // const stats = Stats();
 // document.body.appendChild(stats.dom);
 
-let tempVector = new THREE.Vector3();
+let tempVector = new Vector3();
 let activeAction = "idle",
   previousAction;
 class MainScene extends Scene3D {
@@ -83,7 +81,7 @@ class MainScene extends Scene3D {
 
     const man = await this.load.fbx("character");
 
-    const manAnims = new THREE.AnimationMixer(man);
+    const manAnims = new AnimationMixer(man);
     this.animationMixers.add(manAnims);
 
     const idle = await this.load.fbx("idle");
@@ -163,8 +161,6 @@ class MainScene extends Scene3D {
     };
     document.addEventListener("keydown", (e) => press(e, true));
     document.addEventListener("keyup", (e) => press(e, false));
-
-    this.frustum = new Frustum();
   }
 
   fadeToAction(name, duration) {
@@ -199,14 +195,13 @@ class MainScene extends Scene3D {
     }
     this.camera.position.copy(this.man.body.position);
     this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5;
-    this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5;
+    this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5 * (window.outerWidth < 1000 ? 2 : 1);
     this.camera.position.y += 1.5;
     tempVector.copy(this.man.body.position).y += 1.5;
     this.camera.lookAt(tempVector);
     this.camera.updateMatrix();
     this.camera.updateMatrixWorld();
 
-    this.frustum.setFromProjectionMatrix(new Matrix4().multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse));
     let minToEmission = null,
       minDist = 21;
     this.map.traverse((child) => {
