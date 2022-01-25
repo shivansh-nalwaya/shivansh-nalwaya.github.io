@@ -50,8 +50,6 @@ class MainScene extends Scene3D {
 
     // this.physics.debug.enable();
 
-    this.camera.position.set(10, 10, 10);
-
     const map = (await this.load.gltf("map")).scene;
     map.scale.setScalar(10);
     this.map = new ExtendedObject3D();
@@ -197,6 +195,10 @@ class MainScene extends Scene3D {
       this.man.body.setVelocityZ(Math.cos(this.man.body.rotation.y) * -this.speed);
       this.man.body.setVelocityX(Math.sin(this.man.body.rotation.y) * -this.speed);
     }
+    if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
+      document.getElementById("pointer").style.bottom = 6.2 - this.man.position.z / 27 + "rem";
+      document.getElementById("pointer").style.left = 6.2 + this.man.position.x / 23 + "rem";
+    }
     if ((this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) && this.man.position.y > -1) {
       if (this.running) this.fadeToAction("run", 0.5);
       else this.fadeToAction("walk", 0.5);
@@ -214,8 +216,6 @@ class MainScene extends Scene3D {
     this.camera.position.y += 1.5 * (isMobile ? 2 : 1);
     tempVector.copy(this.man.body.position).y += 1.5;
     this.camera.lookAt(tempVector);
-    this.camera.updateMatrix();
-    this.camera.updateMatrixWorld();
 
     let minToEmission = null,
       minDist = 21;

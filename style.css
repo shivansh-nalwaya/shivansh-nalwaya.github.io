@@ -2,3 +2,20 @@ body,
 html {
   margin: 0;
 }
+
+.map {
+  width: 10rem;
+  position: fixed;
+  bottom: 3rem;
+  left: 1rem;
+}
+
+.map img {
+  width: 100%;
+}
+
+#pointer {
+  position: fixed;
+  bottom: 3rem;
+  left: 1rem;
+}
