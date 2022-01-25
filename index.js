@@ -239,7 +239,7 @@ class MainScene extends Scene3D {
       if (child.isMesh) {
         if (minToEmission && minToEmission.parent == child.parent) {
           child.material.emissive.setHex(0xffffaa);
-          child.material.emissiveIntensity = minToEmission.parent.userData.emissionIntensity || 1;
+          child.material.emissiveIntensity = minToEmission.parent.userData.emissionIntensity || 0.5;
         } else child.material.emissive.setHex(0x000000);
       }
     });
