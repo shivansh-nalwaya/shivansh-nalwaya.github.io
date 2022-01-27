@@ -6,7 +6,7 @@ html {
 .map {
   width: 10rem;
   position: fixed;
-  bottom: 3rem;
+  bottom: 2rem;
   left: 1rem;
 }
 
@@ -16,6 +16,6 @@ html {
 
 #pointer {
   position: fixed;
-  bottom: 6rem;
+  bottom: 5rem;
   left: 6rem;
 }

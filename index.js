@@ -62,8 +62,12 @@ class MainScene extends Scene3D {
     this.map.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
-        if (child.parent.userData.name == "Frame 1" && child.name == "Cube_1") {
-          // child.material.map = loader.load("https://shivansh-nalwaya.github.io/assets/images/python-certificate.png");
+        if (child.parent.userData.name && child.parent.userData.name.startsWith("Frame") && child.name.startsWith("Cube")) {
+          child.material.map = loader.load("/assets/certificates/0001.jpg", (texture) => {
+            texture.wrapS = THREE.MirroredRepeatWrapping;
+            texture.wrapT = THREE.MirroredRepeatWrapping;
+            texture.repeat.set(5, 5.6);
+          });
         }
         if (child.name == "Sand") {
           child.material.map = loader.load("/assets/sand-map.png");
@@ -171,7 +175,8 @@ class MainScene extends Scene3D {
         this.keys.up.isDown = top > 0;
         this.keys.left.isDown = right < 0;
         this.keys.right.isDown = right > 0;
-        this.speed = Math.abs(top) * 6;
+        this.speed = Math.abs(top) * 10;
+        this.running = this.speed > 5;
         this.turnSpeed = Math.abs(right);
       });
     }
@@ -197,7 +202,7 @@ class MainScene extends Scene3D {
       this.man.body.setVelocityX(Math.sin(this.man.body.rotation.y) * -this.speed);
     }
     if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
-      document.getElementById("pointer").style.bottom = 6.2 - this.man.position.z / 27 + "rem";
+      document.getElementById("pointer").style.bottom = 5.2 - this.man.position.z / 27 + "rem";
       document.getElementById("pointer").style.left = 6.2 + this.man.position.x / 23 + "rem";
     }
     if ((this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) && this.man.position.y > -1) {
@@ -238,8 +243,8 @@ class MainScene extends Scene3D {
     this.map.traverse((child) => {
       if (child.isMesh) {
         if (minToEmission && minToEmission.parent == child.parent) {
-          child.material.emissive.setHex(0xffffaa);
-          child.material.emissiveIntensity = minToEmission.parent.userData.emissionIntensity || 0.5;
+          child.material.emissive.setHex(0xffffff);
+          child.material.emissiveIntensity = minToEmission.parent.userData.emissionIntensity || 0.1;
         } else child.material.emissive.setHex(0x000000);
       }
     });
