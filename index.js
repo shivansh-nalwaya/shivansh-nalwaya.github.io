@@ -1,7 +1,7 @@
 // import Stats from "three/examples/jsm/libs/stats.module";
 
 const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, JoyStick, THREE } = ENABLE3D;
-const { TextureLoader, Matrix4, Vector3, AnimationMixer } = THREE;
+const { TextureLoader, Matrix4, Vector3, AnimationMixer, sRGBEncoding } = THREE;
 
 // const stats = Stats();
 // document.body.appendChild(stats.dom);
@@ -21,6 +21,7 @@ class MainScene extends Scene3D {
 
   async init() {
     this.renderer.setPixelRatio(1);
+    this.renderer.outputEncoding = sRGBEncoding;
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
@@ -52,27 +53,13 @@ class MainScene extends Scene3D {
     // this.physics.debug.enable();
 
     const map = (await this.load.gltf("map")).scene;
-    map.scale.setScalar(10);
+    map.scale.setScalar(3);
     this.map = new ExtendedObject3D();
     this.map.name = "map";
     this.map.add(map);
-    this.map.rotation.set(0, 0, 0);
-    this.map.position.set(0, 0, 0);
-    const loader = new TextureLoader();
     this.map.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
-        if (child.parent.userData.name && child.parent.userData.name.startsWith("Frame") && child.name.startsWith("Cube")) {
-          child.material.map = loader.load("/assets/certificates/0001.jpg", (texture) => {
-            texture.wrapS = THREE.MirroredRepeatWrapping;
-            texture.wrapT = THREE.MirroredRepeatWrapping;
-            texture.repeat.set(5, 5.6);
-          });
-        }
-        if (child.name == "Sand") {
-          child.material.map = loader.load("/assets/sand-map.png");
-          child.material.normalMap = loader.load("/assets/sand-normal.png");
-        }
       }
     });
     this.add.existing(this.map);
@@ -106,7 +93,7 @@ class MainScene extends Scene3D {
       run: this.manRunAction,
     };
 
-    man.scale.setScalar(0.01);
+    man.scale.setScalar(0.013);
     man.rotateY(Math.PI);
 
     this.man = new ExtendedObject3D();
@@ -129,9 +116,6 @@ class MainScene extends Scene3D {
     this.man.body.setAngularFactor(0, 0, 0);
     this.man.body.setCcdMotionThreshold(1e-7);
     this.man.body.setCcdSweptSphereRadius(0.25);
-
-    this.water = this.add.plane({ x: -54, z: 0, y: -0.1, height: 12, width: 19 }, { lambert: { color: 0x24a8af, opacity: 0.8, transparent: true } });
-    this.water.rotateX(Math.PI / 2);
 
     this.keys = {
       up: { isDown: false },
@@ -240,14 +224,14 @@ class MainScene extends Scene3D {
         }
       }
     });
-    this.map.traverse((child) => {
-      if (child.isMesh) {
-        if (minToEmission && minToEmission.parent == child.parent) {
-          child.material.emissive.setHex(0xffffff);
-          child.material.emissiveIntensity = minToEmission.parent.userData.emissionIntensity || 0.1;
-        } else child.material.emissive.setHex(0x000000);
-      }
-    });
+    // this.map.traverse((child) => {
+    //   if (child.isMesh) {
+    //     if (minToEmission && minToEmission.parent == child.parent) {
+    //       child.material.emissive.setHex(0xffffff);
+    //       child.material.emissiveIntensity = minToEmission.parent.userData.emissionIntensity || 0.1;
+    //     } else child.material.emissive.setHex(0x000000);
+    //   }
+    // });
 
     // stats.update();
   }
