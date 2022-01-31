@@ -28,13 +28,11 @@ class MainScene extends Scene3D {
   async preload() {
     const map = this.load.preload("map", "/assets/scene.gltf");
     const character = this.load.preload("character", "/assets/character.fbx");
-    const python = this.load.preload("python", "/assets/python.gltf");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
     const run = this.load.preload("run", "/assets/run.fbx");
-    const swim = this.load.preload("swim", "/assets/swim.fbx");
 
-    await Promise.all([character, idle, walk, run, swim, map, python]);
+    await Promise.all([map, character, idle, walk, run]);
   }
 
   async create() {
@@ -80,26 +78,22 @@ class MainScene extends Scene3D {
     const walk = await this.load.fbx("walk");
     this.manWalkAction = manAnims.clipAction(walk.animations[0]);
 
-    const swim = await this.load.fbx("swim");
-    this.manSwimAction = manAnims.clipAction(swim.animations[0]);
-
     const run = await this.load.fbx("run");
     this.manRunAction = manAnims.clipAction(run.animations[0]);
 
     this.actions = {
       walk: this.manWalkAction,
       idle: this.manIdleAction,
-      swim: this.manSwimAction,
       run: this.manRunAction,
     };
 
-    man.scale.setScalar(0.013);
+    man.scale.setScalar(0.012);
     man.rotateY(Math.PI);
 
     this.man = new ExtendedObject3D();
-    this.man.name = "character";
+    this.man.name = "man";
     this.man.add(man);
-    this.man.position.set(0, 10, 5);
+    this.man.position.set(0, 0, 8);
     this.man.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
@@ -189,41 +183,37 @@ class MainScene extends Scene3D {
       document.getElementById("pointer").style.bottom = 5.2 - this.man.position.z / 27 + "rem";
       document.getElementById("pointer").style.left = 6.2 + this.man.position.x / 23 + "rem";
     }
-    if ((this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) && this.man.position.y > -1) {
+    if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
       if (this.running) this.fadeToAction("run", 0.5);
       else this.fadeToAction("walk", 0.5);
-      this.man.children[0].position.y = 0;
-    } else if (this.man.position.y <= -1) {
-      this.fadeToAction("swim", 0.1);
-      this.man.children[0].position.y = 0.5;
     } else {
       this.fadeToAction("idle", 0.5);
-      this.man.children[0].position.y = 0;
     }
+
     this.camera.position.copy(this.man.body.position);
-    this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5 * (isMobile ? 2 : 1);
-    this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5 * (isMobile ? 2 : 1);
-    this.camera.position.y += 1.5 * (isMobile ? 2 : 1);
+    this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5 * (isMobile ? 2.3 : 1);
+    this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5 * (isMobile ? 2.3 : 1);
+    this.camera.position.y += 1.5 * (isMobile ? 2.3 : 1);
     tempVector.copy(this.man.body.position).y += 1.5;
     this.camera.lookAt(tempVector);
 
-    let minToEmission = null,
-      minDist = 21;
-    this.map.traverse((child) => {
-      if (child.isMesh) {
-        var point1 = new Vector3(),
-          point2 = new Vector3();
-        point1.setFromMatrixPosition(this.man.matrixWorld);
-        point2.setFromMatrixPosition(child.matrixWorld);
-        var distance = point1.distanceTo(point2);
-        if (child.parent.userData.emissive == 1 && distance < 20) {
-          if (distance < minDist) {
-            minDist = distance;
-            minToEmission = child;
-          }
-        }
-      }
-    });
+    // let minToEmission = null,
+    //   minDist = 21;
+    // this.map.traverse((child) => {
+    //   if (child.isMesh) {
+    //     var point1 = new Vector3(),
+    //       point2 = new Vector3();
+    //     point1.setFromMatrixPosition(this.man.matrixWorld);
+    //     point2.setFromMatrixPosition(child.matrixWorld);
+    //     var distance = point1.distanceTo(point2);
+    //     if (child.parent.userData.emissive == 1 && distance < 20) {
+    //       if (distance < minDist) {
+    //         minDist = distance;
+    //         minToEmission = child;
+    //       }
+    //     }
+    //   }
+    // });
     // this.map.traverse((child) => {
     //   if (child.isMesh) {
     //     if (minToEmission && minToEmission.parent == child.parent) {
