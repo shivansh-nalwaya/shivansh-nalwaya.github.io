@@ -1,10 +1,9 @@
-// import Stats from "three/examples/jsm/libs/stats.module";
-
 const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, JoyStick, THREE } = ENABLE3D;
 const { TextureLoader, Matrix4, Vector3, AnimationMixer, sRGBEncoding } = THREE;
 
-// const stats = Stats();
-// document.body.appendChild(stats.dom);
+const stats = Stats();
+stats.domElement.style.position = "fixed";
+document.body.appendChild(stats.domElement);
 
 const isMobile = window.outerWidth < 1000,
   isTouchDevice = "ontouchstart" in window,
@@ -27,12 +26,16 @@ class MainScene extends Scene3D {
 
   async preload() {
     const map = this.load.preload("map", "/assets/scene.gltf");
+    const react = this.load.preload("react", "/assets/react.gltf");
+    const python = this.load.preload("python", "/assets/python.gltf");
+    const ruby = this.load.preload("ruby", "/assets/ruby.gltf");
+    const node = this.load.preload("node", "/assets/node.gltf");
     const character = this.load.preload("character", "/assets/character.fbx");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
     const run = this.load.preload("run", "/assets/run.fbx");
 
-    await Promise.all([map, character, idle, walk, run]);
+    await Promise.all([map, character, react, python, ruby, node, idle, walk, run]);
   }
 
   async create() {
@@ -49,6 +52,38 @@ class MainScene extends Scene3D {
     lights.directionalLight.shadow.camera.bottom = -250;
 
     // this.physics.debug.enable();
+
+    const react = (await this.load.gltf("react")).scene;
+    react.scale.setScalar(2);
+    this.react = new ExtendedObject3D();
+    this.react.name = "react";
+    this.react.position.set(-10, 1, -15);
+    this.react.add(react);
+    this.add.existing(this.react);
+
+    const python = (await this.load.gltf("python")).scene;
+    python.scale.setScalar(2);
+    this.python = new ExtendedObject3D();
+    this.python.name = "python";
+    this.python.position.set(-20, 1, -15);
+    this.python.add(python);
+    this.add.existing(this.python);
+
+    const ruby = (await this.load.gltf("ruby")).scene;
+    ruby.scale.setScalar(2);
+    this.ruby = new ExtendedObject3D();
+    this.ruby.name = "ruby";
+    this.ruby.position.set(-20, 1, -23);
+    this.ruby.add(ruby);
+    this.add.existing(this.ruby);
+
+    const node = (await this.load.gltf("node")).scene;
+    node.scale.setScalar(2.5);
+    this.node = new ExtendedObject3D();
+    this.node.name = "node";
+    this.node.position.set(-10, 1, -23);
+    this.node.add(node);
+    this.add.existing(this.node);
 
     const map = (await this.load.gltf("map")).scene;
     map.scale.setScalar(3);
@@ -191,11 +226,16 @@ class MainScene extends Scene3D {
     }
 
     this.camera.position.copy(this.man.body.position);
-    this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5 * (isMobile ? 2.3 : 1);
-    this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5 * (isMobile ? 2.3 : 1);
-    this.camera.position.y += 1.5 * (isMobile ? 2.3 : 1);
-    tempVector.copy(this.man.body.position).y += 1.5;
+    this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5 * (isMobile ? 2.3 : 1.4);
+    this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5 * (isMobile ? 2.3 : 1.4);
+    this.camera.position.y += 1.5 * (isMobile ? 2.3 : 3);
+    tempVector.copy(this.man.body.position).y += 3;
     this.camera.lookAt(tempVector);
+
+    this.react.rotateY(0.015);
+    this.python.rotateY(0.015);
+    this.ruby.rotateY(0.015);
+    this.node.rotateY(0.015);
 
     // let minToEmission = null,
     //   minDist = 21;
@@ -214,16 +254,7 @@ class MainScene extends Scene3D {
     //     }
     //   }
     // });
-    // this.map.traverse((child) => {
-    //   if (child.isMesh) {
-    //     if (minToEmission && minToEmission.parent == child.parent) {
-    //       child.material.emissive.setHex(0xffffff);
-    //       child.material.emissiveIntensity = minToEmission.parent.userData.emissionIntensity || 0.1;
-    //     } else child.material.emissive.setHex(0x000000);
-    //   }
-    // });
-
-    // stats.update();
+    stats.update();
   }
 }
 
