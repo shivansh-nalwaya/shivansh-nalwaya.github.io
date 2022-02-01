@@ -1,5 +1,10 @@
 const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, JoyStick, THREE } = ENABLE3D;
 const { TextureLoader, Matrix4, Vector3, AnimationMixer, sRGBEncoding } = THREE;
+// const gui = new dat.GUI();
+// const cubeFolder = gui.addFolder("Cube");
+// cubeFolder.add(texture.repeat, "x", 0, 10);
+// cubeFolder.add(texture.repeat, "y", 0, 10);
+// cubeFolder.open();
 
 const stats = Stats();
 stats.domElement.style.position = "fixed";
@@ -12,10 +17,26 @@ let tempVector = new Vector3();
 let activeAction = "idle",
   previousAction;
 
-const textureMapping = (texture) => {
+const textureMappingFlag = (texture) => {
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(1, 1);
+  texture.rotation = Math.PI;
+};
+
+const textureMappingCert = (texture) => {
   texture.wrapS = THREE.MirroredRepeatWrapping;
   texture.wrapT = THREE.MirroredRepeatWrapping;
-  texture.repeat.set(5, 6.3);
+  texture.rotation = Math.PI / 2;
+  texture.repeat.set(5.1, 5);
+};
+
+const textureMappingProject = (texture) => {
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(4, 3.2);
+  texture.rotation = Math.PI / 2;
+  texture.flipY = false;
 };
 class MainScene extends Scene3D {
   constructor() {
@@ -36,12 +57,14 @@ class MainScene extends Scene3D {
     const python = this.load.preload("python", "/assets/python.gltf");
     const ruby = this.load.preload("ruby", "/assets/ruby.gltf");
     const node = this.load.preload("node", "/assets/node.gltf");
+    const key = this.load.preload("key", "/assets/key.gltf");
+    const chest = this.load.preload("chest", "/assets/chest.fbx");
     const character = this.load.preload("character", "/assets/character.fbx");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
     const run = this.load.preload("run", "/assets/run.fbx");
 
-    await Promise.all([map, character, react, python, ruby, node, idle, walk, run]);
+    await Promise.all([map, character, react, python, ruby, node, key, chest, idle, walk, run]);
   }
 
   async create() {
@@ -94,6 +117,24 @@ class MainScene extends Scene3D {
     this.node.add(node);
     this.add.existing(this.node);
 
+    const key = (await this.load.gltf("key")).scene;
+    key.scale.setScalar(0.8);
+    this.key = new ExtendedObject3D();
+    this.key.name = "key";
+    this.key.position.set(-25, 2.5, 24);
+    this.key.rotation.set(0, -Math.PI / 4, 0);
+    this.key.add(key);
+    this.add.existing(this.key);
+
+    const chest = await this.load.fbx("chest");
+    chest.scale.setScalar(0.008);
+    this.chest = new ExtendedObject3D();
+    this.chest.name = "chest";
+    this.chest.position.set(-28, 3, 27.5);
+    this.chest.rotation.set(0, -Math.PI / 4, 0);
+    this.chest.add(chest);
+    this.add.existing(this.chest);
+
     const loader = new THREE.TextureLoader();
 
     const map = (await this.load.gltf("map")).scene;
@@ -104,11 +145,19 @@ class MainScene extends Scene3D {
     this.map.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
-        if (child.parent.name == "Board001") if (child.name == "Cylinder009_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMapping);
-        if (child.parent.name == "Board002") if (child.name == "Cylinder010_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMapping);
-        if (child.parent.name == "Board003") if (child.name == "Cylinder011_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMapping);
-        if (child.parent.name == "Board005") if (child.name == "Cylinder001_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMapping);
-        if (child.parent.name == "Project") if (child.name == "Cube031_1") child.material.map = loader.load("assets/projects/project-1.png", textureMapping);
+        if (child.parent.name == "Board001") if (child.name == "Cylinder009_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
+        if (child.parent.name == "Board002") if (child.name == "Cylinder010_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
+        if (child.parent.name == "Board003") if (child.name == "Cylinder011_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
+        if (child.parent.name == "Board005") if (child.name == "Cylinder001_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
+        if (child.parent.name == "Project") if (child.name == "Cube031_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
+        if (child.parent.name == "Project001") if (child.name == "Cube032_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
+        if (child.parent.name == "Project002") if (child.name == "Cube033_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
+        if (child.parent.name == "Project003") if (child.name == "Cube034_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
+        if (child.parent.name == "Scene") {
+          if (child.name == "Plane") child.material.map = loader.load("assets/companies/awign.png", textureMappingFlag);
+          if (child.name == "Plane001") child.material.map = loader.load("assets/companies/tbi.png", textureMappingFlag);
+          if (child.name == "Plane002") child.material.map = loader.load("assets/companies/sixerclass.jpg", textureMappingFlag);
+        }
       }
     });
     this.add.existing(this.map);
@@ -244,8 +293,8 @@ class MainScene extends Scene3D {
     this.camera.position.copy(this.man.body.position);
     this.camera.position.x += Math.sin(this.man.body.rotation.y) * 5 * (isMobile ? 2.3 : 1.4);
     this.camera.position.z += Math.cos(this.man.body.rotation.y) * 5 * (isMobile ? 2.3 : 1.4);
-    this.camera.position.y += 1.5 * (isMobile ? 2.3 : 3);
-    tempVector.copy(this.man.body.position).y += 3;
+    this.camera.position.y += 1.5 * (isMobile ? 2.3 : 2);
+    tempVector.copy(this.man.body.position).y += 2;
     this.camera.lookAt(tempVector);
 
     this.react.rotateY(0.015);
