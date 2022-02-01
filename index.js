@@ -11,6 +11,12 @@ const isMobile = window.outerWidth < 1000,
 let tempVector = new Vector3();
 let activeAction = "idle",
   previousAction;
+
+const textureMapping = (texture) => {
+  texture.wrapS = THREE.MirroredRepeatWrapping;
+  texture.wrapT = THREE.MirroredRepeatWrapping;
+  texture.repeat.set(5, 6.3);
+};
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
@@ -51,6 +57,9 @@ class MainScene extends Scene3D {
     lights.directionalLight.shadow.camera.top = 250;
     lights.directionalLight.shadow.camera.bottom = -250;
 
+    // this.camera.near = 7;
+    // this.camera.updateProjectionMatrix();
+
     // this.physics.debug.enable();
 
     const react = (await this.load.gltf("react")).scene;
@@ -85,6 +94,8 @@ class MainScene extends Scene3D {
     this.node.add(node);
     this.add.existing(this.node);
 
+    const loader = new THREE.TextureLoader();
+
     const map = (await this.load.gltf("map")).scene;
     map.scale.setScalar(3);
     this.map = new ExtendedObject3D();
@@ -93,6 +104,11 @@ class MainScene extends Scene3D {
     this.map.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
+        if (child.parent.name == "Board001") if (child.name == "Cylinder009_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMapping);
+        if (child.parent.name == "Board002") if (child.name == "Cylinder010_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMapping);
+        if (child.parent.name == "Board003") if (child.name == "Cylinder011_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMapping);
+        if (child.parent.name == "Board005") if (child.name == "Cylinder001_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMapping);
+        if (child.parent.name == "Project") if (child.name == "Cube031_1") child.material.map = loader.load("assets/projects/project-1.png", textureMapping);
       }
     });
     this.add.existing(this.map);
