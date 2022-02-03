@@ -57,18 +57,32 @@ class MainScene extends Scene3D {
     const python = this.load.preload("python", "/assets/python.gltf");
     const ruby = this.load.preload("ruby", "/assets/ruby.gltf");
     const node = this.load.preload("node", "/assets/node.gltf");
-    const key = this.load.preload("key", "/assets/key.gltf");
     const chest = this.load.preload("chest", "/assets/chest.fbx");
     const character = this.load.preload("character", "/assets/character.fbx");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
     const run = this.load.preload("run", "/assets/run.fbx");
 
-    await Promise.all([map, character, react, python, ruby, node, key, chest, idle, walk, run]);
+    await Promise.all([map, character, react, python, ruby, node, chest, idle, walk, run]);
   }
 
   async create() {
     const { lights } = await this.warpSpeed("-ground", "-grid");
+
+    const ground = this.add.plane({ width: 60, height: 60 });
+    ground.rotation.x = Math.PI / 2;
+    ground.position.y -= 0.1;
+    ground.material.visible = false;
+    this.physics.add.existing(ground, { mass: 1, collisionFlags: 2 });
+    const fence1 = this.add.box({ width: 13.2, height: 2, depth: 0.5 });
+    fence1.position.set(-23.5, 1, -9);
+    this.physics.add.existing(fence1, { mass: 1, collisionFlags: 2 });
+    const fence2 = this.add.box({ width: 26, height: 2, depth: 0.5 });
+    fence2.position.set(0, 1, -9);
+    this.physics.add.existing(fence2, { mass: 1, collisionFlags: 2 });
+    const fence3 = this.add.box({ width: 13.2, height: 2, depth: 0.5 });
+    fence3.position.set(23.5, 1, -9);
+    this.physics.add.existing(fence3, { mass: 1, collisionFlags: 2 });
 
     lights.directionalLight.shadow.bias = -0.001;
     lights.directionalLight.shadow.mapSize.width = 2048;
@@ -117,15 +131,6 @@ class MainScene extends Scene3D {
     this.node.add(node);
     this.add.existing(this.node);
 
-    const key = (await this.load.gltf("key")).scene;
-    key.scale.setScalar(0.8);
-    this.key = new ExtendedObject3D();
-    this.key.name = "key";
-    this.key.position.set(-25, 2.5, 24);
-    this.key.rotation.set(0, -Math.PI / 4, 0);
-    this.key.add(key);
-    this.add.existing(this.key);
-
     const chest = await this.load.fbx("chest");
     chest.scale.setScalar(0.008);
     this.chest = new ExtendedObject3D();
@@ -143,12 +148,36 @@ class MainScene extends Scene3D {
     this.map.name = "map";
     this.map.add(map);
     this.map.traverse((child) => {
+      if (child.isGroup) {
+        if (child.name == "Center") {
+          child.position.y = 0.25;
+          this.physics.add.existing(child, { shape: "box", mass: 1, collisionFlags: 2, width: 11.8, height: 1, depth: 2, offset: { y: -2.3 } });
+        }
+        if (child.name.startsWith("Tower")) {
+          child.position.y = 0.3;
+          this.physics.add.existing(child, { shape: "cylinder", mass: 1, collisionFlags: 2, radius: 3.3, height: 3, offset: { y: -2 } });
+        }
+        if (child.name.startsWith("Level") || child.name.startsWith("Project")) {
+          this.physics.add.existing(child, { shape: "concave", mass: 1, collisionFlags: 2 });
+        }
+        if (child.name.startsWith("Board")) {
+          child.position.y = 0.9;
+          this.physics.add.existing(child, { shape: "box", mass: 1, collisionFlags: 2, width: 4, height: 2, depth: 25, offset: { y: -1.25 } });
+        }
+      }
       if (child.isMesh) {
+        if (child.name.startsWith("Board")) {
+          child.position.y = child.name == "Board007" ? 0.85 : 0.4;
+          this.physics.add.existing(child, { shape: "box", mass: 1, collisionFlags: 2, width: 4, height: 2, depth: 25, offset: { y: -1.15 } });
+        }
+        if (child.name == "Walls") {
+          this.physics.add.existing(child, { shape: "concave", mass: 1, collisionFlags: 2 });
+        }
         child.castShadow = child.receiveShadow = true;
-        if (child.parent.name == "Board001") if (child.name == "Cylinder009_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
-        if (child.parent.name == "Board002") if (child.name == "Cylinder010_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
-        if (child.parent.name == "Board003") if (child.name == "Cylinder011_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
-        if (child.parent.name == "Board005") if (child.name == "Cylinder001_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
+        if (child.parent.name == "Board001") if (child.name == "Cylinder001_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
+        if (child.parent.name == "Board002") if (child.name == "Cylinder009_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
+        if (child.parent.name == "Board003") if (child.name == "Cylinder010_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
+        if (child.parent.name == "Board004") if (child.name == "Cylinder011_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
         if (child.parent.name == "Project") if (child.name == "Cube031_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
         if (child.parent.name == "Project001") if (child.name == "Cube032_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
         if (child.parent.name == "Project002") if (child.name == "Cube033_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
@@ -161,11 +190,11 @@ class MainScene extends Scene3D {
       }
     });
     this.add.existing(this.map);
-    this.physics.add.existing(this.map, {
-      shape: "concave",
-      mass: 1,
-      collisionFlags: 2,
-    });
+    // this.physics.add.existing(this.map, {
+    //   shape: "concave",
+    //   mass: 1,
+    //   collisionFlags: 2,
+    // });
 
     const man = await this.load.fbx("character");
 
@@ -271,7 +300,7 @@ class MainScene extends Scene3D {
     this.actions[activeAction].reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration);
   }
 
-  update() {
+  update(delta) {
     if (this.keys.left.isDown) this.man.body.setAngularVelocityY(this.turnSpeed);
     else if (this.keys.right.isDown) this.man.body.setAngularVelocityY(-this.turnSpeed);
     else this.man.body.setAngularVelocityY(0);
@@ -280,8 +309,8 @@ class MainScene extends Scene3D {
       this.man.body.setVelocityX(Math.sin(this.man.body.rotation.y) * -this.speed);
     }
     if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
-      document.getElementById("pointer").style.bottom = 5.2 - this.man.position.z / 27 + "rem";
-      document.getElementById("pointer").style.left = 6.2 + this.man.position.x / 23 + "rem";
+      // document.getElementById("pointer").style.bottom = 5.2 - this.man.position.z / 27 + "rem";
+      // document.getElementById("pointer").style.left = 6.2 + this.man.position.x / 23 + "rem";
     }
     if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
       if (this.running) this.fadeToAction("run", 0.5);
@@ -302,23 +331,31 @@ class MainScene extends Scene3D {
     this.ruby.rotateY(0.015);
     this.node.rotateY(0.015);
 
-    // let minToEmission = null,
-    //   minDist = 21;
-    // this.map.traverse((child) => {
-    //   if (child.isMesh) {
-    //     var point1 = new Vector3(),
-    //       point2 = new Vector3();
-    //     point1.setFromMatrixPosition(this.man.matrixWorld);
-    //     point2.setFromMatrixPosition(child.matrixWorld);
-    //     var distance = point1.distanceTo(point2);
-    //     if (child.parent.userData.emissive == 1 && distance < 20) {
-    //       if (distance < minDist) {
-    //         minDist = distance;
-    //         minToEmission = child;
-    //       }
-    //     }
-    //   }
-    // });
+    if (delta % 1 < 0.1) {
+      let minToEmission = null,
+        minDist = 21;
+      this.map.traverse((child) => {
+        if (child.isMesh && child.parent.userData.emissive == 1) {
+          var point1 = new Vector3(),
+            point2 = new Vector3();
+          point1.setFromMatrixPosition(this.man.matrixWorld);
+          point2.setFromMatrixPosition(child.matrixWorld);
+          var distance = point1.distanceTo(point2);
+          if (distance < 5) {
+            if (distance < minDist) {
+              minDist = distance;
+              minToEmission = child;
+            }
+          }
+        }
+      });
+      if (minToEmission) {
+        document.getElementById("msg").style.display = "block";
+        document.getElementById("msg").innerHTML = "Click on the tower to see experience details";
+      } else {
+        document.getElementById("msg").style.display = "none";
+      }
+    }
     stats.update();
   }
 }
