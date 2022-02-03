@@ -1,3 +1,5 @@
+import TWEEN from "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.esm.min.js";
+console.log(TWEEN);
 const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, JoyStick, THREE } = ENABLE3D;
 const { TextureLoader, Matrix4, Vector3, AnimationMixer, sRGBEncoding } = THREE;
 // const gui = new dat.GUI();
@@ -16,6 +18,21 @@ const isMobile = window.outerWidth < 1000,
 let tempVector = new Vector3();
 let activeAction = "idle",
   previousAction;
+
+function onDocumentMouseMove(event, camera, planes) {
+  var mouse = new THREE.Vector2();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  var raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+  var intersects = raycaster.intersectObjects(planes);
+  if (intersects.length > 0) {
+    document.querySelector("body").style.cursor = "pointer";
+  } else {
+    document.querySelector("body").style.cursor = "default";
+  }
+}
 
 const textureMappingFlag = (texture) => {
   texture.wrapS = THREE.RepeatWrapping;
@@ -67,7 +84,30 @@ class MainScene extends Scene3D {
   }
 
   async create() {
+    // this.lookAt = new Vector3(0, 0, 0);
+    // this.isLerping = true;
+    // const gui = new dat.GUI();
+    // const cubeFolder = gui.addFolder("Cube");
+    // cubeFolder.add(this.camera.position, "x", -10, 30);
+    // cubeFolder.add(this.camera.position, "y", -10, 30);
+    // cubeFolder.add(this.camera.position, "z", -10, 30);
+    // const la1 = cubeFolder.add(this.lookAt, "x", -10, 30);
+    // const la2 = cubeFolder.add(this.lookAt, "y", -10, 30);
+    // const la3 = cubeFolder.add(this.lookAt, "z", -10, 30);
+    // la1.onChange((value) => {
+    //   this.camera.lookAt(this.lookAt);
+    // });
+    // la2.onChange((value) => {
+    //   this.camera.lookAt(this.lookAt);
+    // });
+    // la3.onChange((value) => {
+    //   this.camera.lookAt(this.lookAt);
+    // });
+    // cubeFolder.open();
+
     const { lights } = await this.warpSpeed("-ground", "-grid");
+
+    this.camera.position.set(0, 5, 30);
 
     const ground = this.add.plane({ width: 60, height: 60 });
     ground.rotation.x = Math.PI / 2;
@@ -142,6 +182,8 @@ class MainScene extends Scene3D {
 
     const loader = new THREE.TextureLoader();
 
+    this.interactable = [];
+
     const map = (await this.load.gltf("map")).scene;
     map.scale.setScalar(3);
     this.map = new ExtendedObject3D();
@@ -156,6 +198,7 @@ class MainScene extends Scene3D {
         if (child.name.startsWith("Tower")) {
           child.position.y = 0.3;
           this.physics.add.existing(child, { shape: "cylinder", mass: 1, collisionFlags: 2, radius: 3.3, height: 3, offset: { y: -2 } });
+          this.interactable.push(child);
         }
         if (child.name.startsWith("Level") || child.name.startsWith("Project")) {
           this.physics.add.existing(child, { shape: "concave", mass: 1, collisionFlags: 2 });
@@ -190,11 +233,6 @@ class MainScene extends Scene3D {
       }
     });
     this.add.existing(this.map);
-    // this.physics.add.existing(this.map, {
-    //   shape: "concave",
-    //   mass: 1,
-    //   collisionFlags: 2,
-    // });
 
     const man = await this.load.fbx("character");
 
@@ -269,8 +307,90 @@ class MainScene extends Scene3D {
         this.running = false;
       }
     };
+
+    const onClick = (event) => {
+      if (this.isLerping) return;
+      var mouse = new THREE.Vector2();
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      var raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, this.camera);
+      var intersects = raycaster.intersectObjects(this.interactable);
+      if (intersects.length > 0) {
+        this.isLerping = true;
+        const oldPosition = this.camera.position.clone(),
+          oldLookAt = tempVector.clone();
+        window.onCloseModal = () => {
+          document.getElementById("modal").style.display = "none";
+          new TWEEN.Tween(this.camera.position)
+            .to(
+              {
+                x: oldPosition.x,
+                y: oldPosition.y,
+                z: oldPosition.z,
+              },
+              1000
+            )
+            .easing(TWEEN.Easing.Sinusoidal.InOut)
+            .onUpdate(() => {
+              this.camera.lookAt(tempVector);
+            })
+            .onComplete(() => {
+              this.camera.lookAt(...oldLookAt);
+              this.isLerping = false;
+            })
+            .start();
+          new TWEEN.Tween(tempVector)
+            .to({
+              x: oldLookAt.x,
+              y: oldLookAt.y,
+              z: oldLookAt.z,
+            })
+            .easing(TWEEN.Easing.Sinusoidal.InOut)
+            .onComplete(() => {
+              this.camera.lookAt(...oldLookAt);
+              this.isLerping = false;
+            })
+            .start();
+        };
+        new TWEEN.Tween(this.camera.position)
+          .to(
+            {
+              x: intersects[0].object.parent.userData.camera[0],
+              y: intersects[0].object.parent.userData.camera[1],
+              z: intersects[0].object.parent.userData.camera[2],
+            },
+            1000
+          )
+          .easing(TWEEN.Easing.Sinusoidal.InOut)
+          .onUpdate(() => {
+            this.camera.lookAt(tempVector);
+          })
+          .onComplete(() => {
+            this.camera.lookAt(...intersects[0].object.parent.userData.lookAt);
+            document.getElementById("modal").style.display = "block";
+          })
+          .start();
+        new TWEEN.Tween(tempVector)
+          .to({
+            x: intersects[0].object.parent.userData.lookAt[0],
+            y: intersects[0].object.parent.userData.lookAt[1],
+            z: intersects[0].object.parent.userData.lookAt[2],
+          })
+          .easing(TWEEN.Easing.Sinusoidal.InOut)
+          .onComplete(() => {
+            this.camera.lookAt(...intersects[0].object.parent.userData.lookAt);
+            document.getElementById("modal").style.display = "block";
+          })
+          .start();
+      }
+    };
+
     document.addEventListener("keydown", (e) => press(e, true));
     document.addEventListener("keyup", (e) => press(e, false));
+    document.addEventListener("mousemove", (e) => onDocumentMouseMove(e, this.camera, this.interactable));
+    document.addEventListener("click", (e) => onClick(e));
 
     if (isTouchDevice) {
       const joystick = new JoyStick();
@@ -301,6 +421,7 @@ class MainScene extends Scene3D {
   }
 
   update(delta) {
+    if (this.isLerping) return TWEEN.update();
     if (this.keys.left.isDown) this.man.body.setAngularVelocityY(this.turnSpeed);
     else if (this.keys.right.isDown) this.man.body.setAngularVelocityY(-this.turnSpeed);
     else this.man.body.setAngularVelocityY(0);
@@ -311,6 +432,7 @@ class MainScene extends Scene3D {
     if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
       // document.getElementById("pointer").style.bottom = 5.2 - this.man.position.z / 27 + "rem";
       // document.getElementById("pointer").style.left = 6.2 + this.man.position.x / 23 + "rem";
+      document.querySelector("body").style.cursor = "none";
     }
     if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
       if (this.running) this.fadeToAction("run", 0.5);
@@ -331,7 +453,7 @@ class MainScene extends Scene3D {
     this.ruby.rotateY(0.015);
     this.node.rotateY(0.015);
 
-    if (delta % 1 < 0.1) {
+    if (delta % 1 < 0.05) {
       let minToEmission = null,
         minDist = 21;
       this.map.traverse((child) => {
@@ -341,7 +463,7 @@ class MainScene extends Scene3D {
           point1.setFromMatrixPosition(this.man.matrixWorld);
           point2.setFromMatrixPosition(child.matrixWorld);
           var distance = point1.distanceTo(point2);
-          if (distance < 5) {
+          if (distance < 6) {
             if (distance < minDist) {
               minDist = distance;
               minToEmission = child;
@@ -356,6 +478,7 @@ class MainScene extends Scene3D {
         document.getElementById("msg").style.display = "none";
       }
     }
+    this.camera.updateProjectionMatrix();
     stats.update();
   }
 }
