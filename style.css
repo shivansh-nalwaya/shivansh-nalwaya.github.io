@@ -45,3 +45,12 @@ html {
   color: white;
   font-size: 1.2rem;
 }
+
+@media only screen and (max-width: 1000px) {
+  #modal {
+    top: 2rem;
+    left: 1rem;
+    width: calc(100vw - 4rem);
+    min-height: 40vh;
+  }
+}

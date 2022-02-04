@@ -106,7 +106,10 @@ class MainScene extends Scene3D {
     // });
     // cubeFolder.open();
 
-    const { lights } = await this.warpSpeed("-ground", "-grid");
+    const { lights, orbitControls } = await this.warpSpeed("-ground", "-grid");
+    console.log(orbitControls);
+
+    orbitControls.addEventListener("end", (e) => console.log(e, this.camera.position));
 
     this.camera.position.set(0, 5, 30);
 
@@ -358,9 +361,9 @@ class MainScene extends Scene3D {
         new TWEEN.Tween(this.camera.position)
           .to(
             {
-              x: intersects[0].object.parent.userData.camera[0],
-              y: intersects[0].object.parent.userData.camera[1],
-              z: intersects[0].object.parent.userData.camera[2],
+              x: isMobile ? intersects[0].object.parent.userData.cameraMiddle[0] : intersects[0].object.parent.userData.camera[0],
+              y: isMobile ? intersects[0].object.parent.userData.cameraMiddle[1] : intersects[0].object.parent.userData.camera[1],
+              z: isMobile ? intersects[0].object.parent.userData.cameraMiddle[2] : intersects[0].object.parent.userData.camera[2],
             },
             1000
           )
@@ -369,19 +372,19 @@ class MainScene extends Scene3D {
             this.camera.lookAt(tempVector);
           })
           .onComplete(() => {
-            this.camera.lookAt(...intersects[0].object.parent.userData.lookAt);
+            this.camera.lookAt(...(isMobile ? intersects[0].object.parent.userData.lookAtMiddle : intersects[0].object.parent.userData.lookAt));
             document.getElementById("modal").style.display = "block";
           })
           .start();
         new TWEEN.Tween(tempVector)
           .to({
-            x: intersects[0].object.parent.userData.lookAt[0],
-            y: intersects[0].object.parent.userData.lookAt[1],
-            z: intersects[0].object.parent.userData.lookAt[2],
+            x: isMobile ? intersects[0].object.parent.userData.lookAtMiddle[0] : intersects[0].object.parent.userData.lookAt[0],
+            y: isMobile ? intersects[0].object.parent.userData.lookAtMiddle[1] : intersects[0].object.parent.userData.lookAt[1],
+            z: isMobile ? intersects[0].object.parent.userData.lookAtMiddle[2] : intersects[0].object.parent.userData.lookAt[2],
           })
           .easing(TWEEN.Easing.Sinusoidal.InOut)
           .onComplete(() => {
-            this.camera.lookAt(...intersects[0].object.parent.userData.lookAt);
+            this.camera.lookAt(...(isMobile ? intersects[0].object.parent.userData.lookAtMiddle : intersects[0].object.parent.userData.lookAt));
             document.getElementById("modal").style.display = "block";
           })
           .start();
@@ -449,7 +452,7 @@ class MainScene extends Scene3D {
     tempVector.copy(this.man.body.position).y += 2;
     this.camera.lookAt(tempVector);
 
-    const dir = new THREE.Vector3(this.man.body.position.x, this.man.body.position.y, this.man.body.position.z - 2).sub(this.camera.position).normalize();
+    const dir = new THREE.Vector3(this.man.body.position.x, this.man.body.position.y - 2, this.man.body.position.z).sub(this.camera.position).normalize();
     obstruct.set(this.camera.position, dir);
 
     this.react.rotateY(0.015);
@@ -457,34 +460,32 @@ class MainScene extends Scene3D {
     this.ruby.rotateY(0.015);
     this.node.rotateY(0.015);
 
-    if (true) {
-      let minToEmission = null,
-        minDist = 21;
-      this.map.traverse((child) => {
-        if (child.isGroup && child.userData.emissive == 1) {
-          const obstructions = obstruct.intersectObject(child);
-          child.visible = obstructions.length == 0;
-        }
-        if (child.isMesh && child.parent.userData.emissive == 1) {
-          var point1 = new Vector3(),
-            point2 = new Vector3();
-          point1.setFromMatrixPosition(this.man.matrixWorld);
-          point2.setFromMatrixPosition(child.matrixWorld);
-          var distance = point1.distanceTo(point2);
-          if (distance < 6) {
-            if (distance < minDist) {
-              minDist = distance;
-              minToEmission = child;
-            }
+    let minToEmission = null,
+      minDist = 21;
+    this.map.traverse((child) => {
+      if (child.isGroup && child.userData.emissive == 1) {
+        const obstructions = obstruct.intersectObject(child);
+        child.visible = obstructions.length == 0;
+      }
+      if (child.isMesh && child.parent.userData.emissive == 1) {
+        var point1 = new Vector3(),
+          point2 = new Vector3();
+        point1.setFromMatrixPosition(this.man.matrixWorld);
+        point2.setFromMatrixPosition(child.matrixWorld);
+        var distance = point1.distanceTo(point2);
+        if (distance < 6) {
+          if (distance < minDist) {
+            minDist = distance;
+            minToEmission = child;
           }
         }
-      });
-      if (minToEmission) {
-        document.getElementById("msg").style.display = "block";
-        document.getElementById("msg").innerHTML = "Click on the tower to see experience details";
-      } else {
-        document.getElementById("msg").style.display = "none";
       }
+    });
+    if (minToEmission) {
+      document.getElementById("msg").style.display = "block";
+      document.getElementById("msg").innerHTML = "Click on the tower to see experience details";
+    } else {
+      document.getElementById("msg").style.display = "none";
     }
     this.camera.updateProjectionMatrix();
     stats.update();

@@ -398,8 +398,10 @@
             ]
         },
         {
-            "extras" : {
-                "emissive" : 1
+           "extras" : {
+                "emissive" : 1,
+                "camera": [4.5, 9, 14],
+                "lookAt": [4.5, 1, 30]
             },
             "mesh" : 19,
             "name" : "Tower.003",
@@ -423,8 +425,10 @@
         {
             "extras" : {
                 "emissive" : 1,
-                "camera": [4, 6.5, 0],
-                "lookAt": [4, 0, 30]
+                "camera": [4, 8, 0],
+                "lookAt": [4, 0, 30],
+                "cameraMiddle": [9, 8, -9],
+                "lookAtMiddle": [9, 8, 30]
             },
             "mesh" : 20,
             "name" : "Tower.004",
@@ -448,8 +452,10 @@
         {
             "extras" : {
                 "emissive" : 1,
-                "camera": [4, 6.5, 0],
-                "lookAt": [4, 0, 30]
+                "camera": [17, 8, 5],
+                "lookAt": [17, 1, 30],
+                "cameraMiddle": [9, 6, -9],
+                "lookAtMiddle": [9, 6, 30]
             },
             "mesh" : 21,
             "name" : "Tower.005",
