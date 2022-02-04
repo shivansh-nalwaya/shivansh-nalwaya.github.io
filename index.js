@@ -1,7 +1,6 @@
 import TWEEN from "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.esm.min.js";
-console.log(TWEEN);
 const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, JoyStick, THREE } = ENABLE3D;
-const { TextureLoader, Matrix4, Vector3, AnimationMixer, sRGBEncoding } = THREE;
+const { Vector3, AnimationMixer, sRGBEncoding } = THREE;
 // const gui = new dat.GUI();
 // const cubeFolder = gui.addFolder("Cube");
 // cubeFolder.add(texture.repeat, "x", 0, 10);
@@ -28,7 +27,7 @@ function onDocumentMouseMove(event, camera, planes) {
   var raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
   var intersects = raycaster.intersectObjects(planes);
-  if (intersects.length > 0) {
+  if (intersects.length > 0 && intersects[0].object.parent.visible) {
     document.querySelector("body").style.cursor = "pointer";
   } else {
     document.querySelector("body").style.cursor = "default";
@@ -85,31 +84,28 @@ class MainScene extends Scene3D {
   }
 
   async create() {
-    // this.lookAt = new Vector3(0, 0, 0);
+    this.lookAt = new Vector3(0, 0, 0);
     // this.isLerping = true;
-    // const gui = new dat.GUI();
-    // const cubeFolder = gui.addFolder("Cube");
-    // cubeFolder.add(this.camera.position, "x", -10, 30);
-    // cubeFolder.add(this.camera.position, "y", -10, 30);
-    // cubeFolder.add(this.camera.position, "z", -10, 30);
-    // const la1 = cubeFolder.add(this.lookAt, "x", -10, 30);
-    // const la2 = cubeFolder.add(this.lookAt, "y", -10, 30);
-    // const la3 = cubeFolder.add(this.lookAt, "z", -10, 30);
-    // la1.onChange((value) => {
-    //   this.camera.lookAt(this.lookAt);
-    // });
-    // la2.onChange((value) => {
-    //   this.camera.lookAt(this.lookAt);
-    // });
-    // la3.onChange((value) => {
-    //   this.camera.lookAt(this.lookAt);
-    // });
-    // cubeFolder.open();
+    const gui = new dat.GUI();
+    const cubeFolder = gui.addFolder("Cube");
+    cubeFolder.add(this.camera.position, "x", -50, 50);
+    cubeFolder.add(this.camera.position, "y", -50, 50);
+    cubeFolder.add(this.camera.position, "z", -50, 50);
+    const la1 = cubeFolder.add(this.lookAt, "x", -50, 50);
+    const la2 = cubeFolder.add(this.lookAt, "y", -50, 50);
+    const la3 = cubeFolder.add(this.lookAt, "z", -50, 50);
+    la1.onChange((value) => {
+      this.camera.lookAt(this.lookAt);
+    });
+    la2.onChange((value) => {
+      this.camera.lookAt(this.lookAt);
+    });
+    la3.onChange((value) => {
+      this.camera.lookAt(this.lookAt);
+    });
+    cubeFolder.open();
 
-    const { lights, orbitControls } = await this.warpSpeed("-ground", "-grid");
-    console.log(orbitControls);
-
-    orbitControls.addEventListener("end", (e) => console.log(e, this.camera.position));
+    const { lights } = await this.warpSpeed("-ground", "-grid");
 
     this.camera.position.set(0, 5, 30);
 
@@ -204,12 +200,17 @@ class MainScene extends Scene3D {
           this.physics.add.existing(child, { shape: "cylinder", mass: 1, collisionFlags: 2, radius: 3.3, height: 3, offset: { y: -2 } });
           this.interactable.push(child);
         }
-        if (child.name.startsWith("Level") || child.name.startsWith("Project")) {
+        if (child.name.startsWith("Level")) {
           this.physics.add.existing(child, { shape: "concave", mass: 1, collisionFlags: 2 });
+        }
+        if (child.name.startsWith("Project")) {
+          this.physics.add.existing(child, { shape: "concave", mass: 1, collisionFlags: 2 });
+          this.interactable.push(child);
         }
         if (child.name.startsWith("Board")) {
           child.position.y = 0.9;
           this.physics.add.existing(child, { shape: "box", mass: 1, collisionFlags: 2, width: 4, height: 2, depth: 25, offset: { y: -1.25 } });
+          this.interactable.push(child);
         }
       }
       if (child.isMesh) {
@@ -218,6 +219,11 @@ class MainScene extends Scene3D {
           this.physics.add.existing(child, { shape: "box", mass: 1, collisionFlags: 2, width: 4, height: 2, depth: 25, offset: { y: -1.15 } });
         }
         if (child.name == "Walls") {
+          child.material.map = loader.load("/assets/brick.jpeg", (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(10, 1);
+          });
           this.physics.add.existing(child, { shape: "concave", mass: 1, collisionFlags: 2 });
         }
         child.castShadow = child.receiveShadow = true;
@@ -321,7 +327,7 @@ class MainScene extends Scene3D {
       var raycaster = new THREE.Raycaster();
       raycaster.setFromCamera(mouse, this.camera);
       var intersects = raycaster.intersectObjects(this.interactable);
-      if (intersects.length > 0) {
+      if (intersects.length > 0 && intersects[0].object.parent.visible) {
         this.isLerping = true;
         const oldPosition = this.camera.position.clone(),
           oldLookAt = tempVector.clone();
@@ -452,7 +458,7 @@ class MainScene extends Scene3D {
     tempVector.copy(this.man.body.position).y += 2;
     this.camera.lookAt(tempVector);
 
-    const dir = new THREE.Vector3(this.man.body.position.x, this.man.body.position.y - 2, this.man.body.position.z).sub(this.camera.position).normalize();
+    const dir = new THREE.Vector3(this.man.body.position.x, this.man.body.position.y - (isMobile ? 1 : 2), this.man.body.position.z).sub(this.camera.position).normalize();
     obstruct.set(this.camera.position, dir);
 
     this.react.rotateY(0.015);
@@ -463,11 +469,11 @@ class MainScene extends Scene3D {
     let minToEmission = null,
       minDist = 21;
     this.map.traverse((child) => {
-      if (child.isGroup && child.userData.emissive == 1) {
+      if (child.isGroup && child.userData.hideable == 1) {
         const obstructions = obstruct.intersectObject(child);
         child.visible = obstructions.length == 0;
       }
-      if (child.isMesh && child.parent.userData.emissive == 1) {
+      if (child.isMesh && child.parent.userData.emissive == 1 && child.parent.visible) {
         var point1 = new Vector3(),
           point2 = new Vector3();
         point1.setFromMatrixPosition(this.man.matrixWorld);
@@ -483,7 +489,7 @@ class MainScene extends Scene3D {
     });
     if (minToEmission) {
       document.getElementById("msg").style.display = "block";
-      document.getElementById("msg").innerHTML = "Click on the tower to see experience details";
+      document.getElementById("msg").innerHTML = minToEmission.parent.userData.cta;
     } else {
       document.getElementById("msg").style.display = "none";
     }
