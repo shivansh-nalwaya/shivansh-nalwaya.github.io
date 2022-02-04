@@ -14,7 +14,8 @@ document.body.appendChild(stats.domElement);
 
 const isMobile = window.outerWidth < 1000,
   isTouchDevice = "ontouchstart" in window,
-  rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  rem = parseFloat(getComputedStyle(document.documentElement).fontSize),
+  obstruct = new THREE.Raycaster();
 let tempVector = new Vector3();
 let activeAction = "idle",
   previousAction;
@@ -448,15 +449,22 @@ class MainScene extends Scene3D {
     tempVector.copy(this.man.body.position).y += 2;
     this.camera.lookAt(tempVector);
 
+    const dir = new THREE.Vector3(this.man.body.position.x, this.man.body.position.y, this.man.body.position.z - 2).sub(this.camera.position).normalize();
+    obstruct.set(this.camera.position, dir);
+
     this.react.rotateY(0.015);
     this.python.rotateY(0.015);
     this.ruby.rotateY(0.015);
     this.node.rotateY(0.015);
 
-    if (delta % 1 < 0.05) {
+    if (true) {
       let minToEmission = null,
         minDist = 21;
       this.map.traverse((child) => {
+        if (child.isGroup && child.userData.emissive == 1) {
+          const obstructions = obstruct.intersectObject(child);
+          child.visible = obstructions.length == 0;
+        }
         if (child.isMesh && child.parent.userData.emissive == 1) {
           var point1 = new Vector3(),
             point2 = new Vector3();

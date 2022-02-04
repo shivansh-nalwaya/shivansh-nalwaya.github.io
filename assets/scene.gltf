@@ -446,6 +446,11 @@
             ]
         },
         {
+            "extras" : {
+                "emissive" : 1,
+                "camera": [4, 6.5, 0],
+                "lookAt": [4, 0, 30]
+            },
             "mesh" : 21,
             "name" : "Tower.005",
             "rotation" : [
