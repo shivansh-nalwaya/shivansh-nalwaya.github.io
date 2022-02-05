@@ -1,4 +1,5 @@
 import TWEEN from "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.esm.min.js";
+import content from "/content.js";
 const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, JoyStick, THREE } = ENABLE3D;
 const { Vector3, AnimationMixer, sRGBEncoding } = THREE;
 // const gui = new dat.GUI();
@@ -70,41 +71,35 @@ class MainScene extends Scene3D {
 
   async preload() {
     const map = this.load.preload("map", "/assets/scene.gltf");
-    const react = this.load.preload("react", "/assets/react.gltf");
-    const python = this.load.preload("python", "/assets/python.gltf");
-    const ruby = this.load.preload("ruby", "/assets/ruby.gltf");
-    const node = this.load.preload("node", "/assets/node.gltf");
-    const chest = this.load.preload("chest", "/assets/chest.fbx");
     const character = this.load.preload("character", "/assets/character.fbx");
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
     const run = this.load.preload("run", "/assets/run.fbx");
 
-    await Promise.all([map, character, react, python, ruby, node, chest, idle, walk, run]);
+    await Promise.all([map, character, idle, walk, run]);
   }
 
   async create() {
-    this.camera.position.set(-24, 3, 16);
-    this.lookAt = new Vector3(-50, 3, 16);
+    this.lookAt = new Vector3(0, 0, 0);
     // this.isLerping = true;
-    const gui = new dat.GUI();
-    const cubeFolder = gui.addFolder("Cube");
-    cubeFolder.add(this.camera.position, "x", -50, 50);
-    cubeFolder.add(this.camera.position, "y", -50, 50);
-    cubeFolder.add(this.camera.position, "z", -50, 50);
-    const la1 = cubeFolder.add(this.lookAt, "x", -50, 50);
-    const la2 = cubeFolder.add(this.lookAt, "y", -50, 50);
-    const la3 = cubeFolder.add(this.lookAt, "z", -50, 50);
-    la1.onChange((value) => {
-      this.camera.lookAt(this.lookAt);
-    });
-    la2.onChange((value) => {
-      this.camera.lookAt(this.lookAt);
-    });
-    la3.onChange((value) => {
-      this.camera.lookAt(this.lookAt);
-    });
-    cubeFolder.open();
+    // const gui = new dat.GUI();
+    // const cubeFolder = gui.addFolder("Cube");
+    // cubeFolder.add(this.camera.position, "x", -50, 50);
+    // cubeFolder.add(this.camera.position, "y", -50, 50);
+    // cubeFolder.add(this.camera.position, "z", -50, 50);
+    // const la1 = cubeFolder.add(this.lookAt, "x", -50, 50);
+    // const la2 = cubeFolder.add(this.lookAt, "y", -50, 50);
+    // const la3 = cubeFolder.add(this.lookAt, "z", -50, 50);
+    // la1.onChange((value) => {
+    //   this.camera.lookAt(this.lookAt);
+    // });
+    // la2.onChange((value) => {
+    //   this.camera.lookAt(this.lookAt);
+    // });
+    // la3.onChange((value) => {
+    //   this.camera.lookAt(this.lookAt);
+    // });
+    // cubeFolder.open();
 
     const { lights } = await this.warpSpeed("-ground", "-grid");
 
@@ -140,47 +135,6 @@ class MainScene extends Scene3D {
 
     // this.physics.debug.enable();
 
-    const react = (await this.load.gltf("react")).scene;
-    react.scale.setScalar(2);
-    this.react = new ExtendedObject3D();
-    this.react.name = "react";
-    this.react.position.set(-10, 1, -15);
-    this.react.add(react);
-    this.add.existing(this.react);
-
-    const python = (await this.load.gltf("python")).scene;
-    python.scale.setScalar(2);
-    this.python = new ExtendedObject3D();
-    this.python.name = "python";
-    this.python.position.set(-20, 1, -15);
-    this.python.add(python);
-    this.add.existing(this.python);
-
-    const ruby = (await this.load.gltf("ruby")).scene;
-    ruby.scale.setScalar(2);
-    this.ruby = new ExtendedObject3D();
-    this.ruby.name = "ruby";
-    this.ruby.position.set(-20, 1, -23);
-    this.ruby.add(ruby);
-    this.add.existing(this.ruby);
-
-    const node = (await this.load.gltf("node")).scene;
-    node.scale.setScalar(2.5);
-    this.node = new ExtendedObject3D();
-    this.node.name = "node";
-    this.node.position.set(-10, 1, -23);
-    this.node.add(node);
-    this.add.existing(this.node);
-
-    const chest = await this.load.fbx("chest");
-    chest.scale.setScalar(0.008);
-    this.chest = new ExtendedObject3D();
-    this.chest.name = "chest";
-    this.chest.position.set(-28, 3, 27.5);
-    this.chest.rotation.set(0, -Math.PI / 4, 0);
-    this.chest.add(chest);
-    this.add.existing(this.chest);
-
     const loader = new THREE.TextureLoader();
 
     this.interactable = [];
@@ -213,6 +167,11 @@ class MainScene extends Scene3D {
           this.physics.add.existing(child, { shape: "box", mass: 1, collisionFlags: 2, width: 4, height: 2, depth: 25, offset: { y: -1.25 } });
           this.interactable.push(child);
         }
+        if (child.name.startsWith("Chest")) {
+          child.position.y = 1.2;
+          this.physics.add.existing(child, { shape: "box", mass: 1, collisionFlags: 2, width: 2, height: 2, depth: 2, offset: { y: -0.75 } });
+          this.interactable.push(child);
+        }
       }
       if (child.isMesh) {
         if (child.name.startsWith("Board")) {
@@ -236,6 +195,15 @@ class MainScene extends Scene3D {
         if (child.parent.name == "Project001") if (child.name == "Cube032_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
         if (child.parent.name == "Project002") if (child.name == "Cube033_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
         if (child.parent.name == "Project003") if (child.name == "Cube034_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
+        if (child.parent.name == "Project004")
+          if (child.name == "Cube003_1")
+            child.material.map = loader.load("/assets/github.png", (texture) => {
+              texture.wrapS = THREE.RepeatWrapping;
+              texture.wrapT = THREE.RepeatWrapping;
+              texture.repeat.set(4, 5);
+              texture.rotation = Math.PI / 2;
+              texture.flipY = false;
+            });
         if (child.parent.name == "Scene") {
           if (child.name == "Plane") child.material.map = loader.load("assets/companies/awign.png", textureMappingFlag);
           if (child.name == "Plane001") child.material.map = loader.load("assets/companies/tbi.png", textureMappingFlag);
@@ -366,12 +334,14 @@ class MainScene extends Scene3D {
             })
             .start();
         };
+        document.getElementById("msg").style.display = "none";
+        const parent = intersects[0].object.parent;
         new TWEEN.Tween(this.camera.position)
           .to(
             {
-              x: isMobile ? intersects[0].object.parent.userData.cameraMiddle[0] : intersects[0].object.parent.userData.camera[0],
-              y: isMobile ? intersects[0].object.parent.userData.cameraMiddle[1] : intersects[0].object.parent.userData.camera[1],
-              z: isMobile ? intersects[0].object.parent.userData.cameraMiddle[2] : intersects[0].object.parent.userData.camera[2],
+              x: parent.position.x * 3 + parent.userData.cameraOffset.x * (isMobile ? parent.userData.mobileOffsetFactor : 1),
+              y: parent.position.y * 3 + parent.userData.cameraOffset.y,
+              z: parent.position.z * 3 + parent.userData.cameraOffset.z * (isMobile ? parent.userData.mobileOffsetFactor : 1),
             },
             1000
           )
@@ -380,19 +350,32 @@ class MainScene extends Scene3D {
             this.camera.lookAt(tempVector);
           })
           .onComplete(() => {
-            this.camera.lookAt(...(isMobile ? intersects[0].object.parent.userData.lookAtMiddle : intersects[0].object.parent.userData.lookAt));
+            this.camera.lookAt(
+              new Vector3(
+                parent.position.x * 3 + parent.userData.targetOffset.x,
+                parent.position.y * 3 + parent.userData.targetOffset.y,
+                parent.position.z * 3 + parent.userData.targetOffset.z
+              )
+            );
             document.getElementById("modal").style.display = "block";
+            document.getElementById("modal-content").innerHTML = content[parent.userData.name] || "";
           })
           .start();
         new TWEEN.Tween(tempVector)
           .to({
-            x: isMobile ? intersects[0].object.parent.userData.lookAtMiddle[0] : intersects[0].object.parent.userData.lookAt[0],
-            y: isMobile ? intersects[0].object.parent.userData.lookAtMiddle[1] : intersects[0].object.parent.userData.lookAt[1],
-            z: isMobile ? intersects[0].object.parent.userData.lookAtMiddle[2] : intersects[0].object.parent.userData.lookAt[2],
+            x: parent.position.x * 3 + parent.userData.targetOffset.x,
+            y: parent.position.y * 3 + parent.userData.targetOffset.y,
+            z: parent.position.z * 3 + parent.userData.targetOffset.z,
           })
           .easing(TWEEN.Easing.Sinusoidal.InOut)
           .onComplete(() => {
-            this.camera.lookAt(...(isMobile ? intersects[0].object.parent.userData.lookAtMiddle : intersects[0].object.parent.userData.lookAt));
+            this.camera.lookAt(
+              new Vector3(
+                parent.position.x * 3 + parent.userData.targetOffset.x,
+                parent.position.y * 3 + parent.userData.targetOffset.y,
+                parent.position.z * 3 + parent.userData.targetOffset.z
+              )
+            );
             document.getElementById("modal").style.display = "block";
           })
           .start();
@@ -462,11 +445,6 @@ class MainScene extends Scene3D {
 
     const dir = new THREE.Vector3(this.man.body.position.x, this.man.body.position.y - (isMobile ? 1 : 2), this.man.body.position.z).sub(this.camera.position).normalize();
     obstruct.set(this.camera.position, dir);
-
-    this.react.rotateY(0.015);
-    this.python.rotateY(0.015);
-    this.ruby.rotateY(0.015);
-    this.node.rotateY(0.015);
 
     let minToEmission = null,
       minDist = 21;

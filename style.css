@@ -26,31 +26,55 @@ html {
   right: 2rem;
   width: 20rem;
   min-height: 1rem;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: #ffeec8;
+  border: 0.5rem solid #cccdaa;
+  box-sizing: border-box;
+  border-radius: 8px;
   display: none;
   padding: 1rem;
   color: white;
   font-size: 1.2rem;
+  color: black;
 }
 
 #modal {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
-  width: 40rem;
-  min-height: 85vh;
-  background-color: rgba(0, 0, 0, 0.4);
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100vw - 6rem);
+  min-height: 20vh;
+  background-color: #ffeec8;
+  border: 0.5rem solid #cccdaa;
+  box-sizing: border-box;
+  border-radius: 8px;
   display: none;
   padding: 1rem;
   color: white;
-  font-size: 1.2rem;
+  z-index: 1;
+  color: black;
+}
+
+#modal img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  transform: translate(50%, -50%);
+  cursor: pointer;
+  z-index: 2;
 }
 
 @media only screen and (max-width: 1000px) {
+  #msg {
+    top: 1rem;
+    right: 1rem;
+    width: 14rem;
+    font-size: 0.9rem;
+    color: black;
+  }
   #modal {
-    top: 2rem;
-    left: 1rem;
-    width: calc(100vw - 4rem);
-    min-height: 40vh;
+    width: 90vw;
+    font-size: 0.9rem;
   }
 }
