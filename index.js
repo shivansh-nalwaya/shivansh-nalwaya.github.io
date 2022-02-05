@@ -84,7 +84,8 @@ class MainScene extends Scene3D {
   }
 
   async create() {
-    this.lookAt = new Vector3(0, 0, 0);
+    this.camera.position.set(-24, 3, 16);
+    this.lookAt = new Vector3(-50, 3, 16);
     // this.isLerping = true;
     const gui = new dat.GUI();
     const cubeFolder = gui.addFolder("Cube");
@@ -327,6 +328,7 @@ class MainScene extends Scene3D {
       var raycaster = new THREE.Raycaster();
       raycaster.setFromCamera(mouse, this.camera);
       var intersects = raycaster.intersectObjects(this.interactable);
+      if (intersects[0].object.parent.userData.link) return window.open(intersects[0].object.parent.userData.link);
       if (intersects.length > 0 && intersects[0].object.parent.visible) {
         this.isLerping = true;
         const oldPosition = this.camera.position.clone(),

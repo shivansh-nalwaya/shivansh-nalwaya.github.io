@@ -97,6 +97,14 @@
             ]
         },
         {
+            "extras" : {
+                "emissive" : 1,
+                "cta": "Click on the board to see certificate details",
+                "camera": [-24, 3, 7.2],
+                "lookAt": [-50,3,7.2],
+                "cameraMiddle": [9, 8, -9],
+                "lookAtMiddle": [9, 8, 30]
+            },
             "mesh" : 2,
             "name" : "Board.004",
             "rotation" : [
@@ -418,6 +426,11 @@
             ]
         },
         {
+             "extras" : {
+                "emissive" : 1,
+                "cta": "Click to see more projects on GitHub",
+                "link": "https://github.com/shivansh-nalwaya"
+            },
             "mesh" : 17,
             "name" : "Project.004",
             "rotation" : [
