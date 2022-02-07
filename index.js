@@ -43,10 +43,11 @@ const textureMappingFlag = (texture) => {
 };
 
 const textureMappingCert = (texture) => {
-  texture.wrapS = THREE.MirroredRepeatWrapping;
-  texture.wrapT = THREE.MirroredRepeatWrapping;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
   texture.rotation = Math.PI / 2;
-  texture.repeat.set(5.1, 5);
+  texture.repeat.set(4, 5);
+  texture.flipY = false;
 };
 
 const textureMappingProject = (texture) => {
@@ -187,10 +188,10 @@ class MainScene extends Scene3D {
           this.physics.add.existing(child, { shape: "concave", mass: 1, collisionFlags: 2 });
         }
         child.castShadow = child.receiveShadow = true;
-        if (child.parent.name == "Board001") if (child.name == "Cylinder001_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
-        if (child.parent.name == "Board002") if (child.name == "Cylinder009_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
-        if (child.parent.name == "Board003") if (child.name == "Cylinder010_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
-        if (child.parent.name == "Board004") if (child.name == "Cylinder011_1") child.material.map = loader.load("assets/certificates/0001.jpg", textureMappingCert);
+        if (child.parent.name == "Board001") if (child.name == "Cylinder001_1") child.material.map = loader.load("assets/certificates/0001.png", textureMappingCert);
+        if (child.parent.name == "Board002") if (child.name == "Cylinder009_1") child.material.map = loader.load("assets/certificates/0002.png", textureMappingCert);
+        if (child.parent.name == "Board003") if (child.name == "Cylinder010_1") child.material.map = loader.load("assets/certificates/0003.png", textureMappingCert);
+        if (child.parent.name == "Board004") if (child.name == "Cylinder011_1") child.material.map = loader.load("assets/certificates/0004.png", textureMappingCert);
         if (child.parent.name == "Project") if (child.name == "Cube031_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
         if (child.parent.name == "Project001") if (child.name == "Cube032_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
         if (child.parent.name == "Project002") if (child.name == "Cube033_1") child.material.map = loader.load("assets/projects/project-1.png", textureMappingProject);
@@ -302,7 +303,7 @@ class MainScene extends Scene3D {
         const oldPosition = this.camera.position.clone(),
           oldLookAt = tempVector.clone();
         window.onCloseModal = () => {
-          document.getElementById("modal").style.display = "none";
+          document.getElementById("modal").classList.remove("visible");
           new TWEEN.Tween(this.camera.position)
             .to(
               {
@@ -336,6 +337,8 @@ class MainScene extends Scene3D {
         };
         document.getElementById("msg").style.display = "none";
         const parent = intersects[0].object.parent;
+        document.getElementById("modal").classList.add("visible");
+        document.getElementById("modal-content").innerHTML = content[parent.userData.name] || "";
         new TWEEN.Tween(this.camera.position)
           .to(
             {
@@ -357,8 +360,6 @@ class MainScene extends Scene3D {
                 parent.position.z * 3 + parent.userData.targetOffset.z
               )
             );
-            document.getElementById("modal").style.display = "block";
-            document.getElementById("modal-content").innerHTML = content[parent.userData.name] || "";
           })
           .start();
         new TWEEN.Tween(tempVector)
@@ -376,7 +377,7 @@ class MainScene extends Scene3D {
                 parent.position.z * 3 + parent.userData.targetOffset.z
               )
             );
-            document.getElementById("modal").style.display = "block";
+            document.getElementById("modal").classList.add("visible");
           })
           .start();
       }
