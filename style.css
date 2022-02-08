@@ -6,9 +6,10 @@ html {
 }
 
 .map {
-  width: 10rem;
+  width: 7rem;
+  height: 7rem;
   position: fixed;
-  bottom: 2rem;
+  bottom: 1rem;
   left: 1rem;
 }
 
@@ -18,8 +19,8 @@ html {
 
 #pointer {
   position: fixed;
-  bottom: 5rem;
-  left: 6rem;
+  bottom: 3.6rem;
+  left: 4rem;
 }
 
 #msg {
@@ -31,12 +32,18 @@ html {
   background-color: #ffeec8;
   border: 0.5rem solid #cccdaa;
   box-sizing: border-box;
-  border-radius: 8px;
   display: none;
   padding: 1rem;
   color: white;
   font-size: 1.2rem;
   color: black;
+  font-family: "MedievalSharp", cursive;
+  align-items: flex-start;
+}
+
+#msg img {
+  width: 2rem;
+  padding-right: 0.7rem;
 }
 
 #modal {

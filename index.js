@@ -2,15 +2,6 @@ import TWEEN from "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.
 import content from "/content.js";
 const { Project, PhysicsLoader, Scene3D, ExtendedObject3D, JoyStick, THREE } = ENABLE3D;
 const { Vector3, AnimationMixer, sRGBEncoding } = THREE;
-// const gui = new dat.GUI();
-// const cubeFolder = gui.addFolder("Cube");
-// cubeFolder.add(texture.repeat, "x", 0, 10);
-// cubeFolder.add(texture.repeat, "y", 0, 10);
-// cubeFolder.open();
-
-const stats = Stats();
-stats.domElement.style.position = "fixed";
-document.body.appendChild(stats.domElement);
 
 const isMobile = window.outerWidth < 1000,
   isTouchDevice = "ontouchstart" in window,
@@ -57,6 +48,25 @@ const textureMappingProject = (texture) => {
   texture.rotation = Math.PI / 2;
   texture.flipY = false;
 };
+
+const linkBoxMaterial = (color, image, loader) => {
+  const cubeMaterialArray = [];
+  cubeMaterialArray.push(new THREE.MeshBasicMaterial({ color }));
+  cubeMaterialArray.push(new THREE.MeshBasicMaterial({ color }));
+  cubeMaterialArray.push(new THREE.MeshBasicMaterial({ color }));
+  cubeMaterialArray.push(new THREE.MeshBasicMaterial({ color }));
+  cubeMaterialArray.push(
+    new THREE.MeshBasicMaterial({
+      map: loader.load(image, (texture) => {
+        texture.repeat.set(0.7, 0.7);
+        texture.offset.set(0.15, 0.15);
+      }),
+    })
+  );
+  cubeMaterialArray.push(new THREE.MeshBasicMaterial({ color }));
+  return new THREE.MeshFaceMaterial(cubeMaterialArray);
+};
+
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
@@ -81,30 +91,7 @@ class MainScene extends Scene3D {
   }
 
   async create() {
-    this.lookAt = new Vector3(0, 0, 0);
-    // this.isLerping = true;
-    // const gui = new dat.GUI();
-    // const cubeFolder = gui.addFolder("Cube");
-    // cubeFolder.add(this.camera.position, "x", -50, 50);
-    // cubeFolder.add(this.camera.position, "y", -50, 50);
-    // cubeFolder.add(this.camera.position, "z", -50, 50);
-    // const la1 = cubeFolder.add(this.lookAt, "x", -50, 50);
-    // const la2 = cubeFolder.add(this.lookAt, "y", -50, 50);
-    // const la3 = cubeFolder.add(this.lookAt, "z", -50, 50);
-    // la1.onChange((value) => {
-    //   this.camera.lookAt(this.lookAt);
-    // });
-    // la2.onChange((value) => {
-    //   this.camera.lookAt(this.lookAt);
-    // });
-    // la3.onChange((value) => {
-    //   this.camera.lookAt(this.lookAt);
-    // });
-    // cubeFolder.open();
-
-    const { lights } = await this.warpSpeed("-ground", "-grid");
-
-    this.camera.position.set(0, 5, 30);
+    const { lights } = await this.warpSpeed("-ground", "-grid", "-orbitControls");
 
     const ground = this.add.plane({ width: 60, height: 60 });
     ground.rotation.x = Math.PI / 2;
@@ -120,6 +107,9 @@ class MainScene extends Scene3D {
     const fence3 = this.add.box({ width: 13.2, height: 2, depth: 0.5 });
     fence3.position.set(23.5, 1, -9);
     this.physics.add.existing(fence3, { mass: 1, collisionFlags: 2 });
+    const fence4 = this.add.box({ width: 0.5, height: 2, depth: 21 });
+    fence4.position.set(0, 1, -20);
+    this.physics.add.existing(fence4, { mass: 1, collisionFlags: 2 });
 
     lights.directionalLight.shadow.bias = -0.001;
     lights.directionalLight.shadow.mapSize.width = 2048;
@@ -130,11 +120,6 @@ class MainScene extends Scene3D {
     lights.directionalLight.shadow.camera.right = -250;
     lights.directionalLight.shadow.camera.top = 250;
     lights.directionalLight.shadow.camera.bottom = -250;
-
-    // this.camera.near = 7;
-    // this.camera.updateProjectionMatrix();
-
-    // this.physics.debug.enable();
 
     const loader = new THREE.TextureLoader();
 
@@ -212,6 +197,37 @@ class MainScene extends Scene3D {
         }
       }
     });
+
+    const email = this.add.box({ width: 0.5, height: 0.5, depth: 0.3 });
+    email.material = linkBoxMaterial(0xffffff, "assets/links/email.png", loader);
+    email.position.set(-4, 0.67, 1.45);
+    email.link = "mailto:shivanshnalwaya@gmail.com";
+    this.interactable.push(email);
+
+    const linkedin = this.add.box({ width: 0.5, height: 0.5, depth: 0.3 });
+    linkedin.material = linkBoxMaterial(0x0078d3, "assets/links/linkedin.png", loader);
+    linkedin.position.set(-2, 0.67, 1.45);
+    linkedin.link = "https://www.linkedin.com/in/shivansh-nalwaya/";
+    this.interactable.push(linkedin);
+
+    const github = this.add.box({ width: 0.5, height: 0.5, depth: 0.3 });
+    github.material = linkBoxMaterial(0x000000, "assets/links/github.png", loader);
+    github.position.set(0, 0.67, 1.45);
+    github.link = "https://github.com/shivansh-nalwaya";
+    this.interactable.push(github);
+
+    const facebook = this.add.box({ width: 0.5, height: 0.5, depth: 0.3 });
+    facebook.material = linkBoxMaterial(0x3f51b5, "assets/links/facebook.png", loader);
+    facebook.position.set(2, 0.67, 1.45);
+    facebook.link = "https://www.facebook.com/shivansh.nalwaya";
+    this.interactable.push(facebook);
+
+    const insta = this.add.box({ width: 0.5, height: 0.5, depth: 0.3 });
+    insta.material = linkBoxMaterial(0xf55376, "assets/links/insta.png", loader);
+    insta.position.set(4, 0.67, 1.45);
+    insta.link = "https://www.instagram.com/shivanshnalwaya";
+    this.interactable.push(insta);
+
     this.add.existing(this.map);
 
     const man = await this.load.fbx("character");
@@ -297,6 +313,7 @@ class MainScene extends Scene3D {
       var raycaster = new THREE.Raycaster();
       raycaster.setFromCamera(mouse, this.camera);
       var intersects = raycaster.intersectObjects(this.interactable);
+      if (intersects[0].object.link) return window.open(intersects[0].object.link);
       if (intersects[0].object.parent.userData.link) return window.open(intersects[0].object.parent.userData.link);
       if (intersects.length > 0 && intersects[0].object.parent.visible) {
         this.isLerping = true;
@@ -402,6 +419,8 @@ class MainScene extends Scene3D {
         this.running = this.speed > 5;
         this.turnSpeed = Math.abs(right);
       });
+    } else {
+      document.getElementById("msg").style.display = "flex";
     }
   }
 
@@ -416,7 +435,7 @@ class MainScene extends Scene3D {
     this.actions[activeAction].reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration);
   }
 
-  update(delta) {
+  update() {
     if (this.isLerping) return TWEEN.update();
     if (this.keys.left.isDown) this.man.body.setAngularVelocityY(this.turnSpeed);
     else if (this.keys.right.isDown) this.man.body.setAngularVelocityY(-this.turnSpeed);
@@ -425,9 +444,9 @@ class MainScene extends Scene3D {
       this.man.body.setVelocityZ(Math.cos(this.man.body.rotation.y) * -this.speed);
       this.man.body.setVelocityX(Math.sin(this.man.body.rotation.y) * -this.speed);
     }
-    if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
-      // document.getElementById("pointer").style.bottom = 5.2 - this.man.position.z / 27 + "rem";
-      // document.getElementById("pointer").style.left = 6.2 + this.man.position.x / 23 + "rem";
+    if (this.keys.up.isDown) {
+      document.getElementById("pointer").style.bottom = 4 - this.man.position.z / 9 + "rem";
+      document.getElementById("pointer").style.left = 4 + this.man.position.x / 9 + "rem";
       document.querySelector("body").style.cursor = "none";
     }
     if (this.keys.left.isDown || this.keys.right.isDown || this.keys.up.isDown) {
@@ -454,28 +473,34 @@ class MainScene extends Scene3D {
         const obstructions = obstruct.intersectObject(child);
         child.visible = obstructions.length == 0;
       }
-      if (child.isMesh && child.parent.userData.emissive == 1 && child.parent.visible) {
-        var point1 = new Vector3(),
-          point2 = new Vector3();
-        point1.setFromMatrixPosition(this.man.matrixWorld);
-        point2.setFromMatrixPosition(child.matrixWorld);
-        var distance = point1.distanceTo(point2);
-        if (distance < 6) {
-          if (distance < minDist) {
-            minDist = distance;
-            minToEmission = child;
+    });
+    if (this.keys.up.isDown) {
+      this.map.traverse((child) => {
+        if (child.isGroup && child.userData.hideable == 1) {
+          const obstructions = obstruct.intersectObject(child);
+          child.visible = obstructions.length == 0;
+        }
+        if (child.isMesh && child.parent.userData.emissive == 1 && child.parent.visible) {
+          var point1 = new Vector3(),
+            point2 = new Vector3();
+          point1.setFromMatrixPosition(this.man.matrixWorld);
+          point2.setFromMatrixPosition(child.matrixWorld);
+          var distance = point1.distanceTo(point2);
+          if (distance < 6) {
+            if (distance < minDist) {
+              minDist = distance;
+              minToEmission = child;
+            }
           }
         }
+      });
+      if (minToEmission) {
+        document.getElementById("msg").style.display = "flex";
+        document.getElementById("msg-content").innerHTML = minToEmission.parent.userData.cta;
+      } else {
+        document.getElementById("msg").style.display = "none";
       }
-    });
-    if (minToEmission) {
-      document.getElementById("msg").style.display = "block";
-      document.getElementById("msg").innerHTML = minToEmission.parent.userData.cta;
-    } else {
-      document.getElementById("msg").style.display = "none";
     }
-    this.camera.updateProjectionMatrix();
-    stats.update();
   }
 }
 
