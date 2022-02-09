@@ -52,6 +52,13 @@ const linkBoxMaterial = (color, image, loader) => {
   return new THREE.MeshFaceMaterial(cubeMaterialArray);
 };
 
+let filesLoaded = 0;
+const updateProgress = () => {
+  filesLoaded += 1;
+  const progress = (filesLoaded / 6) * 100;
+  document.querySelector("#begin-modal .progress-bg").style.width = `${progress}%`;
+};
+
 class MainScene extends Scene3D {
   constructor() {
     super("MainScene");
@@ -69,19 +76,19 @@ class MainScene extends Scene3D {
   }
 
   async preload() {
-    const map = this.load.preload("map", "/assets/scene.gltf");
-    const character = this.load.preload("character", "/assets/character.fbx");
-    const idle = this.load.preload("idle", "/assets/idle.fbx");
-    const walk = this.load.preload("walk", "/assets/walk.fbx");
-    const run = this.load.preload("run", "/assets/run.fbx");
-    const wave = this.load.preload("wave", "/assets/wave.fbx");
+    const map = this.load.preload("map", "/assets/scene.gltf").then(updateProgress);
+    const character = this.load.preload("character", "/assets/character.fbx").then(updateProgress);
+    const idle = this.load.preload("idle", "/assets/idle.fbx").then(updateProgress);
+    const walk = this.load.preload("walk", "/assets/walk.fbx").then(updateProgress);
+    const run = this.load.preload("run", "/assets/run.fbx").then(updateProgress);
+    const wave = this.load.preload("wave", "/assets/wave.fbx").then(updateProgress);
 
     await Promise.all([map, character, idle, walk, run, wave]);
   }
 
   async create() {
     const { lights } = await this.warpSpeed("-ground", "-grid", "-orbitControls");
-    this.camera.position.set(0, 3, 0);
+    this.camera.position.set(0, 3, isMobile ? 5 : 0);
     this.camera.lookAt(new THREE.Vector3(0, 3, 10));
     const ground = this.add.plane({ width: 60, height: 60 });
     ground.rotation.x = Math.PI / 2;
@@ -250,7 +257,7 @@ class MainScene extends Scene3D {
     this.man = new ExtendedObject3D();
     this.man.name = "man";
     this.man.add(man);
-    this.man.position.set(0, 0, 8);
+    this.man.position.set(0, 0, isMobile ? 18 : 8);
     this.man.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = child.receiveShadow = true;
@@ -316,7 +323,23 @@ class MainScene extends Scene3D {
         .onComplete(() => {
           this.camera.lookAt(new Vector3(0, 2, 8));
           this.isLerping = false;
-          document.getElementById("msg").style.display = "flex";
+          if (isTouchDevice) {
+            const joystick = new JoyStick();
+            const axis = joystick.add.axis({
+              styles: { right: 1.5 * rem, bottom: rem, size: 100 },
+            });
+            axis.onMove((event) => {
+              const { top, right } = event;
+              this.keys.up.isDown = top > 0;
+              this.keys.left.isDown = right < 0;
+              this.keys.right.isDown = right > 0;
+              this.speed = Math.abs(top) * 10;
+              this.running = this.speed > 5;
+              this.turnSpeed = Math.abs(right);
+            });
+          } else document.getElementById("msg").style.display = "flex";
+          document.getElementById("map").style.display = "block";
+          document.getElementById("pointer").style.display = "block";
         })
         .start();
     };
@@ -437,22 +460,6 @@ class MainScene extends Scene3D {
     document.addEventListener("keyup", (e) => press(e, false));
     document.addEventListener("mousemove", (e) => onMouseMove(e));
     document.addEventListener("click", (e) => onClick(e));
-
-    if (isTouchDevice) {
-      const joystick = new JoyStick();
-      const axis = joystick.add.axis({
-        styles: { right: 2 * rem, bottom: 3 * rem, size: 100 },
-      });
-      axis.onMove((event) => {
-        const { top, right } = event;
-        this.keys.up.isDown = top > 0;
-        this.keys.left.isDown = right < 0;
-        this.keys.right.isDown = right > 0;
-        this.speed = Math.abs(top) * 10;
-        this.running = this.speed > 5;
-        this.turnSpeed = Math.abs(right);
-      });
-    }
   }
 
   fadeToAction(name, duration) {
@@ -468,9 +475,8 @@ class MainScene extends Scene3D {
 
   update() {
     if (this.isLoading) {
-      document.getElementById("load").style.display = "none";
-      document.getElementById("map").style.display = "block";
-      document.getElementById("pointer").style.display = "block";
+      document.querySelector("#begin-modal button").classList.add("loaded");
+      document.querySelector("#begin-modal button").innerHTML = "Begin Journey";
       document.querySelector("canvas").style.opacity = "1";
       this.isLoading = false;
     }
@@ -486,7 +492,6 @@ class MainScene extends Scene3D {
     if (this.waveStarted) {
       this.fadeToAction("wave", 0.5);
       setTimeout(() => {
-        document.querySelector("#begin-modal button").style.display = "block";
         this.fadeToAction("idle", 0.5);
       }, 2000);
       this.waveStarted = false;
