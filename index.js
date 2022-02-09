@@ -11,21 +11,6 @@ let tempVector = new Vector3();
 let activeAction = "idle",
   previousAction;
 
-function onDocumentMouseMove(event, camera, planes) {
-  var mouse = new THREE.Vector2();
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  var raycaster = new THREE.Raycaster();
-  raycaster.setFromCamera(mouse, camera);
-  var intersects = raycaster.intersectObjects(planes);
-  if (intersects.length > 0 && intersects[0].object.parent.visible) {
-    document.querySelector("body").style.cursor = "pointer";
-  } else {
-    document.querySelector("body").style.cursor = "default";
-  }
-}
-
 const textureMappingFlag = (texture) => {
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
@@ -72,6 +57,9 @@ class MainScene extends Scene3D {
     super("MainScene");
     this.speed = 4;
     this.turnSpeed = 3;
+    this.isLoading = true;
+    this.isLerping = true;
+    this.waving = true;
   }
 
   async init() {
@@ -86,13 +74,15 @@ class MainScene extends Scene3D {
     const idle = this.load.preload("idle", "/assets/idle.fbx");
     const walk = this.load.preload("walk", "/assets/walk.fbx");
     const run = this.load.preload("run", "/assets/run.fbx");
+    const wave = this.load.preload("wave", "/assets/wave.fbx");
 
-    await Promise.all([map, character, idle, walk, run]);
+    await Promise.all([map, character, idle, walk, run, wave]);
   }
 
   async create() {
     const { lights } = await this.warpSpeed("-ground", "-grid", "-orbitControls");
-
+    this.camera.position.set(0, 3, 0);
+    this.camera.lookAt(new THREE.Vector3(0, 3, 10));
     const ground = this.add.plane({ width: 60, height: 60 });
     ground.rotation.x = Math.PI / 2;
     ground.position.y -= 0.1;
@@ -244,7 +234,11 @@ class MainScene extends Scene3D {
     const run = await this.load.fbx("run");
     this.manRunAction = manAnims.clipAction(run.animations[0]);
 
+    const wave = await this.load.fbx("wave");
+    this.manWaveAction = manAnims.clipAction(wave.animations[0]);
+
     this.actions = {
+      wave: this.manWaveAction,
       walk: this.manWalkAction,
       idle: this.manIdleAction,
       run: this.manRunAction,
@@ -302,6 +296,29 @@ class MainScene extends Scene3D {
         this.speed = 4;
         this.running = false;
       }
+    };
+
+    window.beginJourney = () => {
+      document.getElementById("begin-modal").style.display = "none";
+      new TWEEN.Tween(this.camera.position)
+        .to(
+          {
+            x: 0,
+            y: isMobile ? 2.3 * 1.5 : 3,
+            z: 8 + (isMobile ? 11.5 : 7),
+          },
+          1000
+        )
+        .easing(TWEEN.Easing.Sinusoidal.InOut)
+        .onUpdate(() => {
+          this.camera.lookAt(new Vector3(0, 2, 8));
+        })
+        .onComplete(() => {
+          this.camera.lookAt(new Vector3(0, 2, 8));
+          this.isLerping = false;
+          document.getElementById("msg").style.display = "flex";
+        })
+        .start();
     };
 
     const onClick = (event) => {
@@ -400,9 +417,25 @@ class MainScene extends Scene3D {
       }
     };
 
+    const onMouseMove = (event) => {
+      if (this.isLerping) return;
+      var mouse = new THREE.Vector2();
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      var raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, this.camera);
+      var intersects = raycaster.intersectObjects(this.interactable);
+      if (intersects.length > 0 && intersects[0].object.parent.visible) {
+        document.querySelector("body").style.cursor = "pointer";
+      } else {
+        document.querySelector("body").style.cursor = "default";
+      }
+    };
+
     document.addEventListener("keydown", (e) => press(e, true));
     document.addEventListener("keyup", (e) => press(e, false));
-    document.addEventListener("mousemove", (e) => onDocumentMouseMove(e, this.camera, this.interactable));
+    document.addEventListener("mousemove", (e) => onMouseMove(e));
     document.addEventListener("click", (e) => onClick(e));
 
     if (isTouchDevice) {
@@ -419,8 +452,6 @@ class MainScene extends Scene3D {
         this.running = this.speed > 5;
         this.turnSpeed = Math.abs(right);
       });
-    } else {
-      document.getElementById("msg").style.display = "flex";
     }
   }
 
@@ -436,6 +467,31 @@ class MainScene extends Scene3D {
   }
 
   update() {
+    if (this.isLoading) {
+      document.getElementById("load").style.display = "none";
+      document.getElementById("map").style.display = "block";
+      document.getElementById("pointer").style.display = "block";
+      document.querySelector("canvas").style.opacity = "1";
+      this.isLoading = false;
+    }
+    if (this.waving) {
+      this.fadeToAction("idle", 0.5);
+      setTimeout(() => {
+        this.waveStarted = true;
+        this.fadeToAction("wave", 0.5);
+      }, 1000);
+      this.waving = false;
+      return;
+    }
+    if (this.waveStarted) {
+      this.fadeToAction("wave", 0.5);
+      setTimeout(() => {
+        document.querySelector("#begin-modal button").style.display = "block";
+        this.fadeToAction("idle", 0.5);
+      }, 2000);
+      this.waveStarted = false;
+      return;
+    }
     if (this.isLerping) return TWEEN.update();
     if (this.keys.left.isDown) this.man.body.setAngularVelocityY(this.turnSpeed);
     else if (this.keys.right.isDown) this.man.body.setAngularVelocityY(-this.turnSpeed);

@@ -9,17 +9,23 @@
   </head>
   <body>
     <div id="app"></div>
-    <div class="map">
-      <img src="./assets/map.jpeg"  />
+    <div id="load">Loading</div>
+    <div id="map">
+      <img src="./assets/map.jpeg" />
     </div>
-    <div id="pointer"><img src="./assets/icon.png" width="15px" height="15px"  /></div>
+    <img id="pointer" src="./assets/icon.png" width="15px" height="15px" />
     <div id="msg">
       <img src="assets/info.png" />
-      <div id="msg-content">Use arrow keys to move</div>
+      <div id="msg-content">
+        Use arrow keys to move<br />Use shift key to run
+      </div>
     </div>
     <div id="modal">
       <span id="modal-content"></span>
       <img src="assets/icon-close.svg" onclick="window.onCloseModal()" />
+    </div>
+    <div id="begin-modal">
+      <button onclick="window.beginJourney();">Begin Journey</button>
     </div>
     <script type="module" src="index.js"></script>
   </body>

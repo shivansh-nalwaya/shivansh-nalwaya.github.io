@@ -5,19 +5,37 @@ html {
   margin: 0;
 }
 
-.map {
+canvas {
+  opacity: 0;
+}
+
+#begin-modal {
+  height: 10rem;
+  position: fixed;
+}
+
+#begin-modal button {
+  display: none;
+  position: fixed;
+  top: 10rem;
+  right: 5rem;
+}
+
+#map {
   width: 7rem;
   height: 7rem;
   position: fixed;
   bottom: 1rem;
   left: 1rem;
+  display: none;
 }
 
-.map img {
+#map img {
   width: 100%;
 }
 
 #pointer {
+  display: none;
   position: fixed;
   bottom: 3.6rem;
   left: 4rem;
@@ -39,6 +57,7 @@ html {
   color: black;
   font-family: "MedievalSharp", cursive;
   align-items: flex-start;
+  display: none;
 }
 
 #msg img {
