@@ -17,7 +17,7 @@ JS.scripts.prototype = {
   },
   basicData: function () {
     $.ajax({
-      url: "/resume/data.json",
+      url: "/public/resume/data.json",
       success: function (result) {
         $("#name").append(result.name);
         $("#title").append(result.title);
@@ -26,7 +26,7 @@ JS.scripts.prototype = {
   },
   skillData: function () {
     $.ajax({
-      url: "/resume/data.json",
+      url: "/public/resume/data.json",
       success: function (result) {
         let skills = _.get(result, "Professional Skills");
         _.map(_.keys(skills), (skill) => {
@@ -39,7 +39,7 @@ JS.scripts.prototype = {
   },
   contactData: function () {
     $.ajax({
-      url: "/resume/data.json",
+      url: "/public/resume/data.json",
       success: function (result) {
         let contacts = _.get(result, "Contacts");
         _.map(contacts, (contact) => {
@@ -51,7 +51,7 @@ JS.scripts.prototype = {
   },
   educationData: function () {
     $.ajax({
-      url: "/resume/data.json",
+      url: "/public/resume/data.json",
       success: function (result) {
         let educations = _.get(result, "Education");
         _.map(educations, (education) => {
@@ -73,7 +73,7 @@ JS.scripts.prototype = {
   },
   experienceData: function () {
     $.ajax({
-      url: "/resume/data.json",
+      url: "/public/resume/data.json",
       success: function (result) {
         let experiences = _.get(result, "Work Experience");
         _.map(experiences, (experience) => {
@@ -99,7 +99,7 @@ JS.scripts.prototype = {
   },
   projectData: function () {
     $.ajax({
-      url: "/resume/data.json",
+      url: "/public/resume/data.json",
       success: function (result) {
         let projects = _.get(result, "Projects");
         _.map(projects, (project) => {
@@ -123,7 +123,7 @@ JS.scripts.prototype = {
   },
   certificateData: function () {
     $.ajax({
-      url: "/resume/data.json",
+      url: "/public/resume/data.json",
       success: function (result) {
         let certificates = _.get(result, "Certifications");
         _.map(certificates, (certificate) => {
@@ -142,7 +142,7 @@ JS.scripts.prototype = {
   },
   achievementData: function () {
     $.ajax({
-      url: "/resume/data.json",
+      url: "/public/resume/data.json",
       success: function (result) {
         let achievements = _.get(result, "Achievements");
         let achievementsUi = "";

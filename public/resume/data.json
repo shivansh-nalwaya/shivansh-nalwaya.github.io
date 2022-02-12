@@ -1,6 +1,6 @@
 {
   "name": "SHIVANSH NALWAYA",
-  "title": "FULL STACK DEVELOPER",
+  "title": "SENIOR FRONTEND DEVELOPER",
   "Professional Skills": {
     "Programming Languages": [
       "C / C++",
@@ -37,10 +37,16 @@
       "REST",
       "Git",
       "Photoshop",
-      "FL Studio"
+      "FL Studio",
+      "Blender"
     ]
   },
   "Contacts": [
+    {
+      "icon": "fa fa-globe",
+      "label": "shivansh-nalwaya.githib.io",
+      "link": "https://shivansh-nalwaya.githib.io"
+    },
     {
       "icon": "fa fa-envelope",
       "label": "shivanshnalwaya@gmail.com",
@@ -91,7 +97,8 @@
       "duration": "May, 2021 - Present",
       "desc": [
         "Worked on 8+ UI platforms.",
-        "Developed multiple features across multiple platforms."
+        "Developed multiple features across multiple platforms.",
+        "Made the app vernacular by adding multiple languages support"
       ],
       "techStack": [
         "React JS",
